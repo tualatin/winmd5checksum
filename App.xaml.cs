@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using WinMd5Checksum.Data;
 using WinMd5Checksum.Utils;
+using System;
 
 
 namespace WinMd5Checksum
@@ -12,6 +13,7 @@ namespace WinMd5Checksum
   {
     void app_Startup (object Sender, StartupEventArgs e)
     {
+      AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
       LogFile.DeleteFile ( );
 
       if (e.Args.Length == 0)
@@ -63,6 +65,11 @@ namespace WinMd5Checksum
       ShutdownMode = ShutdownMode.OnExplicitShutdown;
 
       base.OnStartup (e);
+    }
+
+    private static void CurrentDomain_UnhandledException (object sender, UnhandledExceptionEventArgs e)
+    {
+      ErrorLog.WriteLog (ErrorFlags.Error, "winmd5checksum", string.Format ("UnhandledException: {0}", e.ExceptionObject));
     }
   }
 }

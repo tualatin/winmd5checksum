@@ -261,17 +261,17 @@ namespace WinMd5Checksum.Utils
       }
     }
 
-    private static string GetMd5HashFromFile (string fileName)
+    private static string GetMd5HashOf (string fileName)
     {
       return (HashOf<MD5CryptoServiceProvider> (fileName, Encoding.Default));
     }
 
-    private static string GetSha256HashFromFile (string fileName)
+    private static string GetSha256HashOf (string fileName)
     {
       return (HashOf<SHA1CryptoServiceProvider> (fileName, Encoding.Default));
     }
 
-    private static string GetSha512HashFromFile (string fileName)
+    private static string GetSha512HashOf (string fileName)
     {
       return (HashOf<SHA512CryptoServiceProvider> (fileName, Encoding.Default));
     }

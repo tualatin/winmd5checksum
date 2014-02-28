@@ -73,15 +73,15 @@ namespace WinMd5Checksum.Data
       pattern = @"[a-fA-F\d]{32}";
       match = Regex.Match (cmdArg, pattern);
 
-      if (match.Success)
-      {
-        item.compare = cmdArg;
-
-        if (item.key != null && item.compare != null)
-          AddFileContainer ( );
-
+      if (!match.Success)
         return;
-      }
+
+      item.compare = cmdArg;
+
+      if (item.key != null && item.compare != null)
+        AddFileContainer ( );
+
+      return;
     }
 
     /// <summary>

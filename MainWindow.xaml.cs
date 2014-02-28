@@ -7,7 +7,6 @@ using Microsoft.Win32;
 using WinMd5Checksum.Data;
 using System.Windows.Controls;
 using System.IO;
-using System.Windows.Navigation;
 using System.Diagnostics;
 using System.Windows.Input;
 using System.Reflection;
@@ -72,79 +71,79 @@ namespace WinMd5Checksum
       btnFile.Focus ( );
     }
     
-    private void Hyperlink_RequestNavigate (object sender, RequestNavigateEventArgs e)
-    {
-      Process.Start (new ProcessStartInfo (e.Uri.AbsoluteUri));
-      e.Handled = true;
-    }
+    //private void Hyperlink_RequestNavigate (object sender, RequestNavigateEventArgs e)
+    //{
+    //  Process.Start (new ProcessStartInfo (e.Uri.AbsoluteUri));
+    //  e.Handled = true;
+    //}
 
     private void dataGridFiles_Drop (object sender, DragEventArgs e)
     {
       object text = e.Data.GetData (DataFormats.FileDrop);
       DataGrid dg = sender as DataGrid;
 
-      if (dg != null)
+      if (dg == null)
+        return;
+
+      try
       {
-        try
+        string fileName = string.Format ("{0}", ((string[]) text)[0]);
+
+        if ((Path.GetExtension (fileName).CompareTo (".md5")) == 0)
         {
-          string fileName = string.Format ("{0}", ((string[]) text)[0]);
+          fileName = CalcMd5Checksum.GetValueFromHashFile (fileName);
+          Md5Structure file = Md5Files.GetFileContainer ( )[Md5Files.GetFileContainer ( ).Count - 1];
 
-          if ((Path.GetExtension (fileName).CompareTo (".md5")) == 0)
-          {
-            fileName = CalcMd5Checksum.GetValueFromHashFile (fileName);
-            Md5Structure file = Md5Files.GetFileContainer ( )[Md5Files.GetFileContainer ( ).Count - 1];
-
-            file.compare = fileName;
-
-            RefreshDataSource ( );
-            return;
-          }
-
-          if ((Path.GetExtension (fileName).CompareTo (".sha256")) == 0)
-          {
-            fileName = CalcMd5Checksum.GetValueFromHashFile (fileName);
-            Md5Structure file = Md5Files.GetFileContainer ( )[Md5Files.GetFileContainer ( ).Count - 1];
-
-            file.compare256hash = fileName;
-            RefreshDataSource ( );
-            return;
-          }
-
-          Md5Files.AddFileToContainer (fileName);
-          Md5Files.FinishOperation ( );
+          file.compare = fileName;
 
           RefreshDataSource ( );
+          return;
         }
-        catch
-        {
 
+        if ((Path.GetExtension (fileName).CompareTo (".sha256")) == 0)
+        {
+          fileName = CalcMd5Checksum.GetValueFromHashFile (fileName);
+          Md5Structure file = Md5Files.GetFileContainer ( )[Md5Files.GetFileContainer ( ).Count - 1];
+
+          file.compare256hash = fileName;
+          RefreshDataSource ( );
+          return;
         }
+
+        Md5Files.AddFileToContainer (fileName);
+        Md5Files.FinishOperation ( );
+
+        RefreshDataSource ( );
+      }
+      catch (Exception ex)
+      {
+        ErrorLog.WriteLog (ErrorFlags.Error, GetType ( ).Name, string.Format ("{0}, exception: {1}", System.Reflection.MethodBase.GetCurrentMethod ( ).Name, ex));
       }
     }
 
     private void dataGridFiles_GotFocus (object sender, RoutedEventArgs e)
     {
-      if (e.OriginalSource is DataGridCell)
-      {
-        if ((e.OriginalSource as DataGridCell).Column.DisplayIndex == 1 || (e.OriginalSource as DataGridCell).Column.DisplayIndex == 4)
-          currentDataGridCell = e.OriginalSource as DataGridCell;
-        else
-          currentDataGridCell = null;
-      }
+      if (!(e.OriginalSource is DataGridCell))
+        return;
+
+      if ((e.OriginalSource as DataGridCell).Column.DisplayIndex == 1 || (e.OriginalSource as DataGridCell).Column.DisplayIndex == 4)
+        currentDataGridCell = e.OriginalSource as DataGridCell;
+      else
+        currentDataGridCell = null;
     }
 
     private void dataGridFiles_PreviewKeyDown (object sender, KeyEventArgs e)
     {
-      if (e.Key == Key.C && Keyboard.Modifiers == ModifierKeys.Control)
-      {
-        if (currentDataGridCell != null)
-        {
-          if (Clipboard.ContainsText ( ))
-            Clipboard.Clear ( );
+      if (e.Key != Key.C || Keyboard.Modifiers != ModifierKeys.Control)
+        return;
 
-          Clipboard.SetText ((currentDataGridCell.Content as TextBlock).Text);
-        }
-      }
+      if (currentDataGridCell == null)
+        return;
+
+      if (Clipboard.ContainsText ( ))
+        Clipboard.Clear ( );
+
+      Clipboard.SetText ((currentDataGridCell.Content as TextBlock).Text);
     }
 
     #region ClickEvents
@@ -160,22 +159,22 @@ namespace WinMd5Checksum
 
     private void btnFile_Click (object sender, RoutedEventArgs e)
     {
-      OpenFileDialog openDialog = new OpenFileDialog ( )
+      OpenFileDialog openDialog = new OpenFileDialog
       {
         Filter = "All files (*.*)|*.*",
         RestoreDirectory = true,
         Title = "Please select a file to calculate md5/sha256 hashsum"
       };
 
-      Nullable<bool> result = openDialog.ShowDialog ( );
+      bool? result = openDialog.ShowDialog ( );
 
-      if (result == true)
-      {
-        Md5Files.AddFileToContainer (openDialog.FileName);
-        Md5Files.FinishOperation ( );
+      if (result != true)
+        return;
 
-        RefreshDataSource ( );
-      }
+      Md5Files.AddFileToContainer (openDialog.FileName);
+      Md5Files.FinishOperation ( );
+
+      RefreshDataSource ( );
     }
 
     private void btnStart_Click (object sender, RoutedEventArgs e)
@@ -195,8 +194,8 @@ namespace WinMd5Checksum
       {
         if (!string.IsNullOrEmpty (file.calc))
         {
-          SaveFileDialog saveDialog = new SaveFileDialog() { Filter = "md5 files (*.md5)|*.md5", RestoreDirectory = true, Title = string.Format ("Hashsum file for {0}", file.key) };
-          Nullable<bool> result = saveDialog.ShowDialog ( );
+          SaveFileDialog saveDialog = new SaveFileDialog { Filter = "md5 files (*.md5)|*.md5", RestoreDirectory = true, Title = string.Format ("Hashsum file for {0}", file.key) };
+          bool? result = saveDialog.ShowDialog ( );
 
           if (result == true)
           {
@@ -224,7 +223,7 @@ namespace WinMd5Checksum
     {
       Assembly assembly = Assembly.GetExecutingAssembly ( );
 
-      MessageBox.Show (string.Format ("{0}\nVersion: {1}\nBuild Date: {2}\nAuthor: M. Zoennchen, Copryright 2013\nAll rights reserved\n\nIts a opensource .NET project", LogFile.ApplicationCaption ( ), assembly.GetName ( ).Version, BuildDate.GetBuildDateTime (assembly)), LogFile.ApplicationCaption ( ), MessageBoxButton.OK, MessageBoxImage.Information);
+      MessageBox.Show (string.Format ("{0}\nVersion: {1}\nBuild Date: {2}\nAuthor: M. Zoennchen, Copryright 2013 - 2014\nAll rights reserved\n\nIts a opensource .NET project", LogFile.ApplicationCaption ( ), assembly.GetName ( ).Version, BuildDate.GetBuildDateTime (assembly)), LogFile.ApplicationCaption ( ), MessageBoxButton.OK, MessageBoxImage.Information);
     }
 
     private void btnWeb_Click (object sender, RoutedEventArgs e)
@@ -266,9 +265,7 @@ namespace WinMd5Checksum
           break;
         }
         else
-        {
           Thread.Sleep (1);
-        }
       }
     }
 
@@ -353,7 +350,7 @@ namespace WinMd5Checksum
       }
       catch (Exception ex)
       {
-        Console.Write (string.Format ("OnCancel exception {0}\n{1}", TraceHelper.GetFunctionName (GetType ( ).Name), ex.Message));
+        ErrorLog.WriteLog (ErrorFlags.Error, GetType ( ).Name, string.Format ("{0}, exception: {1}", System.Reflection.MethodBase.GetCurrentMethod ( ).Name, ex));
       }
       finally
       {
