@@ -109,7 +109,7 @@ namespace WinMd5Checksum.Utils
       }
       catch (Exception ex)
       {
-        Console.Out.WriteLine (string.Format ("Thread exception {0}", ex));
+        ErrorLog.WriteLog (ErrorFlags.Error, "CalcMd5Checksum", string.Format ("WorkerThread, exception: {0}", ex));
       }
     }
 
@@ -126,20 +126,20 @@ namespace WinMd5Checksum.Utils
     {
       List<Md5Structure> compareRest = new List<Md5Structure> ( );
 
-      foreach (Md5Structure item in Md5Files.GetFileContainer ( )) {
-        if (string.IsNullOrEmpty (item.calc))
-          item.calc = GetMd5HashFromFile (item.key);
-        if (!string.IsNullOrEmpty (item.compare))
-        {
-          item.result = DoCompare (item.calc, item.compare);
-          compareRest.Add (item);
-        }
-
-        if (string.IsNullOrEmpty (item.sha256hash))
-          item.sha256hash = GetSHA256HashFromFile (item.key);
-        if (!string.IsNullOrEmpty (item.compare256hash))
-          item.result256compare = DoCompare (item.sha256hash, item.compare256hash);
-      }
+      Md5Files.GetFileContainer ( ).ForEach (item =>
+          {
+            if (string.IsNullOrEmpty (item.calc))
+              item.calc = GetMd5HashFromFile (item.key);
+            if (!string.IsNullOrEmpty (item.compare))
+            {
+              item.result = DoCompare (item.calc, item.compare);
+              compareRest.Add (item);
+            }
+            if (string.IsNullOrEmpty (item.sha256hash))
+              item.sha256hash = GetSHA256HashFromFile (item.key);
+            if (!string.IsNullOrEmpty (item.compare256hash))
+              item.result256compare = DoCompare (item.sha256hash, item.compare256hash);
+          });
 
       if (compareRest.Count != Md5Files.GetFileContainer ( ).Count)
       {
@@ -155,10 +155,7 @@ namespace WinMd5Checksum.Utils
 
     private static void CompareToRest (Md5Structure item)
     {
-      foreach (Md5Structure file in Md5Files.GetFileContainer ( ))
-      {
-        file.result = DoCompare (file.calc, item.compare);
-      }
+      Md5Files.GetFileContainer ( ).ForEach (file => file.result = DoCompare (file.calc, item.compare));
     }
 
     private static string DoCompare (string result, string expected)
@@ -195,7 +192,7 @@ namespace WinMd5Checksum.Utils
       }
       catch (Exception ex)
       {
-        Console.Out.WriteLine (string.Format ("GetValueFromHashFile exception {0}", ex));
+        ErrorLog.WriteLog (ErrorFlags.Error, "CalcMd5Checksum", string.Format ("GetValueFromHashFile, exception: {0}", ex));
 
         return (string.Empty);
       }
@@ -229,7 +226,7 @@ namespace WinMd5Checksum.Utils
       }
       catch (Exception ex)
       {
-        Console.Out.WriteLine (string.Format ("GetMd5HashFromFile exception {0}", ex));
+        ErrorLog.WriteLog (ErrorFlags.Error, "CalcMd5Checksum", string.Format ("GetMd5HashFromFile, exception: {0}", ex));
 
         return (string.Empty);
       }
@@ -258,10 +255,34 @@ namespace WinMd5Checksum.Utils
       }
       catch (Exception ex)
       {
-        Console.Out.WriteLine (string.Format ("GetSHA256HashFromFile exception {0}", ex));
+        ErrorLog.WriteLog (ErrorFlags.Error, "CalcMd5Checksum", string.Format ("GetSHA256HashFromFile, exception: {0}", ex));
 
         return (string.Empty);
       }
+    }
+
+    private static string GetMd5HashFromFile (string fileName)
+    {
+      return (HashOf<MD5CryptoServiceProvider> (fileName, Encoding.Default));
+    }
+
+    private static string GetSha256HashFromFile (string fileName)
+    {
+      return (HashOf<SHA1CryptoServiceProvider> (fileName, Encoding.Default));
+    }
+
+    private static string GetSha512HashFromFile (string fileName)
+    {
+      return (HashOf<SHA512CryptoServiceProvider> (fileName, Encoding.Default));
+    }
+
+    private static string HashOf<T> (string text, Encoding enc)
+      where T : HashAlgorithm, new ()
+    {
+      var buffer = enc.GetBytes (text);
+      var provider = new T ( );
+
+      return (BitConverter.ToString (provider.ComputeHash (buffer)).Replace ("-", ""));
     }
   }
 }
