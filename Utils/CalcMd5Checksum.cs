@@ -13,7 +13,6 @@ namespace WinMd5Checksum.Utils
   {
     private static volatile bool isRunning;
     private static Thread workerThread;
-    private static bool writeFile;
 
 
     /// <summary>
@@ -22,26 +21,26 @@ namespace WinMd5Checksum.Utils
     /// <param name="s"></param>
     public static void SetWriteFile (bool s)
     {
-      writeFile = s;
+      CanWriteFile = s;
     }
 
     /// <summary>
-    /// 
+    /// has file write access
     /// </summary>
-    /// <returns>writeFile</returns>
-    public static bool CanWriteFile ()
+    public static bool CanWriteFile
     {
-      return (writeFile);
+      get;
+      private set;
     }
 
     /// <summary>
-    /// 
+    /// Main thread function
     /// </summary>
     public static void CalcMd5HashSum ()
     {
       workerThread = new Thread (WorkerThread)
       {
-        Name = "CalcMd5HashSum",
+        Name = "CalcFileHashes",
         IsBackground = true
       };
 
@@ -58,16 +57,18 @@ namespace WinMd5Checksum.Utils
     }
 
     /// <summary>
-    /// 
+    /// Get main thread
     /// </summary>
-    /// <returns></returns>
-    public static Thread GetThread ()
+    public static Thread GetThread
     {
-      return (workerThread);
+      get
+      {
+        return (workerThread);
+      }
     }
 
     /// <summary>
-    /// 
+    /// On exit event function
     /// </summary>
     public static void OnExit ()
     {
@@ -95,8 +96,10 @@ namespace WinMd5Checksum.Utils
         return (null);
     }
 
+    #region Main thread
+
     /// <summary>
-    /// 
+    /// Starts main thread
     /// </summary>
     private static void WorkerThread ()
     {
@@ -114,7 +117,7 @@ namespace WinMd5Checksum.Utils
     }
 
     /// <summary>
-    /// 
+    /// Stops main thread
     /// </summary>
     private static void StopWorkerThread ()
     {
@@ -122,6 +125,9 @@ namespace WinMd5Checksum.Utils
       workerThread.Join ( );
     }
 
+    /// <summary>
+    /// Start calcultion
+    /// </summary>
     private static void StartCalculation ()
     {
       DateTime now = DateTime.Now;
@@ -148,14 +154,15 @@ namespace WinMd5Checksum.Utils
           CompareToRest (compareRest[0]);
       }
 
-      if (writeFile == true)
+      if (CanWriteFile)
         LogFile.WriteFile (Md5Files.GetFileContainer ( ));
 
       TimeSpan timeSpan = DateTime.Now.Subtract (now);
-      Console.WriteLine (@"Thread ready: {0}", timeSpan.ToString (@"hh\:mm\:ss\.fff"));
-
+      ErrorLog.WriteLog (ErrorFlags.Info, "CalcMd5Checksum", string.Format ("Calculation time: {0}", timeSpan.ToString (@"hh\:mm\:ss\.fff")));
       isRunning = false;
     }
+
+    #endregion
 
     private static void CompareToRest (Md5Structure item)
     {

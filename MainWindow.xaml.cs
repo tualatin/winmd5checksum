@@ -270,7 +270,7 @@ namespace WinMd5Checksum
     {
       BackgroundWorker worker = sender as BackgroundWorker;
 
-      while (CalcMd5Checksum.GetThread ( ).ThreadState != System.Threading.ThreadState.Stopped)
+      while (CalcMd5Checksum.GetThread.ThreadState != System.Threading.ThreadState.Stopped)
       {
         if ((worker.CancellationPending == true))
         {
@@ -355,7 +355,7 @@ namespace WinMd5Checksum
 
       CalcMd5Checksum.CalcMd5HashSum ( );
 
-      if (CalcMd5Checksum.GetThread ( ).ThreadState == System.Threading.ThreadState.Stopped)
+      if (CalcMd5Checksum.GetThread.ThreadState == System.Threading.ThreadState.Stopped)
         return;
 
       waitingOperation.Visibility = System.Windows.Visibility.Visible;
@@ -385,7 +385,7 @@ namespace WinMd5Checksum
     {
       try
       {
-        if (CalcMd5Checksum.GetThread ( ) != null && CalcMd5Checksum.GetThread ( ).ThreadState != System.Threading.ThreadState.Stopped)
+        if (CalcMd5Checksum.GetThread != null && CalcMd5Checksum.GetThread.ThreadState != System.Threading.ThreadState.Stopped)
           CalcMd5Checksum.OnExit ( );
 
         if (bw.IsBusy == true)
