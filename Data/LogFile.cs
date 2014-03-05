@@ -68,7 +68,7 @@ namespace WinMd5Checksum.Data
       }
       catch (Exception ex)
       {
-        Console.Out.WriteLine (string.Format ("WriteFile ({0}, exception {1}", fileName, ex));
+        ErrorLog.WriteLog (ErrorFlags.Error, "LogFiles", string.Format ("{0} {2}, exception: {1}", System.Reflection.MethodBase.GetCurrentMethod ( ).Name, ex, fileName));
 
         return (false);
       }
@@ -122,7 +122,7 @@ namespace WinMd5Checksum.Data
       }
       catch (Exception ex)
       {
-        Console.Out.WriteLine (string.Format ("WriteFile (list) exception {0}\n{1}", TraceHelper.GetFunctionName ("LogFiles"), ex));
+        ErrorLog.WriteLog (ErrorFlags.Error, "LogFile", string.Format ("{0} (list), exception: {1}", System.Reflection.MethodBase.GetCurrentMethod ( ).Name, ex));
       }
     }
 

@@ -97,7 +97,7 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Res\Key.ico</ApplicationIcon>
+    <ApplicationIcon>Key.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>WinMd5Checksum.App</StartupObject>
@@ -214,6 +214,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Res\Info.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Key.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

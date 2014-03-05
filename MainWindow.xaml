@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:control="clr-namespace:WinMd5Checksum.Control"
         xmlns:utils="clr-namespace:WinMd5Checksum.Utils"
-        Title="Windows MD5 Checksum" Height="500" Width="715" Loaded="Window_Loaded" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen" WindowStyle="SingleBorderWindow" xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" xmlns:lc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" AllowDrop="True" Closing="Window_Closing">
+        Title="Windows MD5 Checksum" Height="500" Width="715" Loaded="Window_Loaded" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen" WindowStyle="SingleBorderWindow" xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" xmlns:lc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" AllowDrop="True" Closing="Window_Closing" Icon="/WinMd5Checksum;component/Res/Key.ico">
   <Window.Resources>
     <utils:MyValueConverter x:Key="converter" />
   </Window.Resources>

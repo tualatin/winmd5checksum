@@ -23,7 +23,8 @@ namespace WinMd5Checksum
     private readonly BackgroundWorker bw = new BackgroundWorker ( );
     private DataGridCell currentDataGridCell;
     private WinMdTrayIcon trayIcon;
-    
+    private delegate System.Windows.Point GetPosition (IInputElement element);
+
 
     public void Dispose ()
     {
@@ -79,41 +80,53 @@ namespace WinMd5Checksum
 
     private void dataGridFiles_Drop (object sender, DragEventArgs e)
     {
+      int index = GetCurrentRowIndex (e.GetPosition);
       object text = e.Data.GetData (DataFormats.FileDrop);
       DataGrid dg = sender as DataGrid;
 
       if (dg == null)
         return;
+      if (text.GetType ( ) != typeof (string[]))
+        return;
 
       try
       {
-        string fileName = string.Format ("{0}", ((string[]) text)[0]);
+        string[] dropFiles = text as string[];
 
-        if ((Path.GetExtension (fileName).CompareTo (".md5")) == 0)
-        {
-          fileName = CalcMd5Checksum.GetValueFromHashFile (fileName);
-          Md5Structure file = Md5Files.GetFileContainer ( )[Md5Files.GetFileContainer ( ).Count - 1];
+        Array.ForEach (dropFiles, fileName =>
+            {
+              if ((Path.GetExtension (fileName).CompareTo (".md5")) == 0)
+              {
+                if (index >= Md5Files.GetFileContainer ( ).Count)
+                  return;
 
-          file.compare = fileName;
+                fileName = CalcMd5Checksum.GetValueFromHashFile (fileName);
+                Md5Structure file = Md5Files.GetFileContainer ( )[index];
 
-          RefreshDataSource ( );
-          return;
-        }
+                file.compare = fileName;
 
-        if ((Path.GetExtension (fileName).CompareTo (".sha256")) == 0)
-        {
-          fileName = CalcMd5Checksum.GetValueFromHashFile (fileName);
-          Md5Structure file = Md5Files.GetFileContainer ( )[Md5Files.GetFileContainer ( ).Count - 1];
+                RefreshDataSource ( );
+                return;
+              }
 
-          file.compare256hash = fileName;
-          RefreshDataSource ( );
-          return;
-        }
+              if ((Path.GetExtension (fileName).CompareTo (".sha256")) == 0)
+              {
+                if (index >= Md5Files.GetFileContainer ( ).Count)
+                  return;
 
-        Md5Files.AddFileToContainer (fileName);
-        Md5Files.FinishOperation ( );
+                fileName = CalcMd5Checksum.GetValueFromHashFile (fileName);
+                Md5Structure file = Md5Files.GetFileContainer ( )[index];
 
-        RefreshDataSource ( );
+                file.compare256hash = fileName;
+                RefreshDataSource ( );
+                return;
+              }
+
+              Md5Files.AddFileToContainer (fileName);
+              Md5Files.FinishOperation ( );
+
+              RefreshDataSource ( );
+            });
       }
       catch (Exception ex)
       {
@@ -294,6 +307,39 @@ namespace WinMd5Checksum
     #endregion Thread
 
     #region Helperfunction
+
+    private int GetCurrentRowIndex (GetPosition pos)
+    {
+      int curIndex = -1;
+
+      for (int i = 0; i < dataGridFiles.Items.Count; i++)
+      {
+        DataGridRow item = GetRowItem (i);
+
+        if (GetMouseTargetRow (item, pos))
+        {
+          curIndex = i;
+          break;
+        }
+      }
+      return (curIndex);
+    }
+
+    private DataGridRow GetRowItem (int index)
+    {
+      if (dataGridFiles.ItemContainerGenerator.Status != System.Windows.Controls.Primitives.GeneratorStatus.ContainersGenerated)
+        return (null);
+
+      return (dataGridFiles.ItemContainerGenerator.ContainerFromIndex (index) as DataGridRow);
+    }
+
+    private static bool GetMouseTargetRow (System.Windows.Media.Visual target, GetPosition pos)
+    {
+      Rect rect = System.Windows.Media.VisualTreeHelper.GetDescendantBounds (target);
+      System.Windows.Point pt = pos ((IInputElement) target);
+
+      return (rect.Contains (pt));
+    }
 
     private void PreStartCalculation ()
     {
