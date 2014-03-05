@@ -9,3 +9,5 @@ Changelog:
 * improve MainWindow source
 * add error logger
 * delete the 256x256 image from icon, because this can cause problem in Windows XP
+* SHA256 algorithm was wrong, bug fix
+* add SHA512 hash

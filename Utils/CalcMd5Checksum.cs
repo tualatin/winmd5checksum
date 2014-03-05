@@ -124,6 +124,7 @@ namespace WinMd5Checksum.Utils
 
     private static void StartCalculation ()
     {
+      DateTime now = DateTime.Now;
       List<Md5Structure> compareRest = new List<Md5Structure> ( );
 
       Md5Files.GetFileContainer ( ).ForEach (item =>
@@ -149,6 +150,9 @@ namespace WinMd5Checksum.Utils
 
       if (writeFile == true)
         LogFile.WriteFile (Md5Files.GetFileContainer ( ));
+
+      TimeSpan timeSpan = DateTime.Now.Subtract (now);
+      Console.WriteLine (@"Thread ready: {0}", timeSpan.ToString (@"hh\:mm\:ss\.fff"));
 
       isRunning = false;
     }
@@ -210,16 +214,10 @@ namespace WinMd5Checksum.Utils
         if (File.Exists (fileName))
         {
           FileStream file = new FileStream (fileName, FileMode.Open);
-          MD5 md5 = new MD5CryptoServiceProvider ( );
-          byte[] retVal = md5.ComputeHash (file);
-          StringBuilder sb = new StringBuilder ( );
-
+          string hash = GetMd5HashOf (file);
           file.Close ( );
 
-          for (int i = 0; i < retVal.Length; i++)
-            sb.Append (retVal[i].ToString ("x2"));
-
-          return (sb.ToString ( ));
+          return (hash);
         }
         else
           return (null);
@@ -236,22 +234,11 @@ namespace WinMd5Checksum.Utils
     {
       try
       {
-        SHA256CryptoServiceProvider SHA256 = new SHA256CryptoServiceProvider ( );
-        byte[] arrayData = Encoding.ASCII.GetBytes (fileName);
-        byte[] arrayResult = SHA256.ComputeHash (arrayData);
-        string result = string.Empty;
-        string temp = string.Empty;
+        FileStream filestream = new FileStream (fileName, FileMode.Open);
+        string hash = GetSha256HashOf (filestream);
+        filestream.Close ( );
 
-        for (int i = 0; i < arrayResult.Length; i++)
-        {
-          temp = Convert.ToString (arrayResult[i], 16);
-
-          if (temp.Length == 1)
-            temp = "0" + temp;
-
-          result += temp;
-        }
-        return (result);
+        return (hash);
       }
       catch (Exception ex)
       {
@@ -261,28 +248,28 @@ namespace WinMd5Checksum.Utils
       }
     }
 
-    private static string GetMd5HashOf (string fileName)
+    private static string GetMd5HashOf (FileStream fileName)
     {
-      return (HashOf<MD5CryptoServiceProvider> (fileName, Encoding.Default));
+      return (HashOf<MD5CryptoServiceProvider> (fileName));
     }
 
-    private static string GetSha256HashOf (string fileName)
+    private static string GetSha256HashOf (FileStream fileName)
     {
-      return (HashOf<SHA1CryptoServiceProvider> (fileName, Encoding.Default));
+      return (HashOf<SHA256CryptoServiceProvider> (fileName));
     }
 
-    private static string GetSha512HashOf (string fileName)
+    private static string GetSha512HashOf (FileStream fileName)
     {
-      return (HashOf<SHA512CryptoServiceProvider> (fileName, Encoding.Default));
+      return (HashOf<SHA512CryptoServiceProvider> (fileName));
     }
 
-    private static string HashOf<T> (string text, Encoding enc)
+    private static string HashOf<T> (FileStream file)
       where T : HashAlgorithm, new ()
     {
-      var buffer = enc.GetBytes (text);
       var provider = new T ( );
+      var hashValue = provider.ComputeHash (file);
 
-      return (BitConverter.ToString (provider.ComputeHash (buffer)).Replace ("-", ""));
+      return (BitConverter.ToString (hashValue).Replace ("-", string.Empty).ToLower ( ));
     }
   }
 }
