@@ -153,6 +153,8 @@ namespace WinMd5Checksum.Utils
 
           if (string.IsNullOrEmpty (item.sha256hash))
             item.sha256hash = GetSha256HashOf (fs);
+          if (!string.IsNullOrEmpty (item.compare256hash))
+            item.result256compare = DoCompare (item.sha256hash, item.compare256hash);
 
           fs.Close ( );
         }

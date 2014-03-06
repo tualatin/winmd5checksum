@@ -5,9 +5,11 @@ If there are problems, winmd5checksum creates a error logfile in the directory. 
 
 Changelog:
 
-1.0.5172.x
+1.1.5178.x
 * improve MainWindow source
 * add error logger
 * delete the 256x256 image from icon, because this can cause problem in Windows XP
 * SHA256 algorithm was wrong, bug fix
 * add SHA512 hash
+* add parallel threading
+* performance improvements
