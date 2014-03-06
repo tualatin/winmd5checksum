@@ -3,11 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinMd5Checksum", "WinMd5Checksum.csproj", "{2F677C70-CCFC-4E69-BC92-369CEC801698}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A0B58321-E3CF-4AB9-BB91-E1479A647F2C}"
-	ProjectSection(SolutionItems) = preProject
-		WinMd5Checksum.vsmdi = WinMd5Checksum.vsmdi
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = WinMd5Checksum.vsmdi

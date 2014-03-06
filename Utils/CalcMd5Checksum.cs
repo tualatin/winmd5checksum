@@ -5,6 +5,7 @@ using System.Threading;
 using System;
 using WinMd5Checksum.Data;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 
 namespace WinMd5Checksum.Utils
@@ -133,20 +134,31 @@ namespace WinMd5Checksum.Utils
       DateTime now = DateTime.Now;
       List<Md5Structure> compareRest = new List<Md5Structure> ( );
 
-      Md5Files.GetFileContainer ( ).ForEach (item =>
+      System.Threading.Tasks.Parallel.For (0, Md5Files.GetFileContainer ( ).Count, i =>
+      {
+        Md5Structure item = Md5Files.GetFileContainer ( )[i];
+
+        if (File.Exists (item.key))
+        {
+          FileStream fs = new FileStream (item.key, FileMode.Open, FileAccess.Read);
+
+          if (string.IsNullOrEmpty (item.calc))
+            item.calc = GetMd5HashOf (fs);
+          if (!string.IsNullOrEmpty (item.compare))
           {
-            if (string.IsNullOrEmpty (item.calc))
-              item.calc = GetMd5HashFromFile (item.key);
-            if (!string.IsNullOrEmpty (item.compare))
-            {
-              item.result = DoCompare (item.calc, item.compare);
-              compareRest.Add (item);
-            }
-            if (string.IsNullOrEmpty (item.sha256hash))
-              item.sha256hash = GetSHA256HashFromFile (item.key);
-            if (!string.IsNullOrEmpty (item.compare256hash))
-              item.result256compare = DoCompare (item.sha256hash, item.compare256hash);
-          });
+            item.result = DoCompare (item.calc, item.compare);
+            compareRest.Add (item);
+          }
+
+          fs.Close ( );
+          fs = new FileStream (item.key, FileMode.Open, FileAccess.Read);
+
+          if (string.IsNullOrEmpty (item.sha256hash))
+            item.sha256hash = GetSha256HashOf (fs);
+
+          fs.Close ( );
+        }
+      });
 
       if (compareRest.Count != Md5Files.GetFileContainer ( ).Count)
       {
@@ -209,74 +221,59 @@ namespace WinMd5Checksum.Utils
       }
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="fileName"></param>
-    /// <returns></returns>
-    public static string GetMd5HashFromFile (string fileName)
+    private static string GetMd5HashOf (Stream input)
     {
-      try
+      return (HashOf<MD5CryptoServiceProvider> (input));
+    }
+
+    private static string GetSha256HashOf (Stream input)
+    {
+      return (HashOf<SHA256CryptoServiceProvider> (input));
+    }
+
+    //private static string GetSha512HashOf (Stream input)
+    //{
+    //  return (HashOf<SHA512CryptoServiceProvider> (input));
+    //}
+
+    //private static string HashOf<T> (byte[] bArray)
+    //  where T: HashAlgorithm, new ( )
+    //{
+    //  var provider = new T ( );
+    //  var hashValue = provider.ComputeHash (bArray);
+
+    //  return (BitConverter.ToString (hashValue).Replace ("-", string.Empty).ToLower ( ));
+    //}
+
+    private static string HashOf<T> (Stream input)
+     where T: HashAlgorithm, new ( )
+    {
+      const int bufferSize = 1024 * 1024 * 8;
+      string hashString = string.Empty;
+      System.Diagnostics.Process process = System.Diagnostics.Process.GetCurrentProcess ( );
+
+      using (var provider = new T ( ))
       {
-        if (File.Exists (fileName))
+        int readCount;
+        long bytesTransfered = 0;
+        var buffer = new byte[bufferSize];
+
+        while ((readCount = input.Read (buffer, 0, buffer.Length)) != 0)
         {
-          FileStream file = new FileStream (fileName, FileMode.Open);
-          string hash = GetMd5HashOf (file);
-          file.Close ( );
+          if (bytesTransfered + readCount == input.Length)
+            provider.TransformFinalBlock (buffer, 0, readCount);
+          else
+            provider.TransformBlock (buffer, 0, bufferSize, buffer, 0);
 
-          return (hash);
+          bytesTransfered += readCount;
+
+          Console.WriteLine (@"GetSha512Buffered:{0}MB/{1}MB. Memory Used: {2}MB", bytesTransfered / 1000000, input.Length / 1000000, process.PrivateMemorySize64 / 1000000);
         }
-        else
-          return (null);
+
+        hashString = BitConverter.ToString (provider.Hash).Replace ("-", string.Empty).ToLower ( );
+        provider.Clear ( );
       }
-      catch (Exception ex)
-      {
-        ErrorLog.WriteLog (ErrorFlags.Error, "CalcMd5Checksum", string.Format ("GetMd5HashFromFile, exception: {0}", ex));
-
-        return (string.Empty);
-      }
-    }
-
-    private static string GetSHA256HashFromFile (string fileName)
-    {
-      try
-      {
-        FileStream filestream = new FileStream (fileName, FileMode.Open);
-        string hash = GetSha256HashOf (filestream);
-        filestream.Close ( );
-
-        return (hash);
-      }
-      catch (Exception ex)
-      {
-        ErrorLog.WriteLog (ErrorFlags.Error, "CalcMd5Checksum", string.Format ("GetSHA256HashFromFile, exception: {0}", ex));
-
-        return (string.Empty);
-      }
-    }
-
-    private static string GetMd5HashOf (FileStream fileName)
-    {
-      return (HashOf<MD5CryptoServiceProvider> (fileName));
-    }
-
-    private static string GetSha256HashOf (FileStream fileName)
-    {
-      return (HashOf<SHA256CryptoServiceProvider> (fileName));
-    }
-
-    private static string GetSha512HashOf (FileStream fileName)
-    {
-      return (HashOf<SHA512CryptoServiceProvider> (fileName));
-    }
-
-    private static string HashOf<T> (FileStream file)
-      where T : HashAlgorithm, new ()
-    {
-      var provider = new T ( );
-      var hashValue = provider.ComputeHash (file);
-
-      return (BitConverter.ToString (hashValue).Replace ("-", string.Empty).ToLower ( ));
+      return (hashString);
     }
   }
 }
