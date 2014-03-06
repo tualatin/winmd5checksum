@@ -46,9 +46,6 @@ namespace WinMd5Checksum.Utils
       isRunning = true;
       workerThread.Start ( );
 
-      while (!workerThread.IsAlive)
-        ;
-
       Thread.Sleep (1);
 
       if (isRunning == false)
@@ -82,17 +79,17 @@ namespace WinMd5Checksum.Utils
     /// <returns>the hash string</returns>
     public static string ReadMd5File (string fileName)
     {
-      string expectedChecksum = string.Empty;
+      string expectedChecksum;
 
       using (StreamReader sr = new StreamReader (fileName))
       {
         expectedChecksum = sr.ReadLine ( );
       }
 
-      if (!string.IsNullOrEmpty (expectedChecksum.Trim ( )))
+      if (expectedChecksum != null && !string.IsNullOrEmpty (expectedChecksum.Trim ( )))
         return (expectedChecksum.Trim ( ));
-      else
-        return (null);
+
+      return (null);
     }
 
     #region Main thread
@@ -183,10 +180,7 @@ namespace WinMd5Checksum.Utils
 
     private static string DoCompare (string result, string expected)
     {
-      if ((expected.CompareTo (result)) == 0)
-        return ("OK");
-      else
-        return ("FAILED");
+      return (String.Compare(expected, result, StringComparison.Ordinal)) == 0 ? ("OK") : ("FAILED");
     }
 
     /// <summary>
@@ -201,17 +195,14 @@ namespace WinMd5Checksum.Utils
         if (!File.Exists (fileName))
           throw new FileNotFoundException (string.Format ("file {0} not found", fileName));
 
-        string expectedHash = string.Empty;
+        string expectedHash;
 
         using (StreamReader sr = new StreamReader (fileName))
         {
           expectedHash = sr.ReadLine ( );
         }
 
-        if (string.IsNullOrEmpty (expectedHash.Trim ( )))
-          return (string.Empty);
-
-        return (expectedHash);
+        return expectedHash != null && string.IsNullOrEmpty (expectedHash.Trim ( )) ? (string.Empty) : (expectedHash);
       }
       catch (Exception ex)
       {
@@ -249,7 +240,7 @@ namespace WinMd5Checksum.Utils
      where T: HashAlgorithm, new ( )
     {
       const int bufferSize = 1024 * 1024 * 8;
-      string hashString = string.Empty;
+      string hashString;
       System.Diagnostics.Process process = System.Diagnostics.Process.GetCurrentProcess ( );
 
       using (var provider = new T ( ))

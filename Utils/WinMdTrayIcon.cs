@@ -33,7 +33,7 @@ namespace WinMd5Checksum.Utils
 
     private void Init (Icon icon, string text)
     {
-      notifyIcon = new NotifyIcon ( )
+      notifyIcon = new NotifyIcon
       {
         Visible = true,
         ContextMenu = contextMenu,
@@ -44,7 +44,7 @@ namespace WinMd5Checksum.Utils
 
     public void CreateMenuItem (string name)
     {
-      MenuItem menuItem = new MenuItem ( )
+      MenuItem menuItem = new MenuItem
       {
         Index = 1,
         Name = name,
@@ -56,7 +56,7 @@ namespace WinMd5Checksum.Utils
 
     public void CreateMenuItem (string name, bool check)
     {
-      MenuItem menuItem = new MenuItem ( )
+      MenuItem menuItem = new MenuItem
       {
         Index = 2,
         Name = name,
@@ -65,10 +65,12 @@ namespace WinMd5Checksum.Utils
       };
 
       menuItem.Click += (sender, e) =>
-      {
-        MenuItem m = sender as MenuItem;
-        m.Checked = !m.Checked;
-      };
+                        {
+                          MenuItem m = sender as MenuItem;
+
+                          if (m != null)
+                            m.Checked = !m.Checked;
+                        };
 
       contextMenu.MenuItems.Add (menuItem);
     }
