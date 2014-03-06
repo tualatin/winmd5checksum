@@ -11,12 +11,14 @@ namespace WinMd5Checksum.Data
 
 
     /// <summary>
-    /// 
+    /// Get files container
     /// </summary>
-    /// <returns></returns>
-    public static List<Md5Structure> GetFileContainer ()
+    public static List<Md5Structure> GetFileContainer
     {
-      return (filesContainer);
+      get
+      {
+        return (filesContainer);
+      }
     }
 
     /// <summary>

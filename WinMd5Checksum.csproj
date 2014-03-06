@@ -138,7 +138,6 @@
     <Compile Include="Utils\CalcMd5Checksum.cs" />
     <Compile Include="Utils\ErrorLog.cs" />
     <Compile Include="Utils\MyValueConverter.cs" />
-    <Compile Include="Utils\TraceHelper.cs" />
     <Compile Include="Utils\WinMdTrayIcon.cs" />
     <Page Include="Control\Block.xaml">
       <Generator>MSBuild:Compile</Generator>

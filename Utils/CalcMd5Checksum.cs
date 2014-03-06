@@ -1,11 +1,9 @@
-﻿using System.Text;
-using System.IO;
+﻿using System.IO;
 using System.Security.Cryptography;
 using System.Threading;
 using System;
 using WinMd5Checksum.Data;
 using System.Collections.Generic;
-using System.ComponentModel;
 
 
 namespace WinMd5Checksum.Utils
@@ -134,9 +132,9 @@ namespace WinMd5Checksum.Utils
       DateTime now = DateTime.Now;
       List<Md5Structure> compareRest = new List<Md5Structure> ( );
 
-      System.Threading.Tasks.Parallel.For (0, Md5Files.GetFileContainer ( ).Count, i =>
+      System.Threading.Tasks.Parallel.For (0, Md5Files.GetFileContainer.Count, i =>
       {
-        Md5Structure item = Md5Files.GetFileContainer ( )[i];
+        Md5Structure item = Md5Files.GetFileContainer[i];
 
         if (File.Exists (item.key))
         {
@@ -160,14 +158,14 @@ namespace WinMd5Checksum.Utils
         }
       });
 
-      if (compareRest.Count != Md5Files.GetFileContainer ( ).Count)
+      if (compareRest.Count != Md5Files.GetFileContainer.Count)
       {
         if (compareRest.Count == 1)
           CompareToRest (compareRest[0]);
       }
 
       if (CanWriteFile)
-        LogFile.WriteFile (Md5Files.GetFileContainer ( ));
+        LogFile.WriteFile (Md5Files.GetFileContainer);
 
       TimeSpan timeSpan = DateTime.Now.Subtract (now);
       ErrorLog.WriteLog (ErrorFlags.Info, "CalcMd5Checksum", string.Format ("Calculation time: {0}", timeSpan.ToString (@"hh\:mm\:ss\.fff")));
@@ -178,7 +176,7 @@ namespace WinMd5Checksum.Utils
 
     private static void CompareToRest (Md5Structure item)
     {
-      Md5Files.GetFileContainer ( ).ForEach (file => file.result = DoCompare (file.calc, item.compare));
+      Md5Files.GetFileContainer.ForEach (file => file.result = DoCompare (file.calc, item.compare));
     }
 
     private static string DoCompare (string result, string expected)
@@ -267,7 +265,9 @@ namespace WinMd5Checksum.Utils
 
           bytesTransfered += readCount;
 
+#if DEBUG
           Console.WriteLine (@"GetSha512Buffered:{0}MB/{1}MB. Memory Used: {2}MB", bytesTransfered / 1000000, input.Length / 1000000, process.PrivateMemorySize64 / 1000000);
+#endif
         }
 
         hashString = BitConverter.ToString (provider.Hash).Replace ("-", string.Empty).ToLower ( );

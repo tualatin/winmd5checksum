@@ -66,7 +66,7 @@ namespace WinMd5Checksum
 
     private void Window_Loaded (object sender, RoutedEventArgs e)
     {
-      if (Md5Files.GetFileContainer ( ).Count > 0)
+      if (Md5Files.GetFileContainer.Count > 0)
         StartCalculation ( );
 
       btnFile.Focus ( );
@@ -97,11 +97,11 @@ namespace WinMd5Checksum
             {
               if ((Path.GetExtension (fileName).CompareTo (".md5")) == 0)
               {
-                if (index >= Md5Files.GetFileContainer ( ).Count)
+                if (index >= Md5Files.GetFileContainer.Count)
                   return;
 
                 fileName = CalcMd5Checksum.GetValueFromHashFile (fileName);
-                Md5Structure file = Md5Files.GetFileContainer ( )[index];
+                Md5Structure file = Md5Files.GetFileContainer[index];
 
                 file.compare = fileName;
 
@@ -111,11 +111,11 @@ namespace WinMd5Checksum
 
               if ((Path.GetExtension (fileName).CompareTo (".sha256")) == 0)
               {
-                if (index >= Md5Files.GetFileContainer ( ).Count)
+                if (index >= Md5Files.GetFileContainer.Count)
                   return;
 
                 fileName = CalcMd5Checksum.GetValueFromHashFile (fileName);
-                Md5Structure file = Md5Files.GetFileContainer ( )[index];
+                Md5Structure file = Md5Files.GetFileContainer[index];
 
                 file.compare256hash = fileName;
                 RefreshDataSource ( );
@@ -203,7 +203,7 @@ namespace WinMd5Checksum
 
     private void btnSave_Click (object sender, RoutedEventArgs e)
     {
-      Md5Files.GetFileContainer ( ).ForEach (file =>
+      Md5Files.GetFileContainer.ForEach (file =>
       {
         if (!string.IsNullOrEmpty (file.calc))
         {
@@ -366,15 +366,15 @@ namespace WinMd5Checksum
 
     private void RefreshDataSource ()
     {
-      dataGridFiles.DataContext = Md5Files.GetFileContainer ( );
+      dataGridFiles.DataContext = Md5Files.GetFileContainer;
       dataGridFiles.Items.Refresh ( );
 
-      if (Md5Files.GetFileContainer ( ).Count > 0)
+      if (Md5Files.GetFileContainer.Count > 0)
         btnClear.IsEnabled = btnStart.IsEnabled = true;
       else
         btnSave.IsEnabled = btnClear.IsEnabled = btnStart.IsEnabled = false;
 
-      Md5Files.GetFileContainer ( ).ForEach (item =>
+      Md5Files.GetFileContainer.ForEach (item =>
       {
         if (!string.IsNullOrEmpty (item.calc))
           btnSave.IsEnabled = true;
