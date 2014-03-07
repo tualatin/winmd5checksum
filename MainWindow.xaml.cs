@@ -30,7 +30,7 @@ namespace WinMd5Checksum
     {
       if (bw == null)
         return;
-        
+
       bw.Dispose ( );
 
       if (trayIcon == null)
@@ -71,7 +71,7 @@ namespace WinMd5Checksum
 
       btnFile.Focus ( );
     }
-    
+
     //private void Hyperlink_RequestNavigate (object sender, RequestNavigateEventArgs e)
     //{
     //  Process.Start (new ProcessStartInfo (e.Uri.AbsoluteUri));
@@ -213,6 +213,7 @@ namespace WinMd5Checksum
           if (result == true)
           {
             string fileName = saveDialog.FileName;
+
             if (LogFile.WriteSaveFile (fileName, file.calc, file.sha256hash) == true)
               MessageBox.Show (string.Format ("File {0} successfully saved.", fileName), LogFile.ApplicationCaption ( ), MessageBoxButton.OK, MessageBoxImage.Information);
             else
@@ -262,7 +263,7 @@ namespace WinMd5Checksum
       OnExit ( );
     }
 
-    #endregion ClickEvents
+    #endregion
 
     #region Thread
 
@@ -304,7 +305,7 @@ namespace WinMd5Checksum
       throw new NotImplementedException ("ProgressChange not implemented yet");
     }
 
-    #endregion Thread
+    #endregion
 
     #region Helperfunction
 
@@ -417,6 +418,6 @@ namespace WinMd5Checksum
       Application.Current.Shutdown ( );
     }
 
-    #endregion Helperfunction
+    #endregion
   }
 }

@@ -180,7 +180,7 @@ namespace WinMd5Checksum.Utils
 
     private static string DoCompare (string result, string expected)
     {
-      return (String.Compare(expected, result, StringComparison.Ordinal)) == 0 ? ("OK") : ("FAILED");
+      return (String.Compare (expected, result, StringComparison.Ordinal)) == 0 ? ("OK") : ("FAILED");
     }
 
     /// <summary>
@@ -239,7 +239,7 @@ namespace WinMd5Checksum.Utils
     private static string HashOf<T> (Stream input)
      where T: HashAlgorithm, new ( )
     {
-      const int bufferSize = 1024 * 1024 * 8;
+      const int bufferSize = 1024 * 1024 * 20;
       string hashString;
       System.Diagnostics.Process process = System.Diagnostics.Process.GetCurrentProcess ( );
 
@@ -259,7 +259,7 @@ namespace WinMd5Checksum.Utils
           bytesTransfered += readCount;
 
 #if DEBUG
-          Console.WriteLine (@"GetSha512Buffered:{0}MB/{1}MB. Memory Used: {2}MB", bytesTransfered / 1000000, input.Length / 1000000, process.PrivateMemorySize64 / 1000000);
+          Console.WriteLine (@"HashOf<{3}> {0}MB/{1}MB. Memory Used: {2}MB", bytesTransfered / 1000000, input.Length / 1000000, process.PrivateMemorySize64 / 1000000, provider.ToString ( ));
 #endif
         }
 
