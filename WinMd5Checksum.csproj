@@ -126,6 +126,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="About.xaml.cs">
+      <DependentUpon>About.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Control\Block.xaml.cs">
       <DependentUpon>Block.xaml</DependentUpon>
     </Compile>
@@ -139,6 +142,10 @@
     <Compile Include="Utils\ErrorLog.cs" />
     <Compile Include="Utils\MyValueConverter.cs" />
     <Compile Include="Utils\WinMdTrayIcon.cs" />
+    <Page Include="About.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Control\Block.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -216,6 +223,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Key.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Res\softpedia_free_award_f.gif" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

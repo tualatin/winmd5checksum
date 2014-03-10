@@ -7,9 +7,7 @@ using Microsoft.Win32;
 using WinMd5Checksum.Data;
 using System.Windows.Controls;
 using System.IO;
-using System.Diagnostics;
 using System.Windows.Input;
-using System.Reflection;
 using System.Drawing;
 
 
@@ -235,14 +233,12 @@ namespace WinMd5Checksum
 
     private void btnAbout_Click (object sender, RoutedEventArgs e)
     {
-      Assembly assembly = Assembly.GetExecutingAssembly ( );
+      About about = new About
+      {
+        Owner = this
+      };
 
-      MessageBox.Show (string.Format ("{0}\nVersion: {1}\nBuild Date: {2}\nAuthor: M. Zoennchen, Copryright 2013 - 2014\nAll rights reserved\n\nIts a opensource .NET project", LogFile.ApplicationCaption ( ), assembly.GetName ( ).Version, BuildDate.GetBuildDateTime (assembly)), LogFile.ApplicationCaption ( ), MessageBoxButton.OK, MessageBoxImage.Information);
-    }
-
-    private void btnWeb_Click (object sender, RoutedEventArgs e)
-    {
-      Process.Start (new ProcessStartInfo ("http://www.virtual-studios.org"));
+      about.ShowDialog ( );
     }
 
     private void checkBoxOnTop_Click (object sender, RoutedEventArgs e)

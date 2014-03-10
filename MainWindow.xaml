@@ -15,13 +15,12 @@
     </Grid.RowDefinitions>
     <Button Content="Exit" Height="23" HorizontalAlignment="Right" Name="btnExit" VerticalAlignment="Center" Width="75" Click="btnExit_Click" Margin="0,0,8,0" Grid.Row="2" />
     <Button Content="About" Height="23" HorizontalAlignment="Left" Name="btnAbout" VerticalAlignment="Center" Width="75" Margin="8,0,0,0" Grid.Row="2" Click="btnAbout_Click" />
-    <Button Content="Website" Height="23" HorizontalAlignment="Left" Name="btnWeb" VerticalAlignment="Center" Width="75" Margin="91,0,0,0" Grid.Row="2" Click="btnWeb_Click" />
-    <Button Height="23" HorizontalAlignment="Left" Name="btnHelp" VerticalAlignment="Center" Width="23" Margin="174,0,0,0" Grid.Row="2" Click="btnHelp_Click" >
+    <Button Height="23" HorizontalAlignment="Left" Name="btnHelp" VerticalAlignment="Center" Width="23" Margin="91,0,0,0" Grid.Row="2" Click="btnHelp_Click" >
       <StackPanel>
         <Image Source="Res/Info.png" />
       </StackPanel>
     </Button>
-    <CheckBox Content="Always on top" Grid.Row="2" Height="16" HorizontalAlignment="Left" Margin="205,0,0,0" Name="checkBoxOnTop" VerticalAlignment="Center" Click="checkBoxOnTop_Click" />
+    <CheckBox Content="Always on top" Grid.Row="2" Height="16" HorizontalAlignment="Left" Margin="123,0,0,0" Name="checkBoxOnTop" VerticalAlignment="Center" Click="checkBoxOnTop_Click" />
 
     <GroupBox Header="Operation" Name="grpBoxOperation" Grid.Row="1" Margin="8,0" AllowDrop="True">
       <Grid>

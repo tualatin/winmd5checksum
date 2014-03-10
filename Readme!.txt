@@ -5,6 +5,9 @@ If there are problems, winmd5checksum creates a error logfile in the directory. 
 
 Changelog:
 
+1.1.5182.x
+* add About dialogue
+
 1.1.5178.x
 * improve MainWindow source
 * add error logger
