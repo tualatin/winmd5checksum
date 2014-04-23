@@ -48,7 +48,7 @@ namespace WinMd5Checksum
       bw.WorkerSupportsCancellation = true;
 
       bw.DoWork += bw_WaitingThread;
-      bw.ProgressChanged += bw_ProgressChanged;
+      // bw.ProgressChanged += bw_ProgressChanged;
       bw.RunWorkerCompleted += bw_RunWorkerCompleted;
 
       // TrayIcon stuff
@@ -92,39 +92,39 @@ namespace WinMd5Checksum
         string[] dropFiles = text as string[];
 
         Array.ForEach (dropFiles, fileName =>
-            {
-              if ((Path.GetExtension (fileName).CompareTo (".md5")) == 0)
-              {
-                if (index >= Md5Files.GetFileContainer.Count)
-                  return;
+        {
+          if ((Path.GetExtension (fileName).CompareTo (".md5")) == 0)
+          {
+            if (index >= Md5Files.GetFileContainer.Count)
+              return;
 
-                fileName = CalcMd5Checksum.GetValueFromHashFile (fileName);
-                Md5Structure file = Md5Files.GetFileContainer[index];
+            fileName = CalcMd5Checksum.GetValueFromHashFile (fileName);
+            Md5Structure file = Md5Files.GetFileContainer[index];
 
-                file.compare = fileName;
+            file.compare = fileName;
 
-                RefreshDataSource ( );
-                return;
-              }
+            RefreshDataSource ( );
+            return;
+          }
 
-              if ((Path.GetExtension (fileName).CompareTo (".sha256")) == 0)
-              {
-                if (index >= Md5Files.GetFileContainer.Count)
-                  return;
+          if ((Path.GetExtension (fileName).CompareTo (".sha256")) == 0)
+          {
+            if (index >= Md5Files.GetFileContainer.Count)
+              return;
 
-                fileName = CalcMd5Checksum.GetValueFromHashFile (fileName);
-                Md5Structure file = Md5Files.GetFileContainer[index];
+            fileName = CalcMd5Checksum.GetValueFromHashFile (fileName);
+            Md5Structure file = Md5Files.GetFileContainer[index];
 
-                file.compare256hash = fileName;
-                RefreshDataSource ( );
-                return;
-              }
+            file.compare256hash = fileName;
+            RefreshDataSource ( );
+            return;
+          }
 
-              Md5Files.AddFileToContainer (fileName);
-              Md5Files.FinishOperation ( );
+          Md5Files.AddFileToContainer (fileName);
+          Md5Files.FinishOperation ( );
 
-              RefreshDataSource ( );
-            });
+          RefreshDataSource ( );
+        });
       }
       catch (Exception ex)
       {
@@ -267,7 +267,7 @@ namespace WinMd5Checksum
     {
       BackgroundWorker worker = sender as BackgroundWorker;
 
-      while (CalcMd5Checksum.GetThread.ThreadState != System.Threading.ThreadState.Stopped)
+      while (CalcMd5Checksum.GetThread.ThreadState != ThreadState.Stopped)
       {
         if ((worker.CancellationPending == true))
         {
@@ -296,10 +296,10 @@ namespace WinMd5Checksum
       }
     }
 
-    private void bw_ProgressChanged (object sender, ProgressChangedEventArgs e)
-    {
-      throw new NotImplementedException ("ProgressChange not implemented yet");
-    }
+    //private void bw_ProgressChanged (object sender, ProgressChangedEventArgs e)
+    //{
+    //  throw new NotImplementedException ("ProgressChange not implemented yet");
+    //}
 
     #endregion
 
@@ -352,7 +352,7 @@ namespace WinMd5Checksum
 
       CalcMd5Checksum.CalcMd5HashSum ( );
 
-      if (CalcMd5Checksum.GetThread.ThreadState == System.Threading.ThreadState.Stopped)
+      if (CalcMd5Checksum.GetThread.ThreadState == ThreadState.Stopped)
         return;
 
       waitingOperation.Visibility = System.Windows.Visibility.Visible;
@@ -382,7 +382,7 @@ namespace WinMd5Checksum
     {
       try
       {
-        if (CalcMd5Checksum.GetThread != null && CalcMd5Checksum.GetThread.ThreadState != System.Threading.ThreadState.Stopped)
+        if (CalcMd5Checksum.GetThread != null && CalcMd5Checksum.GetThread.ThreadState != ThreadState.Stopped)
           CalcMd5Checksum.OnExit ( );
 
         if (bw.IsBusy == true)
