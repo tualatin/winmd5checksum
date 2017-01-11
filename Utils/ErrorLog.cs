@@ -1,11 +1,11 @@
-﻿using System.IO;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Text;
 
 
-namespace WinMd5Checksum.Utils
+namespace Org.Vs.WinMd5Checksum.Utils
 {
   /// <summary>
   /// Error flags
@@ -33,7 +33,7 @@ namespace WinMd5Checksum.Utils
   /// </summary>
   public static class ErrorLog
   {
-    private static readonly List<string> AllMessages = new List<string> ( );
+    private static readonly List<string> AllMessages = new List<string>();
     private static DateTime now;
     private static StreamWriter sw;
     private static string logFileName = string.Empty;
@@ -54,18 +54,18 @@ namespace WinMd5Checksum.Utils
     /// </summary>
     public static void StartLog ()
     {
-      logFileName = string.Format ("{0}\\{1}_error.log", Path.GetDirectoryName (System.Reflection.Assembly.GetEntryAssembly ( ).Location), Environment.MachineName);
+      logFileName = string.Format("{0}\\{1}_error.log", Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location), Environment.MachineName);
 
       try
       {
-        if (File.Exists (logFileName))
-          File.Delete (logFileName);
+        if (File.Exists(logFileName))
+          File.Delete(logFileName);
         if (sw == null)
-          sw = new StreamWriter (logFileName, true, Encoding.UTF8);
+          sw = new StreamWriter(logFileName, true, Encoding.UTF8);
       }
       catch (Exception ex)
       {
-        Console.WriteLine (@"{1}, exception: {0}", ex, System.Reflection.MethodBase.GetCurrentMethod ( ).Name);
+        Console.WriteLine(@"{1}, exception: {0}", ex, System.Reflection.MethodBase.GetCurrentMethod().Name);
       }
     }
 
@@ -78,8 +78,8 @@ namespace WinMd5Checksum.Utils
     /// <param name="args">Arguments</param>
     public static void WriteLog (ErrorFlags flag, string source, string msg, params object[] args)
     {
-      msg = string.Format (msg, args);
-      WriteLog (flag, source, msg);
+      msg = string.Format(msg, args);
+      WriteLog(flag, source, msg);
     }
 
     /// <summary>
@@ -91,21 +91,21 @@ namespace WinMd5Checksum.Utils
     public static void WriteLog (ErrorFlags flag, string source, string msg)
     {
       if (sw == null)
-        StartLog ( );
+        StartLog();
 
       if (sw == null)
         return;
 
       try
       {
-        now = GetSystemTime ( );
+        now = GetSystemTime();
 
-        AllMessages.Add (string.Format ("{0},{1} > |{2} |{3,-30} |{4}", now.ToString ("T", CultureInfo.CurrentCulture), now.Millisecond.ToString ("D3"), (char) flag, source, msg));
-        Flush ( );
+        AllMessages.Add(string.Format("{0},{1} > |{2} |{3,-30} |{4}", now.ToString("T", CultureInfo.CurrentCulture), now.Millisecond.ToString("D3"), (char) flag, source, msg));
+        Flush();
       }
       catch (Exception ex)
       {
-        Console.WriteLine (@"{1}, exception: {0}", ex, System.Reflection.MethodBase.GetCurrentMethod ( ).Name);
+        Console.WriteLine(@"{1}, exception: {0}", ex, System.Reflection.MethodBase.GetCurrentMethod().Name);
       }
     }
 
@@ -117,9 +117,9 @@ namespace WinMd5Checksum.Utils
       if (sw == null)
         return;
 
-      Flush ( );
+      Flush();
 
-      sw.Close ( );
+      sw.Close();
       sw = null;
     }
 
@@ -134,14 +134,14 @@ namespace WinMd5Checksum.Utils
 
     private static void Flush ()
     {
-      if (ReferenceEquals (AllMessages, null))
+      if (ReferenceEquals(AllMessages, null))
         return;
 
-      AllMessages.ForEach (sw.WriteLine);
+      AllMessages.ForEach(sw.WriteLine);
 
-      sw.Flush ( );
+      sw.Flush();
 
-      AllMessages.Clear ( );
+      AllMessages.Clear();
     }
   }
 }

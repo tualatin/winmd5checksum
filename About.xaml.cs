@@ -1,46 +1,46 @@
-﻿using System.Windows;
-using System.Reflection;
-using WinMd5Checksum.Utils;
-using WinMd5Checksum.Data;
+﻿using Org.Vs.WinMd5Checksum.Data;
+using Org.Vs.WinMd5Checksum.Utils;
 using System.Diagnostics;
+using System.Reflection;
+using System.Windows;
 using System.Windows.Input;
 
 
-namespace WinMd5Checksum
+namespace Org.Vs.WinMd5Checksum
 {
   /// <summary>
   /// Interaction logic for About.xaml
   /// </summary>
-  public partial class About: Window
+  public partial class About : Window
   {
     public About ()
     {
-      InitializeComponent ( );
+      InitializeComponent();
 
-      Title = "About " + LogFile.ApplicationCaption ( );
+      Title = "About " + LogFile.ApplicationCaption();
 
-      Assembly assembly = Assembly.GetExecutingAssembly ( );
-      labelBuildDate.Content = (BuildDate.GetBuildDateTime (assembly)).ToString ("dd.MM.yyyy HH:mm:ss");
-      labelVersion.Content = assembly.GetName ( ).Version;
+      Assembly assembly = Assembly.GetExecutingAssembly();
+      labelBuildDate.Content = (BuildDate.GetBuildDateTime(assembly)).ToString("dd.MM.yyyy HH:mm:ss");
+      labelVersion.Content = assembly.GetName().Version;
 
       PreviewKeyDown += HandleEsc;
     }
 
     private void Hyperlink_RequestNavigate (object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
     {
-      Process.Start (new ProcessStartInfo (e.Uri.AbsoluteUri));
+      Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri));
       e.Handled = true;
     }
 
     private void btnOk_Click (object sender, RoutedEventArgs e)
     {
-      Close ( );
+      Close();
     }
 
     public void HandleEsc (object sender, KeyEventArgs e)
     {
       if (e.Key == Key.Escape)
-        btnOk_Click (sender, e);
+        btnOk_Click(sender, e);
     }
   }
 }

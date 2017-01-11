@@ -1,20 +1,20 @@
-﻿using System.Windows;
-using WinMd5Checksum.Data;
-using WinMd5Checksum.Utils;
+﻿using Org.Vs.WinMd5Checksum.Data;
+using Org.Vs.WinMd5Checksum.Utils;
 using System;
+using System.Windows;
 
 
-namespace WinMd5Checksum
+namespace Org.Vs.WinMd5Checksum
 {
   /// <summary>
   /// Interaction logic for "App.xaml"
   /// </summary>
-  public partial class App: Application
+  public partial class App : Application
   {
     void app_Startup (object Sender, StartupEventArgs e)
     {
       AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
-      LogFile.DeleteFile ( );
+      LogFile.DeleteFile();
 
       if (e.Args.Length == 0)
         return;
@@ -23,53 +23,53 @@ namespace WinMd5Checksum
 
       foreach (string arg in e.Args)
       {
-        if (arg.CompareTo ("/q") == 0)
+        if (arg.CompareTo("/q") == 0)
         {
           quiet = true;
           continue;
         }
 
-        if (arg.CompareTo ("/s") == 0)
+        if (arg.CompareTo("/s") == 0)
         {
-          LogFile.SetShortPrint (true);
+          LogFile.SetShortPrint(true);
           continue;
         }
 
-        if (arg.CompareTo ("/?") == 0)
+        if (arg.CompareTo("/?") == 0)
         {
-          LogFile.ShowHelp ( );
+          LogFile.ShowHelp();
           break;
         }
 
-        if (arg.CompareTo ("/l") == 0)
+        if (arg.CompareTo("/l") == 0)
         {
-          LogFile.SetListPorint (true);
+          LogFile.SetListPorint(true);
           continue;
         }
 
-        Md5Files.AddFileToContainer (arg);
+        Md5Files.AddFileToContainer(arg);
       }
 
-      Md5Files.FinishOperation ( );
+      Md5Files.FinishOperation();
 
       if (quiet != true)
         return;
 
-      CalcMd5Checksum.SetWriteFile (true);
-      CalcMd5Checksum.CalcMd5HashSum ( );
-      Application.Current.Shutdown ( );
+      CalcMd5Checksum.SetWriteFile(true);
+      CalcMd5Checksum.CalcMd5HashSum();
+      Application.Current.Shutdown();
     }
 
     protected override void OnStartup (StartupEventArgs e)
     {
       ShutdownMode = ShutdownMode.OnExplicitShutdown;
 
-      base.OnStartup (e);
+      base.OnStartup(e);
     }
 
     private static void CurrentDomain_UnhandledException (object sender, UnhandledExceptionEventArgs e)
     {
-      ErrorLog.WriteLog (ErrorFlags.Error, "winmd5checksum", string.Format ("UnhandledException: {0}", e.ExceptionObject));
+      ErrorLog.WriteLog(ErrorFlags.Error, "winmd5checksum", string.Format("UnhandledException: {0}", e.ExceptionObject));
     }
   }
 }

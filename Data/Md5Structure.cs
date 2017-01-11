@@ -1,11 +1,11 @@
-﻿using System.IO;
+﻿using System.ComponentModel;
+using System.IO;
 using System.Text.RegularExpressions;
-using System.ComponentModel;
 
 
-namespace WinMd5Checksum.Data
+namespace Org.Vs.WinMd5Checksum.Data
 {
-  public class Md5Structure: INotifyPropertyChanged
+  public class Md5Structure : INotifyPropertyChanged
   {
     /// <summary>
     /// Declare the event
@@ -18,7 +18,7 @@ namespace WinMd5Checksum.Data
       PropertyChangedEventHandler handler = PropertyChanged;
 
       if (handler != null)
-        handler (this, new PropertyChangedEventArgs (name));
+        handler(this, new PropertyChangedEventArgs(name));
     }
 
     /// <summary>
@@ -35,7 +35,7 @@ namespace WinMd5Checksum.Data
       set
       {
         Key = value;
-        OnPropertyChanged ("key");
+        OnPropertyChanged("key");
       }
     }
 
@@ -46,7 +46,7 @@ namespace WinMd5Checksum.Data
     {
       get
       {
-        return (Path.GetFileName (Key));
+        return (Path.GetFileName(Key));
       }
     }
 
@@ -64,7 +64,7 @@ namespace WinMd5Checksum.Data
       set
       {
         Calc = value;
-        OnPropertyChanged ("calc");
+        OnPropertyChanged("calc");
       }
     }
 
@@ -82,7 +82,7 @@ namespace WinMd5Checksum.Data
       set
       {
         Result = value;
-        OnPropertyChanged ("result");
+        OnPropertyChanged("result");
       }
     }
 
@@ -100,14 +100,14 @@ namespace WinMd5Checksum.Data
       set
       {
         const string pattern = @"[a-fA-F\d]{32}";
-        Match match = Regex.Match (value, pattern);
+        Match match = Regex.Match(value, pattern);
 
         if (match.Success)
           Compare = value;
         else
           Compare = string.Empty;
 
-        OnPropertyChanged ("compare");
+        OnPropertyChanged("compare");
       }
     }
 
@@ -125,7 +125,7 @@ namespace WinMd5Checksum.Data
       set
       {
         SHA256Hash = value;
-        OnPropertyChanged ("sha256hash");
+        OnPropertyChanged("sha256hash");
       }
     }
 
@@ -143,14 +143,14 @@ namespace WinMd5Checksum.Data
       set
       {
         const string pattern = @"[A-Fa-f0-9]{64}";
-        Match match = Regex.Match (value, pattern);
+        Match match = Regex.Match(value, pattern);
 
         if (match.Success)
           Compare256Hash = value;
         else
           Compare256Hash = string.Empty;
 
-        OnPropertyChanged ("compare256hash");
+        OnPropertyChanged("compare256hash");
       }
     }
 
@@ -168,7 +168,7 @@ namespace WinMd5Checksum.Data
       set
       {
         Result256Compare = value;
-        OnPropertyChanged ("result256compare");
+        OnPropertyChanged("result256compare");
       }
     }
   }

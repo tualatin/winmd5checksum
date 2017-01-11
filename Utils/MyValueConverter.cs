@@ -1,12 +1,12 @@
-﻿using System.Windows.Data;
+﻿using Org.Vs.WinMd5Checksum.Data;
 using System.Drawing;
 using System.Windows;
-using WinMd5Checksum.Data;
+using System.Windows.Data;
 
 
-namespace WinMd5Checksum.Utils
+namespace Org.Vs.WinMd5Checksum.Utils
 {
-  public class MyValueConverter: IValueConverter
+  public class MyValueConverter : IValueConverter
   {
     #region IValueConverter Members
 
@@ -20,11 +20,11 @@ namespace WinMd5Checksum.Utils
         {
         case "FAILED":
 
-          return (Brushes.Red);
+        return (Brushes.Red);
 
         default:
 
-          return (DependencyProperty.UnsetValue);
+        return (DependencyProperty.UnsetValue);
         }
       }
       return (Brushes.White);
@@ -32,7 +32,7 @@ namespace WinMd5Checksum.Utils
 
     public object ConvertBack (object value, System.Type targetType, object parameter, System.Globalization.CultureInfo culture)
     {
-      throw new System.NotImplementedException ( );
+      throw new System.NotImplementedException();
     }
 
     #endregion

@@ -7,19 +7,19 @@ using System.Windows;
 // Allgemeine Informationen über eine Assembly werden über die folgenden 
 // Attribute gesteuert. Ändern Sie diese Attributwerte, um die Informationen zu ändern,
 // die mit einer Assembly verknüpft sind.
-[assembly: AssemblyTitle ("WinMd5Checksum")]
-[assembly: AssemblyDescription ("Calculating and comparing MD5 hashsums")]
-[assembly: AssemblyConfiguration ("")]
-[assembly: AssemblyCompany ("Virtual Studios")]
-[assembly: AssemblyProduct ("WinMd5Checksum")]
-[assembly: AssemblyCopyright ("Copyright ©  2013 M. Zoennchen")]
-[assembly: AssemblyTrademark ("")]
-[assembly: AssemblyCulture ("")]
+[assembly: AssemblyTitle("WinMd5Checksum")]
+[assembly: AssemblyDescription("Calculating and comparing MD5 hashsums")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("Virtual Studios")]
+[assembly: AssemblyProduct("WinMd5Checksum")]
+[assembly: AssemblyCopyright("Copyright ©  2013 - 2017 M. Zoennchen")]
+[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]
 
 // Durch Festlegen von ComVisible auf "false" werden die Typen in dieser Assembly unsichtbar 
 // für COM-Komponenten. Wenn Sie auf einen Typ in dieser Assembly von 
 // COM zugreifen müssen, legen Sie das ComVisible-Attribut für diesen Typ auf "true" fest.
-[assembly: ComVisible (false)]
+[assembly: ComVisible(false)]
 
 //Um mit dem Erstellen lokalisierbarer Anwendungen zu beginnen, legen Sie 
 //<UICulture>ImCodeVerwendeteKultur</UICulture> in der .csproj-Datei
@@ -31,13 +31,13 @@ using System.Windows;
 //[assembly: NeutralResourcesLanguage("en-US", UltimateResourceFallbackLocation.Satellite)]
 
 
-[assembly: ThemeInfo (
+[assembly: ThemeInfo(
     ResourceDictionaryLocation.None, //Speicherort der designspezifischen Ressourcenwörterbücher
-  //(wird verwendet, wenn eine Ressource auf der Seite
-  // oder in den Anwendungsressourcen-Wörterbüchern nicht gefunden werden kann.)
+                                     //(wird verwendet, wenn eine Ressource auf der Seite
+                                     // oder in den Anwendungsressourcen-Wörterbüchern nicht gefunden werden kann.)
     ResourceDictionaryLocation.SourceAssembly //Speicherort des generischen Ressourcenwörterbuchs
-  //(wird verwendet, wenn eine Ressource auf der Seite, in der Anwendung oder einem 
-  // designspezifischen Ressourcenwörterbuch nicht gefunden werden kann.)
+                                              //(wird verwendet, wenn eine Ressource auf der Seite, in der Anwendung oder einem 
+                                              // designspezifischen Ressourcenwörterbuch nicht gefunden werden kann.)
 )]
 
 
@@ -51,5 +51,5 @@ using System.Windows;
 // Sie können alle Werte angeben oder die standardmäßigen Build- und Revisionsnummern 
 // übernehmen, indem Sie "*" eingeben:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion ("1.1.*")]
+[assembly: AssemblyVersion("1.1.*")]
 // [assembly: AssemblyFileVersion ("1.0.0.0")]

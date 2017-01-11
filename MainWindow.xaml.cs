@@ -1,24 +1,24 @@
-﻿using System;
-using System.Windows;
-using WinMd5Checksum.Utils;
-using System.Threading;
+﻿using Microsoft.Win32;
+using Org.Vs.WinMd5Checksum.Data;
+using Org.Vs.WinMd5Checksum.Utils;
+using System;
 using System.ComponentModel;
-using Microsoft.Win32;
-using WinMd5Checksum.Data;
-using System.Windows.Controls;
-using System.IO;
-using System.Windows.Input;
 using System.Drawing;
+using System.IO;
+using System.Threading;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
 
 
-namespace WinMd5Checksum
+namespace Org.Vs.WinMd5Checksum
 {
   /// <summary>
   /// Interaction logic for MainWindow.xaml
   /// </summary>
-  public partial class MainWindow: IDisposable
+  public partial class MainWindow : IDisposable
   {
-    private readonly BackgroundWorker bw = new BackgroundWorker ( );
+    private readonly BackgroundWorker bw = new BackgroundWorker();
     private DataGridCell currentDataGridCell;
     private WinMdTrayIcon trayIcon;
     private delegate System.Windows.Point GetPosition (IInputElement element);
@@ -29,20 +29,20 @@ namespace WinMd5Checksum
       if (bw == null)
         return;
 
-      bw.Dispose ( );
+      bw.Dispose();
 
       if (trayIcon == null)
         return;
 
-      trayIcon.Dispose ( );
+      trayIcon.Dispose();
       trayIcon = null;
     }
 
     public MainWindow ()
     {
-      InitializeComponent ( );
+      InitializeComponent();
 
-      Title = LogFile.ApplicationCaption ( );
+      Title = LogFile.ApplicationCaption();
 
       bw.WorkerReportsProgress = true;
       bw.WorkerSupportsCancellation = true;
@@ -52,9 +52,9 @@ namespace WinMd5Checksum
       bw.RunWorkerCompleted += bw_RunWorkerCompleted;
 
       // TrayIcon stuff
-      Stream stream = Application.GetResourceStream (new Uri ("pack://application:,,,/WinMd5Checksum;component/Res/Key.ico")).Stream;
-      Icon icon = new Icon (stream);
-      trayIcon = new WinMdTrayIcon (icon, string.Format ("{0} ready ...", LogFile.ApplicationCaption ( )));
+      Stream stream = Application.GetResourceStream(new Uri("pack://application:,,,/WinMd5Checksum;component/Res/Key.ico")).Stream;
+      Icon icon = new Icon(stream);
+      trayIcon = new WinMdTrayIcon(icon, string.Format("{0} ready ...", LogFile.ApplicationCaption()));
 
       trayIcon.NotifyIcon.DoubleClick += DoubleClickNotifyIcon;
 
@@ -65,9 +65,9 @@ namespace WinMd5Checksum
     private void Window_Loaded (object sender, RoutedEventArgs e)
     {
       if (Md5Files.GetFileContainer.Count > 0)
-        StartCalculation ( );
+        StartCalculation();
 
-      btnFile.Focus ( );
+      btnFile.Focus();
     }
 
     //private void Hyperlink_RequestNavigate (object sender, RequestNavigateEventArgs e)
@@ -78,57 +78,57 @@ namespace WinMd5Checksum
 
     private void dataGridFiles_Drop (object sender, DragEventArgs e)
     {
-      int index = GetCurrentRowIndex (e.GetPosition);
-      object text = e.Data.GetData (DataFormats.FileDrop);
+      int index = GetCurrentRowIndex(e.GetPosition);
+      object text = e.Data.GetData(DataFormats.FileDrop);
       DataGrid dg = sender as DataGrid;
 
       if (dg == null)
         return;
-      if (text.GetType ( ) != typeof (string[]))
+      if (text.GetType() != typeof(string[]))
         return;
 
       try
       {
         string[] dropFiles = text as string[];
 
-        Array.ForEach (dropFiles, fileName =>
-        {
-          if ((Path.GetExtension (fileName).CompareTo (".md5")) == 0)
-          {
-            if (index >= Md5Files.GetFileContainer.Count)
-              return;
+        Array.ForEach(dropFiles, fileName =>
+       {
+         if ((Path.GetExtension(fileName).CompareTo(".md5")) == 0)
+         {
+           if (index >= Md5Files.GetFileContainer.Count)
+             return;
 
-            fileName = CalcMd5Checksum.GetValueFromHashFile (fileName);
-            Md5Structure file = Md5Files.GetFileContainer[index];
+           fileName = CalcMd5Checksum.GetValueFromHashFile(fileName);
+           Md5Structure file = Md5Files.GetFileContainer[index];
 
-            file.compare = fileName;
+           file.compare = fileName;
 
-            RefreshDataSource ( );
-            return;
-          }
+           RefreshDataSource();
+           return;
+         }
 
-          if ((Path.GetExtension (fileName).CompareTo (".sha256")) == 0)
-          {
-            if (index >= Md5Files.GetFileContainer.Count)
-              return;
+         if ((Path.GetExtension(fileName).CompareTo(".sha256")) == 0)
+         {
+           if (index >= Md5Files.GetFileContainer.Count)
+             return;
 
-            fileName = CalcMd5Checksum.GetValueFromHashFile (fileName);
-            Md5Structure file = Md5Files.GetFileContainer[index];
+           fileName = CalcMd5Checksum.GetValueFromHashFile(fileName);
+           Md5Structure file = Md5Files.GetFileContainer[index];
 
-            file.compare256hash = fileName;
-            RefreshDataSource ( );
-            return;
-          }
+           file.compare256hash = fileName;
+           RefreshDataSource();
+           return;
+         }
 
-          Md5Files.AddFileToContainer (fileName);
-          Md5Files.FinishOperation ( );
+         Md5Files.AddFileToContainer(fileName);
+         Md5Files.FinishOperation();
 
-          RefreshDataSource ( );
-        });
+         RefreshDataSource();
+       });
       }
       catch (Exception ex)
       {
-        ErrorLog.WriteLog (ErrorFlags.Error, GetType ( ).Name, string.Format ("{0}, exception: {1}", System.Reflection.MethodBase.GetCurrentMethod ( ).Name, ex));
+        ErrorLog.WriteLog(ErrorFlags.Error, GetType().Name, string.Format("{0}, exception: {1}", System.Reflection.MethodBase.GetCurrentMethod().Name, ex));
       }
     }
 
@@ -151,10 +151,10 @@ namespace WinMd5Checksum
       if (currentDataGridCell == null)
         return;
 
-      if (Clipboard.ContainsText ( ))
-        Clipboard.Clear ( );
+      if (Clipboard.ContainsText())
+        Clipboard.Clear();
 
-      Clipboard.SetText ((currentDataGridCell.Content as TextBlock).Text);
+      Clipboard.SetText((currentDataGridCell.Content as TextBlock).Text);
     }
 
     #region ClickEvents
@@ -164,8 +164,8 @@ namespace WinMd5Checksum
       if (WindowState == WindowState.Minimized)
         WindowState = WindowState.Normal;
 
-      Activate ( );
-      Focus ( );
+      Activate();
+      Focus();
     }
 
     private void btnFile_Click (object sender, RoutedEventArgs e)
@@ -177,58 +177,58 @@ namespace WinMd5Checksum
         Title = "Please select a file to calculate md5/sha256 hashsum"
       };
 
-      bool? result = openDialog.ShowDialog ( );
+      bool? result = openDialog.ShowDialog();
 
       if (result != true)
         return;
 
-      Md5Files.AddFileToContainer (openDialog.FileName);
-      Md5Files.FinishOperation ( );
+      Md5Files.AddFileToContainer(openDialog.FileName);
+      Md5Files.FinishOperation();
 
-      RefreshDataSource ( );
+      RefreshDataSource();
     }
 
     private void btnStart_Click (object sender, RoutedEventArgs e)
     {
-      PreStartCalculation ( );
+      PreStartCalculation();
     }
 
     private void btnClear_Click (object sender, RoutedEventArgs e)
     {
-      Md5Files.ClearAll ( );
-      RefreshDataSource ( );
+      Md5Files.ClearAll();
+      RefreshDataSource();
     }
 
     private void btnSave_Click (object sender, RoutedEventArgs e)
     {
-      Md5Files.GetFileContainer.ForEach (file =>
-      {
-        if (!string.IsNullOrEmpty (file.calc))
-        {
-          SaveFileDialog saveDialog = new SaveFileDialog { Filter = "md5 files (*.md5)|*.md5", RestoreDirectory = true, Title = string.Format ("Hashsum file for {0}", file.key) };
-          bool? result = saveDialog.ShowDialog ( );
+      Md5Files.GetFileContainer.ForEach(file =>
+     {
+       if (!string.IsNullOrEmpty(file.calc))
+       {
+         SaveFileDialog saveDialog = new SaveFileDialog { Filter = "md5 files (*.md5)|*.md5", RestoreDirectory = true, Title = string.Format("Hashsum file for {0}", file.key) };
+         bool? result = saveDialog.ShowDialog();
 
-          if (result == true)
-          {
-            string fileName = saveDialog.FileName;
+         if (result == true)
+         {
+           string fileName = saveDialog.FileName;
 
-            if (LogFile.WriteSaveFile (fileName, file.calc, file.sha256hash) == true)
-              MessageBox.Show (string.Format ("File {0} successfully saved.", fileName), LogFile.ApplicationCaption ( ), MessageBoxButton.OK, MessageBoxImage.Information);
-            else
-              MessageBox.Show (string.Format ("File {0} not saved!", fileName), LogFile.ApplicationCaption ( ), MessageBoxButton.OK, MessageBoxImage.Error);
-          }
-        }
-      });
+           if (LogFile.WriteSaveFile(fileName, file.calc, file.sha256hash) == true)
+             MessageBox.Show(string.Format("File {0} successfully saved.", fileName), LogFile.ApplicationCaption(), MessageBoxButton.OK, MessageBoxImage.Information);
+           else
+             MessageBox.Show(string.Format("File {0} not saved!", fileName), LogFile.ApplicationCaption(), MessageBoxButton.OK, MessageBoxImage.Error);
+         }
+       }
+     });
     }
 
     private void btnCancel_Click (object sender, RoutedEventArgs e)
     {
-      OnCancel ( );
+      OnCancel();
     }
 
     private void btnHelp_Click (object sender, RoutedEventArgs e)
     {
-      LogFile.ShowHelp ( );
+      LogFile.ShowHelp();
     }
 
     private void btnAbout_Click (object sender, RoutedEventArgs e)
@@ -238,7 +238,7 @@ namespace WinMd5Checksum
         Owner = this
       };
 
-      about.ShowDialog ( );
+      about.ShowDialog();
     }
 
     private void checkBoxOnTop_Click (object sender, RoutedEventArgs e)
@@ -251,12 +251,12 @@ namespace WinMd5Checksum
 
     private void btnExit_Click (object sender, RoutedEventArgs e)
     {
-      OnExit ( );
+      OnExit();
     }
 
     private void Window_Closing (object sender, CancelEventArgs e)
     {
-      OnExit ( );
+      OnExit();
     }
 
     #endregion
@@ -275,7 +275,7 @@ namespace WinMd5Checksum
           break;
         }
         else
-          Thread.Sleep (1);
+          Thread.Sleep(1);
       }
     }
 
@@ -287,12 +287,12 @@ namespace WinMd5Checksum
         waitingOperation.Visibility = System.Windows.Visibility.Hidden;
       else
       {
-        RefreshDataSource ( );
+        RefreshDataSource();
 
         btnCancel.IsEnabled = false;
         waitingOperation.Visibility = System.Windows.Visibility.Hidden;
-        trayIcon.NotifyIcon.Text = LogFile.ApplicationCaption ( ) + " ready ...";
-        trayIcon.NotifyIcon.ShowBalloonTip (4000, LogFile.ApplicationCaption ( ), "Calculation finished ...", System.Windows.Forms.ToolTipIcon.Info);
+        trayIcon.NotifyIcon.Text = LogFile.ApplicationCaption() + " ready ...";
+        trayIcon.NotifyIcon.ShowBalloonTip(4000, LogFile.ApplicationCaption(), "Calculation finished ...", System.Windows.Forms.ToolTipIcon.Info);
       }
     }
 
@@ -311,9 +311,9 @@ namespace WinMd5Checksum
 
       for (int i = 0; i < dataGridFiles.Items.Count; i++)
       {
-        DataGridRow item = GetRowItem (i);
+        DataGridRow item = GetRowItem(i);
 
-        if (GetMouseTargetRow (item, pos))
+        if (GetMouseTargetRow(item, pos))
         {
           curIndex = i;
           break;
@@ -327,30 +327,30 @@ namespace WinMd5Checksum
       if (dataGridFiles.ItemContainerGenerator.Status != System.Windows.Controls.Primitives.GeneratorStatus.ContainersGenerated)
         return (null);
 
-      return (dataGridFiles.ItemContainerGenerator.ContainerFromIndex (index) as DataGridRow);
+      return (dataGridFiles.ItemContainerGenerator.ContainerFromIndex(index) as DataGridRow);
     }
 
     private static bool GetMouseTargetRow (System.Windows.Media.Visual target, GetPosition pos)
     {
-      Rect rect = System.Windows.Media.VisualTreeHelper.GetDescendantBounds (target);
-      System.Windows.Point pt = pos ((IInputElement) target);
+      Rect rect = System.Windows.Media.VisualTreeHelper.GetDescendantBounds(target);
+      System.Windows.Point pt = pos((IInputElement) target);
 
-      return (rect.Contains (pt));
+      return (rect.Contains(pt));
     }
 
     private void PreStartCalculation ()
     {
       btnCancel.IsEnabled = true;
 
-      StartCalculation ( );
+      StartCalculation();
     }
 
     private void StartCalculation ()
     {
-      trayIcon.NotifyIcon.Text = LogFile.ApplicationCaption ( ) + " calculating ...";
-      trayIcon.NotifyIcon.ShowBalloonTip (4000, LogFile.ApplicationCaption ( ), "Start calculation ...", System.Windows.Forms.ToolTipIcon.Info);
+      trayIcon.NotifyIcon.Text = LogFile.ApplicationCaption() + " calculating ...";
+      trayIcon.NotifyIcon.ShowBalloonTip(4000, LogFile.ApplicationCaption(), "Start calculation ...", System.Windows.Forms.ToolTipIcon.Info);
 
-      CalcMd5Checksum.CalcMd5HashSum ( );
+      CalcMd5Checksum.CalcMd5HashSum();
 
       if (CalcMd5Checksum.GetThread.ThreadState == ThreadState.Stopped)
         return;
@@ -358,24 +358,24 @@ namespace WinMd5Checksum
       waitingOperation.Visibility = System.Windows.Visibility.Visible;
 
       if (bw.IsBusy != true)
-        bw.RunWorkerAsync ( );
+        bw.RunWorkerAsync();
     }
 
     private void RefreshDataSource ()
     {
       dataGridFiles.DataContext = Md5Files.GetFileContainer;
-      dataGridFiles.Items.Refresh ( );
+      dataGridFiles.Items.Refresh();
 
       if (Md5Files.GetFileContainer.Count > 0)
         btnClear.IsEnabled = btnStart.IsEnabled = true;
       else
         btnSave.IsEnabled = btnClear.IsEnabled = btnStart.IsEnabled = false;
 
-      Md5Files.GetFileContainer.ForEach (item =>
-      {
-        if (!string.IsNullOrEmpty (item.calc))
-          btnSave.IsEnabled = true;
-      });
+      Md5Files.GetFileContainer.ForEach(item =>
+     {
+       if (!string.IsNullOrEmpty(item.calc))
+         btnSave.IsEnabled = true;
+     });
     }
 
     private void OnCancel ()
@@ -383,17 +383,17 @@ namespace WinMd5Checksum
       try
       {
         if (CalcMd5Checksum.GetThread != null && CalcMd5Checksum.GetThread.ThreadState != ThreadState.Stopped)
-          CalcMd5Checksum.OnExit ( );
+          CalcMd5Checksum.OnExit();
 
         if (bw.IsBusy == true)
         {
           if (bw.WorkerSupportsCancellation == true)
-            bw.CancelAsync ( );
+            bw.CancelAsync();
         }
       }
       catch (Exception ex)
       {
-        ErrorLog.WriteLog (ErrorFlags.Error, GetType ( ).Name, string.Format ("{0}, exception: {1}", System.Reflection.MethodBase.GetCurrentMethod ( ).Name, ex));
+        ErrorLog.WriteLog(ErrorFlags.Error, GetType().Name, string.Format("{0}, exception: {1}", System.Reflection.MethodBase.GetCurrentMethod().Name, ex));
       }
       finally
       {
@@ -404,14 +404,14 @@ namespace WinMd5Checksum
     private void HandleEsc (object sender, KeyEventArgs e)
     {
       if (e.Key == Key.Escape)
-        OnExit ( );
+        OnExit();
     }
 
     private void OnExit ()
     {
-      OnCancel ( );
-      Dispose ( );
-      Application.Current.Shutdown ( );
+      OnCancel();
+      Dispose();
+      Application.Current.Shutdown();
     }
 
     #endregion

@@ -8,7 +8,7 @@
     <ProjectGuid>{2F677C70-CCFC-4E69-BC92-369CEC801698}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WinMd5Checksum</RootNamespace>
+    <RootNamespace>Org.Vs.WinMd5Checksum</RootNamespace>
     <AssemblyName>WinMd5Checksum</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>
@@ -100,7 +100,7 @@
     <ApplicationIcon>Key.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>WinMd5Checksum.App</StartupObject>
+    <StartupObject>Org.Vs.WinMd5Checksum.App</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />

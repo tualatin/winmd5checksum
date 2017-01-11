@@ -1,15 +1,15 @@
 ﻿using System.Windows.Controls;
 
-namespace WinMd5Checksum.Control
+namespace Org.Vs.WinMd5Checksum.Control
 {
-    /// <summary>
-    /// Interaction logic for LoadingAnimation.xaml
-    /// </summary>
-    public partial class LoadingAnimation : UserControl
+  /// <summary>
+  /// Interaction logic for LoadingAnimation.xaml
+  /// </summary>
+  public partial class LoadingAnimation : UserControl
+  {
+    public LoadingAnimation ()
     {
-        public LoadingAnimation()
-        {
-            InitializeComponent();
-        }
+      InitializeComponent();
     }
+  }
 }

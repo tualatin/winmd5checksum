@@ -1,16 +1,16 @@
 ﻿using System.Windows.Controls;
 
 
-namespace WinMd5Checksum.Control
+namespace Org.Vs.WinMd5Checksum.Control
 {
-    /// <summary>
-    /// Interaction logic for Block.xaml
-    /// </summary>
-    public partial class Block : UserControl
+  /// <summary>
+  /// Interaction logic for Block.xaml
+  /// </summary>
+  public partial class Block : UserControl
+  {
+    public Block ()
     {
-        public Block()
-        {
-            InitializeComponent();
-        }
+      InitializeComponent();
     }
+  }
 }

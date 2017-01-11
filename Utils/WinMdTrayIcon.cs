@@ -1,14 +1,14 @@
-﻿using System.Windows.Forms;
-using System;
+﻿using System;
 using System.Drawing;
+using System.Windows.Forms;
 
 
-namespace WinMd5Checksum.Utils
+namespace Org.Vs.WinMd5Checksum.Utils
 {
   public class WinMdTrayIcon : IDisposable
   {
     private NotifyIcon notifyIcon;
-    private ContextMenu contextMenu = new ContextMenu ( );
+    private ContextMenu contextMenu = new ContextMenu();
 
 
     public void Dispose ()
@@ -16,19 +16,19 @@ namespace WinMd5Checksum.Utils
       if (notifyIcon == null)
         return;
 
-      notifyIcon.Dispose ( );
+      notifyIcon.Dispose();
       notifyIcon = null;
 
       if (contextMenu == null)
         return;
 
-      contextMenu.Dispose ( );
+      contextMenu.Dispose();
       contextMenu = null;
     }
 
     public WinMdTrayIcon (Icon icon, string iconText)
     {
-      Init (icon, iconText);
+      Init(icon, iconText);
     }
 
     private void Init (Icon icon, string text)
@@ -51,7 +51,7 @@ namespace WinMd5Checksum.Utils
         Text = "&" + name
       };
 
-      contextMenu.MenuItems.Add (menuItem);
+      contextMenu.MenuItems.Add(menuItem);
     }
 
     public void CreateMenuItem (string name, bool check)
@@ -72,7 +72,7 @@ namespace WinMd5Checksum.Utils
                             m.Checked = !m.Checked;
                         };
 
-      contextMenu.MenuItems.Add (menuItem);
+      contextMenu.MenuItems.Add(menuItem);
     }
 
     public NotifyIcon NotifyIcon

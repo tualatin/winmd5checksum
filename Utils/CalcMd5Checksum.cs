@@ -1,12 +1,12 @@
-﻿using System.IO;
+﻿using Org.Vs.WinMd5Checksum.Data;
+using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Security.Cryptography;
 using System.Threading;
-using System;
-using WinMd5Checksum.Data;
-using System.Collections.Generic;
 
 
-namespace WinMd5Checksum.Utils
+namespace Org.Vs.WinMd5Checksum.Utils
 {
   public static class CalcMd5Checksum
   {
@@ -37,19 +37,19 @@ namespace WinMd5Checksum.Utils
     /// </summary>
     public static void CalcMd5HashSum ()
     {
-      workerThread = new Thread (WorkerThread)
+      workerThread = new Thread(WorkerThread)
       {
         Name = "CalcFileHashes",
         IsBackground = true
       };
 
       isRunning = true;
-      workerThread.Start ( );
+      workerThread.Start();
 
-      Thread.Sleep (1);
+      Thread.Sleep(1);
 
       if (isRunning == false)
-        StopWorkerThread ( );
+        StopWorkerThread();
     }
 
     /// <summary>
@@ -69,7 +69,7 @@ namespace WinMd5Checksum.Utils
     public static void OnExit ()
     {
       if (workerThread.ThreadState != ThreadState.Stopped)
-        workerThread.Abort ( );
+        workerThread.Abort();
     }
 
     /// <summary>
@@ -81,13 +81,13 @@ namespace WinMd5Checksum.Utils
     {
       string expectedChecksum;
 
-      using (StreamReader sr = new StreamReader (fileName))
+      using (StreamReader sr = new StreamReader(fileName))
       {
-        expectedChecksum = sr.ReadLine ( );
+        expectedChecksum = sr.ReadLine();
       }
 
-      if (expectedChecksum != null && !string.IsNullOrEmpty (expectedChecksum.Trim ( )))
-        return (expectedChecksum.Trim ( ));
+      if (expectedChecksum != null && !string.IsNullOrEmpty(expectedChecksum.Trim()))
+        return (expectedChecksum.Trim());
 
       return (null);
     }
@@ -103,12 +103,12 @@ namespace WinMd5Checksum.Utils
       {
         while (isRunning)
         {
-          StartCalculation ( );
+          StartCalculation();
         }
       }
       catch (Exception ex)
       {
-        ErrorLog.WriteLog (ErrorFlags.Error, "CalcMd5Checksum", string.Format ("WorkerThread, exception: {0}", ex));
+        ErrorLog.WriteLog(ErrorFlags.Error, "CalcMd5Checksum", string.Format("WorkerThread, exception: {0}", ex));
       }
     }
 
@@ -118,7 +118,7 @@ namespace WinMd5Checksum.Utils
     private static void StopWorkerThread ()
     {
       isRunning = false;
-      workerThread.Join ( );
+      workerThread.Join();
     }
 
     /// <summary>
@@ -127,47 +127,47 @@ namespace WinMd5Checksum.Utils
     private static void StartCalculation ()
     {
       DateTime now = DateTime.Now;
-      List<Md5Structure> compareRest = new List<Md5Structure> ( );
+      List<Md5Structure> compareRest = new List<Md5Structure>();
 
-      System.Threading.Tasks.Parallel.For (0, Md5Files.GetFileContainer.Count, i =>
-      {
-        Md5Structure item = Md5Files.GetFileContainer[i];
+      System.Threading.Tasks.Parallel.For(0, Md5Files.GetFileContainer.Count, i =>
+     {
+       Md5Structure item = Md5Files.GetFileContainer[i];
 
-        if (File.Exists (item.key))
-        {
-          FileStream fs = new FileStream (item.key, FileMode.Open, FileAccess.Read);
+       if (File.Exists(item.key))
+       {
+         FileStream fs = new FileStream(item.key, FileMode.Open, FileAccess.Read);
 
-          if (string.IsNullOrEmpty (item.calc))
-            item.calc = GetMd5HashOf (fs);
-          if (!string.IsNullOrEmpty (item.compare))
-          {
-            item.result = DoCompare (item.calc, item.compare);
-            compareRest.Add (item);
-          }
+         if (string.IsNullOrEmpty(item.calc))
+           item.calc = GetMd5HashOf(fs);
+         if (!string.IsNullOrEmpty(item.compare))
+         {
+           item.result = DoCompare(item.calc, item.compare);
+           compareRest.Add(item);
+         }
 
-          fs.Close ( );
-          fs = new FileStream (item.key, FileMode.Open, FileAccess.Read);
+         fs.Close();
+         fs = new FileStream(item.key, FileMode.Open, FileAccess.Read);
 
-          if (string.IsNullOrEmpty (item.sha256hash))
-            item.sha256hash = GetSha256HashOf (fs);
-          if (!string.IsNullOrEmpty (item.compare256hash))
-            item.result256compare = DoCompare (item.sha256hash, item.compare256hash);
+         if (string.IsNullOrEmpty(item.sha256hash))
+           item.sha256hash = GetSha256HashOf(fs);
+         if (!string.IsNullOrEmpty(item.compare256hash))
+           item.result256compare = DoCompare(item.sha256hash, item.compare256hash);
 
-          fs.Close ( );
-        }
-      });
+         fs.Close();
+       }
+     });
 
       if (compareRest.Count != Md5Files.GetFileContainer.Count)
       {
         if (compareRest.Count == 1)
-          CompareToRest (compareRest[0]);
+          CompareToRest(compareRest[0]);
       }
 
       if (CanWriteFile)
-        LogFile.WriteFile (Md5Files.GetFileContainer);
+        LogFile.WriteFile(Md5Files.GetFileContainer);
 
-      TimeSpan timeSpan = DateTime.Now.Subtract (now);
-      ErrorLog.WriteLog (ErrorFlags.Info, "CalcMd5Checksum", string.Format ("Calculation time: {0}", timeSpan.ToString (@"hh\:mm\:ss\.fff")));
+      TimeSpan timeSpan = DateTime.Now.Subtract(now);
+      ErrorLog.WriteLog(ErrorFlags.Info, "CalcMd5Checksum", string.Format("Calculation time: {0}", timeSpan.ToString(@"hh\:mm\:ss\.fff")));
       isRunning = false;
     }
 
@@ -175,12 +175,12 @@ namespace WinMd5Checksum.Utils
 
     private static void CompareToRest (Md5Structure item)
     {
-      Md5Files.GetFileContainer.ForEach (file => file.result = DoCompare (file.calc, item.compare));
+      Md5Files.GetFileContainer.ForEach(file => file.result = DoCompare(file.calc, item.compare));
     }
 
     private static string DoCompare (string result, string expected)
     {
-      return (String.Compare (expected, result, StringComparison.Ordinal)) == 0 ? ("OK") : ("FAILED");
+      return (String.Compare(expected, result, StringComparison.Ordinal)) == 0 ? ("OK") : ("FAILED");
     }
 
     /// <summary>
@@ -192,21 +192,21 @@ namespace WinMd5Checksum.Utils
     {
       try
       {
-        if (!File.Exists (fileName))
-          throw new FileNotFoundException (string.Format ("file {0} not found", fileName));
+        if (!File.Exists(fileName))
+          throw new FileNotFoundException(string.Format("file {0} not found", fileName));
 
         string expectedHash;
 
-        using (StreamReader sr = new StreamReader (fileName))
+        using (StreamReader sr = new StreamReader(fileName))
         {
-          expectedHash = sr.ReadLine ( );
+          expectedHash = sr.ReadLine();
         }
 
-        return expectedHash != null && string.IsNullOrEmpty (expectedHash.Trim ( )) ? (string.Empty) : (expectedHash);
+        return expectedHash != null && string.IsNullOrEmpty(expectedHash.Trim()) ? (string.Empty) : (expectedHash);
       }
       catch (Exception ex)
       {
-        ErrorLog.WriteLog (ErrorFlags.Error, "CalcMd5Checksum", string.Format ("GetValueFromHashFile, exception: {0}", ex));
+        ErrorLog.WriteLog(ErrorFlags.Error, "CalcMd5Checksum", string.Format("GetValueFromHashFile, exception: {0}", ex));
 
         return (string.Empty);
       }
@@ -214,12 +214,12 @@ namespace WinMd5Checksum.Utils
 
     private static string GetMd5HashOf (Stream input)
     {
-      return (HashOf<MD5CryptoServiceProvider> (input));
+      return (HashOf<MD5CryptoServiceProvider>(input));
     }
 
     private static string GetSha256HashOf (Stream input)
     {
-      return (HashOf<SHA256CryptoServiceProvider> (input));
+      return (HashOf<SHA256CryptoServiceProvider>(input));
     }
 
     //private static string GetSha512HashOf (Stream input)
@@ -237,34 +237,34 @@ namespace WinMd5Checksum.Utils
     //}
 
     private static string HashOf<T> (Stream input)
-     where T: HashAlgorithm, new ( )
+     where T : HashAlgorithm, new()
     {
       const int bufferSize = 1024 * 1024 * 20;
       string hashString;
-      System.Diagnostics.Process process = System.Diagnostics.Process.GetCurrentProcess ( );
+      System.Diagnostics.Process process = System.Diagnostics.Process.GetCurrentProcess();
 
-      using (var provider = new T ( ))
+      using (var provider = new T())
       {
         int readCount;
         long bytesTransfered = 0;
         var buffer = new byte[bufferSize];
 
-        while ((readCount = input.Read (buffer, 0, buffer.Length)) != 0)
+        while ((readCount = input.Read(buffer, 0, buffer.Length)) != 0)
         {
           if (bytesTransfered + readCount == input.Length)
-            provider.TransformFinalBlock (buffer, 0, readCount);
+            provider.TransformFinalBlock(buffer, 0, readCount);
           else
-            provider.TransformBlock (buffer, 0, bufferSize, buffer, 0);
+            provider.TransformBlock(buffer, 0, bufferSize, buffer, 0);
 
           bytesTransfered += readCount;
 
 #if DEBUG
-          Console.WriteLine (@"HashOf<{3}> {0}MB/{1}MB. Memory Used: {2}MB", bytesTransfered / 1000000, input.Length / 1000000, process.PrivateMemorySize64 / 1000000, provider.ToString ( ));
+          Console.WriteLine(@"HashOf<{3}> {0}MB/{1}MB. Memory Used: {2}MB", bytesTransfered / 1000000, input.Length / 1000000, process.PrivateMemorySize64 / 1000000, provider.ToString());
 #endif
         }
 
-        hashString = BitConverter.ToString (provider.Hash).Replace ("-", string.Empty).ToLower ( );
-        provider.Clear ( );
+        hashString = BitConverter.ToString(provider.Hash).Replace("-", string.Empty).ToLower();
+        provider.Clear();
       }
       return (hashString);
     }
