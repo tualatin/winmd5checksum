@@ -12,7 +12,7 @@ using System.Windows;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Virtual Studios")]
 [assembly: AssemblyProduct("WinMd5Checksum")]
-[assembly: AssemblyCopyright("Copyright ©  2013 - 2017 M. Zoennchen")]
+[assembly: AssemblyCopyright("Copyright ©  2013 - 2018 M. Zoennchen")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -51,5 +51,5 @@ using System.Windows;
 // Sie können alle Werte angeben oder die standardmäßigen Build- und Revisionsnummern 
 // übernehmen, indem Sie "*" eingeben:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.1.*")]
+[assembly: AssemblyVersion("1.5.*")]
 // [assembly: AssemblyFileVersion ("1.0.0.0")]
