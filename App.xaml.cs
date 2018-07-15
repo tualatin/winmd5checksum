@@ -1,7 +1,8 @@
-﻿using Org.Vs.WinMd5Checksum.Data;
-using Org.Vs.WinMd5Checksum.Utils;
-using System;
+﻿using System;
 using System.Windows;
+using log4net;
+using Org.Vs.WinMd5Checksum.BaseView;
+using Org.Vs.WinMd5Checksum.Core.Utils;
 
 
 namespace Org.Vs.WinMd5Checksum
@@ -9,67 +10,27 @@ namespace Org.Vs.WinMd5Checksum
   /// <summary>
   /// Interaction logic for "App.xaml"
   /// </summary>
-  public partial class App : Application
+  public partial class App
   {
-    void app_Startup (object Sender, StartupEventArgs e)
+    private static readonly ILog LOG = LogManager.GetLogger(typeof(App));
+
+    private void ApplicationStartup(object sender, StartupEventArgs e)
     {
-      AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
-      LogFile.DeleteFile();
-
-      if (e.Args.Length == 0)
-        return;
-
-      bool quiet = false;
-
-      foreach (string arg in e.Args)
+      // If it is not the minimum .NET version installed
+      if ( EnvironmentContainer.NetFrameworkKey <= 393295 )
       {
-        if (arg.CompareTo("/q") == 0)
-        {
-          quiet = true;
-          continue;
-        }
-
-        if (arg.CompareTo("/s") == 0)
-        {
-          LogFile.SetShortPrint(true);
-          continue;
-        }
-
-        if (arg.CompareTo("/?") == 0)
-        {
-          LogFile.ShowHelp();
-          break;
-        }
-
-        if (arg.CompareTo("/l") == 0)
-        {
-          LogFile.SetListPorint(true);
-          continue;
-        }
-
-        Md5Files.AddFileToContainer(arg);
+        LOG.Error("Wrong .NET version! Please install .NET 4.6 or newer.");
+        Shutdown();
+        return;
       }
 
-      Md5Files.FinishOperation();
-
-      if (quiet != true)
-        return;
-
-      CalcMd5Checksum.SetWriteFile(true);
-      CalcMd5Checksum.CalcMd5HashSum();
-      Application.Current.Shutdown();
+      MainWindow wnd = new MainWindow();
+      AppDomain.CurrentDomain.UnhandledException += CurrentDomainUnhandledException;
+      wnd.Show();
     }
 
-    protected override void OnStartup (StartupEventArgs e)
-    {
-      ShutdownMode = ShutdownMode.OnExplicitShutdown;
+    private static void CurrentDomainUnhandledException(object sender, UnhandledExceptionEventArgs e) =>
+      LOG.Error("{0} caused a(n) {1} {2}", System.Reflection.MethodBase.GetCurrentMethod().Name, e.ExceptionObject.GetType().Name, e.ExceptionObject);
 
-      base.OnStartup(e);
-    }
-
-    private static void CurrentDomain_UnhandledException (object sender, UnhandledExceptionEventArgs e)
-    {
-      ErrorLog.WriteLog(ErrorFlags.Error, "winmd5checksum", string.Format("UnhandledException: {0}", e.ExceptionObject));
-    }
   }
 }

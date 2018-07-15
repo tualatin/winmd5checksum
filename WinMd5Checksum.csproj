@@ -158,8 +158,98 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="BaseView\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="BaseView\UserControls\MainWindowStatusBar.xaml.cs">
+      <DependentUpon>MainWindowStatusBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="BaseView\UserControls\MainWindowToolbarButtons.xaml.cs">
+      <DependentUpon>MainWindowToolbarButtons.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="BaseView\UserControls\ViewModels\MainWindowStatusBarViewModel.cs" />
+    <Compile Include="Core\Extensions\ColorExtension.cs" />
+    <Compile Include="Core\Extensions\EnumerableExtension.cs" />
+    <Compile Include="Core\Extensions\EnumExtension.cs" />
+    <Compile Include="Core\Extensions\StringExtension.cs" />
+    <Compile Include="Core\Native\Data\Enum\SWP.cs" />
+    <Compile Include="Core\Native\Data\MemoryObject.cs" />
+    <Compile Include="Core\Native\Data\MINMAXINFO.cs" />
+    <Compile Include="Core\Native\Data\MonitorInfo.cs" />
+    <Compile Include="Core\Native\Data\Rect.cs" />
+    <Compile Include="Core\Native\Data\Win32Point.cs" />
+    <Compile Include="Core\Native\Data\WINDOWPOS.cs" />
+    <Compile Include="Core\Native\NativeMethods.cs" />
+    <Compile Include="Core\Utils\Arg.cs" />
+    <Compile Include="Core\Utils\BuildDate.cs" />
+    <Compile Include="Core\Utils\EnvironmentContainer.cs" />
+    <Compile Include="Core\Utils\Execution.cs" />
+    <Compile Include="Core\Utils\ThrottledExecution.cs" />
+    <Compile Include="UI\Behaviors\DataGridColumnWidthBehavior.cs" />
+    <Compile Include="UI\Behaviors\DataGridRowBehavior.cs" />
+    <Compile Include="UI\Behaviors\DropDownButtonBehavior.cs" />
+    <Compile Include="UI\Behaviors\FocusBehavior.cs" />
+    <Compile Include="UI\Behaviors\ScrollDataGridRowIntoView.cs" />
+    <Compile Include="UI\Converters\BoolToVisibilityConverter.cs" />
+    <Compile Include="UI\Converters\InverseBooleanConverter.cs" />
+    <Compile Include="UI\Converters\InverseBooleanToVisibilityConverter.cs" />
+    <Compile Include="UI\Converters\InverseNullToBoolConverter.cs" />
+    <Compile Include="UI\Converters\NullToBoolConverter.cs" />
+    <Compile Include="UI\Converters\NullToVisibilityConverter.cs" />
+    <Compile Include="UI\Extensions\VisualTreeEnumerationExtension.cs" />
+    <Compile Include="UI\Extensions\WindowExtension.cs" />
+    <Compile Include="UI\NotifyIcon\BalloonIcon.cs" />
+    <Compile Include="UI\NotifyIcon\Interop\BalloonFlags.cs" />
+    <Compile Include="UI\NotifyIcon\Interop\IconDataMembers.cs" />
+    <Compile Include="UI\NotifyIcon\Interop\IconState.cs" />
+    <Compile Include="UI\NotifyIcon\Interop\MouseEvent.cs" />
+    <Compile Include="UI\NotifyIcon\Interop\NotifyCommand.cs" />
+    <Compile Include="UI\NotifyIcon\Interop\NotifyIconData.cs" />
+    <Compile Include="UI\NotifyIcon\Interop\NotifyIconVersion.cs" />
+    <Compile Include="UI\NotifyIcon\Interop\Point.cs" />
+    <Compile Include="UI\NotifyIcon\Interop\SystemInfo.cs" />
+    <Compile Include="UI\NotifyIcon\Interop\TrayInfo.cs" />
+    <Compile Include="UI\NotifyIcon\Interop\WinApi.cs" />
+    <Compile Include="UI\NotifyIcon\Interop\WindowClass.cs" />
+    <Compile Include="UI\NotifyIcon\Interop\WindowMessageSink.cs" />
+    <Compile Include="UI\NotifyIcon\PopupActivationMode.cs" />
+    <Compile Include="UI\NotifyIcon\RoutedEventHelper.cs" />
+    <Compile Include="UI\NotifyIcon\TaskbarIcon.cs" />
+    <Compile Include="UI\NotifyIcon\TaskbarIcon.Declarations.cs" />
+    <Compile Include="UI\NotifyIcon\Util.cs" />
+    <Compile Include="UI\StyleableWindow\Behaviors\ControlDoubleClickBehavior.cs" />
+    <Compile Include="UI\StyleableWindow\Behaviors\ShowSystemMenuBehavior.cs" />
+    <Compile Include="UI\StyleableWindow\Behaviors\WindowDragBehavior.cs" />
+    <Compile Include="UI\StyleableWindow\Behaviors\WindowResizeBehavior.cs" />
+    <Compile Include="UI\StyleableWindow\Commands\WindowCloseCommand.cs" />
+    <Compile Include="UI\StyleableWindow\Commands\WindowMaximizeCommand.cs" />
+    <Compile Include="UI\StyleableWindow\Commands\WindowMinimizeCommand.cs" />
+    <Compile Include="UI\StyleableWindow\SystemMenuManager.cs" />
+    <Compile Include="UI\UserControls\FancyAlertPopUp.xaml.cs">
+      <DependentUpon>FancyAlertPopUp.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\UserControls\FancyNotificationPopUp.xaml.cs">
+      <DependentUpon>FancyNotificationPopUp.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\UserControls\FancyToolTip.xaml.cs">
+      <DependentUpon>FancyToolTip.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\UserControls\VsDataGrid.cs" />
+    <Compile Include="UI\Utils\FileDragDropHelper.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\BaseView\Interfaces\IBaseWindowStatusbarViewModel.cs" />
+    <Compile Include="Controllers\Commands\AsyncCommand.cs" />
+    <Compile Include="Controllers\Commands\Base\AsyncCommandBase.cs" />
+    <Compile Include="Controllers\Commands\Interfaces\IAsyncCommand.cs" />
+    <Compile Include="Controllers\Commands\InvokeDelegateCommandAction.cs" />
+    <Compile Include="Controllers\Commands\MouseCommand.cs" />
+    <Compile Include="Controllers\Commands\RelayCommand.cs" />
+    <Compile Include="Controllers\UI\Interfaces\IFileDragDropTarget.cs" />
+    <Compile Include="Controllers\UI\Interfaces\IViewModelBase.cs" />
+    <Compile Include="Core\Data\Base\NotifyMaster.cs" />
+    <Compile Include="Core\Data\Base\NotifyTaskCompletion.cs" />
+    <Compile Include="Core\Interfaces\INotifyTaskCompletion.cs" />
     <Compile Include="Core\Logging\Log4NetTraceListener.cs" />
     <Compile Include="Core\Logging\LogExtentions.cs" />
     <Compile Include="Core\Logging\Logger.cs" />
@@ -217,7 +307,88 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="BaseView\UserControls\Interfaces\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Config\log4net.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="BaseView\MainWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="BaseView\Styles\BlueWindowStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="BaseView\Styles\TitleBarButtonsStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="BaseView\Styles\TitleBarWindowIconStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="BaseView\UserControls\MainWindowStatusBar.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="BaseView\UserControls\MainWindowToolbarButtons.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Languages\en-EN.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Styles\Base\Converters.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UI\Styles\Base\KeyBindings.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UI\Styles\Base\Shared.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UI\Styles\Button.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UI\Styles\Label.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UI\Styles\ScrollbarResources.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UI\Styles\TextBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UI\UserControls\FancyAlertPopUp.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UI\UserControls\FancyNotificationPopUp.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UI\UserControls\FancyToolTip.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UI\UserControls\Styles\VsDataGridStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

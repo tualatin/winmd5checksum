@@ -1,0 +1,329 @@
+﻿<ResourceDictionary
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  >
+
+  <!--  SrollViewer ScrollBar Repeat Buttons (at each end  -->
+  <Style x:Key="ScrollBarLineButton" TargetType="{x:Type RepeatButton}">
+    <Setter Property="Focusable" Value="false" />
+    <Setter Property="OverridesDefaultStyle" Value="true" />
+    <Setter Property="SnapsToDevicePixels" Value="True" />
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type RepeatButton}">
+          <Border
+            x:Name="Border"
+            Background="{StaticResource ScrollBarLightColor}"
+            >
+            <Path
+              x:Name="Arrow"
+              HorizontalAlignment="Center"
+              VerticalAlignment="Center"
+              Data="{Binding Content, RelativeSource={RelativeSource TemplatedParent}}"
+              >
+              <Path.Fill>
+                <SolidColorBrush Color="{DynamicResource GlyphColor}" />
+              </Path.Fill>
+            </Path>
+            <VisualStateManager.VisualStateGroups>
+              <VisualStateGroup x:Name="CommonStates">
+                <VisualState x:Name="Normal" />
+                <VisualState x:Name="MouseOver">
+                  <Storyboard>
+                    <ColorAnimationUsingKeyFrames
+                      Storyboard.TargetName="Arrow"
+                      Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)"
+                      >
+                      <EasingColorKeyFrame
+                        Value="{StaticResource GlyphMouseOver}"
+                        KeyTime="0"
+                        />
+                    </ColorAnimationUsingKeyFrames>
+                  </Storyboard>
+                </VisualState>
+                <VisualState x:Name="Pressed">
+                  <Storyboard>
+                    <ColorAnimationUsingKeyFrames
+                      Storyboard.TargetName="Arrow"
+                      Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)"
+                      >
+                      <EasingColorKeyFrame
+                        Value="{StaticResource GlyphMousePressed}"
+                        KeyTime="0"
+                        />
+                    </ColorAnimationUsingKeyFrames>
+                  </Storyboard>
+                </VisualState>
+                <VisualState x:Name="Disabled">
+                  <Storyboard>
+                    <ColorAnimationUsingKeyFrames
+                      Storyboard.TargetName="Arrow"
+                      Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)"
+                      >
+                      <EasingColorKeyFrame
+                        Value="{StaticResource DisabledForegroundColor}"
+                        KeyTime="0"
+                        />
+                    </ColorAnimationUsingKeyFrames>
+                  </Storyboard>
+                </VisualState>
+              </VisualStateGroup>
+            </VisualStateManager.VisualStateGroups>
+          </Border>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+  <!--  SrollViewer ScrollBar Repeat Buttons (The part in the middle, not the thumb the long area between the buttons )  -->
+  <Style x:Key="ScrollBarPageButton" TargetType="{x:Type RepeatButton}">
+    <Setter Property="Focusable" Value="False" />
+    <Setter Property="IsTabStop" Value="False" />
+    <Setter Property="OverridesDefaultStyle" Value="True" />
+    <Setter Property="SnapsToDevicePixels" Value="True" />
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type RepeatButton}">
+          <Border Background="{StaticResource ScrollBarLightColor}" />
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+  <!--  ScrollViewer ScrollBar Thumb, that part that can be dragged up/down or left/right Buttons  -->
+  <Style x:Key="ScrollBarThumb" TargetType="{x:Type Thumb}">
+    <Setter Property="Focusable" Value="False" />
+    <Setter Property="IsTabStop" Value="False" />
+    <Setter Property="OverridesDefaultStyle" Value="True" />
+    <Setter Property="SnapsToDevicePixels" Value="True" />
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type Thumb}">
+          <Grid>
+            <Grid x:Name="ThumbVisual">
+              <Rectangle x:Name="Background">
+                <Rectangle.Fill>
+                  <SolidColorBrush Color="{StaticResource DefaultScrollBarColor}" />
+                </Rectangle.Fill>
+              </Rectangle>
+            </Grid>
+            <VisualStateManager.VisualStateGroups>
+              <VisualStateGroup x:Name="CommonStates">
+                <VisualState x:Name="Normal" />
+                <VisualState x:Name="MouseOver">
+                  <Storyboard>
+                    <ColorAnimationUsingKeyFrames
+                      Storyboard.TargetName="Background"
+                      Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)"
+                      >
+                      <EasingColorKeyFrame
+                        Value="{StaticResource ScrollBarPressed}"
+                        KeyTime="0"
+                        />
+                    </ColorAnimationUsingKeyFrames>
+                  </Storyboard>
+                </VisualState>
+                <VisualState x:Name="Pressed">
+                  <Storyboard>
+                    <ColorAnimationUsingKeyFrames
+                      Storyboard.TargetName="Background"
+                      Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)"
+                      >
+                      <EasingColorKeyFrame
+                        Value="{StaticResource ScrollBarPressed}"
+                        KeyTime="0"
+                        />
+                    </ColorAnimationUsingKeyFrames>
+                  </Storyboard>
+                </VisualState>
+              </VisualStateGroup>
+            </VisualStateManager.VisualStateGroups>
+          </Grid>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+  <!--  Vertical ScrollBar definition  -->
+  <ControlTemplate
+    x:Key="VerticalScrollBar"
+    TargetType="{x:Type ScrollBar}"
+    >
+    <Grid>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto" />
+        <RowDefinition MaxHeight="18" />
+        <RowDefinition Height="0.00001*" />
+        <RowDefinition MaxHeight="18" />
+      </Grid.RowDefinitions>
+
+      <Border
+        Grid.RowSpan="3"
+        Background="{StaticResource ScrollBarLightColor}"
+        />
+
+      <Grid
+        x:Name="PART_SplitGripControl"
+        Grid.Row="0"
+        Background="{StaticResource BrushSolidLightBlue}"
+        Visibility="Collapsed"
+        >
+        <Border
+          x:Name="Chrome"
+          BorderBrush="{StaticResource BrushSolidGrey35}"
+          BorderThickness="1"
+          >
+          <Path
+            Height="16"
+            Margin="0 3 0 0"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Data="M0 7L10.8 7 10.8 8.1999998 6 8.1999998 6 11.2204 7.1999998 10.0204 7.1999998 11.2204 5.4000001 13 3.5999999 11.2204 3.5999999 10.0204 4.8000002 11.2204 4.8000002 8.1999998 0 8.1999998z M5.4000001 0L7.2000003 1.7796001 7.2000003 2.9796002 6 1.7796001 6 4.8000002 10.8 4.8000002 10.8 6 0 6 0 4.8000002 4.8000002 4.8000002 4.8000002 1.7796001 3.6000001 2.9796002 3.6000001 1.7796001z"
+            Fill="Black"
+            SnapsToDevicePixels="True"
+            />
+        </Border>
+      </Grid>
+
+      <RepeatButton
+        Grid.Row="1"
+        Height="18"
+        Content="M 0 5 L 10 5 L 5 0 Z"
+        Command="ScrollBar.LineUpCommand"
+        Style="{StaticResource ScrollBarLineButton}"
+        />
+
+      <Track
+        x:Name="PART_Track"
+        Grid.Row="2"
+        IsDirectionReversed="true"
+        >
+        <Track.DecreaseRepeatButton>
+          <RepeatButton
+            Command="ScrollBar.PageUpCommand"
+            Style="{StaticResource ScrollBarPageButton}"
+            />
+        </Track.DecreaseRepeatButton>
+        <Track.Thumb>
+          <Thumb
+            Margin="5 2"
+            Style="{StaticResource ScrollBarThumb}"
+            >
+            <Thumb.Background>
+              <SolidColorBrush Color="{StaticResource DefaultScrollBarColor}" />
+            </Thumb.Background>
+          </Thumb>
+        </Track.Thumb>
+        <Track.IncreaseRepeatButton>
+          <RepeatButton
+            Command="ScrollBar.PageDownCommand"
+            Style="{StaticResource ScrollBarPageButton}"
+            />
+        </Track.IncreaseRepeatButton>
+      </Track>
+
+      <RepeatButton
+        Grid.Row="3"
+        Height="18"
+        Content="M 0 0 L 5 5 L 10 0 Z"
+        Command="ScrollBar.LineDownCommand"
+        Style="{StaticResource ScrollBarLineButton}"
+        />
+    </Grid>
+
+    <ControlTemplate.Triggers>
+      <MultiTrigger>
+        <MultiTrigger.Conditions>
+          <Condition Property="Visibility" Value="Visible" SourceName="PART_SplitGripControl" />
+          <Condition Property="IsMouseOver" Value="True" SourceName="PART_SplitGripControl" />
+        </MultiTrigger.Conditions>
+        <Setter TargetName="Chrome" Property="BorderBrush" Value="{StaticResource BrushSolidOrange}" />
+        <Setter TargetName="PART_SplitGripControl" Property="Background" Value="{StaticResource BrushSolidYellow}" />
+      </MultiTrigger>
+    </ControlTemplate.Triggers>
+  </ControlTemplate>
+
+  <!--  Horizontal ScrollBar definition  -->
+  <ControlTemplate
+    x:Key="HorizontalScrollBar"
+    TargetType="{x:Type ScrollBar}"
+    >
+    <Grid x:Name="GridHorizontalScrollBar">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition MaxWidth="18" />
+        <ColumnDefinition Width="0.00001*" />
+        <ColumnDefinition MaxWidth="18" />
+      </Grid.ColumnDefinitions>
+
+      <Border
+        Grid.ColumnSpan="3"
+        Background="{StaticResource ScrollBarLightColor}"
+        />
+
+      <RepeatButton
+        Grid.Row="0"
+        Grid.Column="0"
+        Width="18"
+        Content="M 5 0 L 5 10 L 0 5 Z"
+        Command="ScrollBar.LineLeftCommand"
+        Style="{StaticResource ScrollBarLineButton}"
+        />
+
+      <Track
+        x:Name="PART_Track"
+        Grid.Column="1"
+        IsDirectionReversed="False"
+        >
+        <Track.DecreaseRepeatButton>
+          <RepeatButton
+            Command="ScrollBar.PageLeftCommand"
+            Style="{StaticResource ScrollBarPageButton}"
+            />
+        </Track.DecreaseRepeatButton>
+        <Track.Thumb>
+          <Thumb
+            Margin="2 5"
+            Style="{StaticResource ScrollBarThumb}"
+            >
+            <Thumb.Background>
+              <SolidColorBrush Color="{StaticResource DefaultScrollBarColor}" />
+            </Thumb.Background>
+          </Thumb>
+        </Track.Thumb>
+        <Track.IncreaseRepeatButton>
+          <RepeatButton
+            Command="ScrollBar.PageRightCommand"
+            Style="{StaticResource ScrollBarPageButton}"
+            />
+        </Track.IncreaseRepeatButton>
+      </Track>
+
+      <RepeatButton
+        Grid.Column="2"
+        Width="18"
+        Content="M 0 0 L 5 5 L 0 10 Z"
+        Command="ScrollBar.LineRightCommand"
+        Style="{StaticResource ScrollBarLineButton}"
+        />
+    </Grid>
+  </ControlTemplate>
+
+  <!--  Scrollbar itself  -->
+  <Style x:Key="{x:Type ScrollBar}" TargetType="{x:Type ScrollBar}">
+    <Setter Property="OverridesDefaultStyle" Value="True" />
+    <Setter Property="SnapsToDevicePixels" Value="True" />
+    <Style.Triggers>
+      <Trigger Property="Orientation" Value="Horizontal">
+        <Setter Property="Height" Value="18" />
+        <Setter Property="Template" Value="{StaticResource HorizontalScrollBar}" />
+        <Setter Property="Width" Value="Auto" />
+      </Trigger>
+      <Trigger Property="Orientation" Value="Vertical">
+        <Setter Property="Height" Value="Auto" />
+        <Setter Property="Template" Value="{StaticResource VerticalScrollBar}" />
+        <Setter Property="Width" Value="18" />
+      </Trigger>
+    </Style.Triggers>
+  </Style>
+
+</ResourceDictionary>
