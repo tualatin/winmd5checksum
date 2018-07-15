@@ -9,7 +9,7 @@
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Org.Vs.WinMd5Checksum</RootNamespace>
-    <AssemblyName>WinMd5Checksum</AssemblyName>
+    <AssemblyName>Winchecksum</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
@@ -172,6 +172,7 @@
     <Compile Include="Core\Extensions\EnumerableExtension.cs" />
     <Compile Include="Core\Extensions\EnumExtension.cs" />
     <Compile Include="Core\Extensions\StringExtension.cs" />
+    <Compile Include="Core\Interfaces\IEventAggregator.cs" />
     <Compile Include="Core\Native\Data\Enum\SWP.cs" />
     <Compile Include="Core\Native\Data\MemoryObject.cs" />
     <Compile Include="Core\Native\Data\MINMAXINFO.cs" />
@@ -183,8 +184,10 @@
     <Compile Include="Core\Utils\Arg.cs" />
     <Compile Include="Core\Utils\BuildDate.cs" />
     <Compile Include="Core\Utils\EnvironmentContainer.cs" />
+    <Compile Include="Core\Utils\EventAggregator.cs" />
     <Compile Include="Core\Utils\Execution.cs" />
     <Compile Include="Core\Utils\ThrottledExecution.cs" />
+    <Compile Include="Data\Messages\ShowNotificationPopUpMessage.cs" />
     <Compile Include="UI\Behaviors\DataGridColumnWidthBehavior.cs" />
     <Compile Include="UI\Behaviors\DataGridRowBehavior.cs" />
     <Compile Include="UI\Behaviors\DropDownButtonBehavior.cs" />
@@ -236,6 +239,7 @@
     </Compile>
     <Compile Include="UI\UserControls\VsDataGrid.cs" />
     <Compile Include="UI\Utils\FileDragDropHelper.cs" />
+    <Compile Include="UI\Utils\UiHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\BaseView\Interfaces\IBaseWindowStatusbarViewModel.cs" />

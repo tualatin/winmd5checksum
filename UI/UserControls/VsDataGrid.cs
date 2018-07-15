@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using Org.Vs.WinMd5Checksum.UI.Behaviors;
 using Org.Vs.WinMd5Checksum.UI.Extensions;
+using Org.Vs.WinMd5Checksum.UI.Utils;
 
 
 namespace Org.Vs.WinMd5Checksum.UI.UserControls
@@ -47,7 +48,7 @@ namespace Org.Vs.WinMd5Checksum.UI.UserControls
       if ( _horizontalScrollbarGrid != null )
         return;
 
-      _horizontalScrollbarGrid = BusinessHelper.GetHorizontalScrollBarGrid(_scrollViewer);
+      _horizontalScrollbarGrid = UiHelper.GetHorizontalScrollBarGrid(_scrollViewer);
       OnWidthChanged(this, null);
     }
 

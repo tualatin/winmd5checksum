@@ -6,7 +6,7 @@
   <log4net>
     <!-- Define some output appenders -->
     <appender name="LogFileAppender" type="log4net.Appender.FileAppender" >
-      <file value="logs\tailforwindows.log" />
+      <file value="logs\winchecksum.log" />
       <appendToFile value="true" />
       <layout type="log4net.Layout.PatternLayout">
         <conversionPattern value="%date [%-5level] - %message%newline" />
@@ -23,7 +23,7 @@
       <rollingStyle value="Composite" />
       <staticLogFileName value="false" />
       <file value="logs\" />
-      <datePattern value="'tailforwindows_'yyyy-MM-dd'.log'" />
+      <datePattern value="'winchecksum_'yyyy-MM-dd'.log'" />
       <maximumFileSize value="10MB" />
       <maxSizeRollBackups value="10" />
       <PreserveLogFileNameExtension value="true" />
