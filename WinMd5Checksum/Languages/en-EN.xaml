@@ -18,6 +18,12 @@
   <system:String x:Key="ButtonStart">Start</system:String>
 
   <system:String x:Key="DataGridNo">No</system:String>
+  <system:String x:Key="DataGridFile">File</system:String>
+  <system:String x:Key="DataGridMd5Hash">MD5 Hash</system:String>
+  <system:String x:Key="DataGridMd5HashCompare">MD5 to compare</system:String>
+  <system:String x:Key="DataGridResult">Result</system:String>
+  <system:String x:Key="DataGridSha1">SHA1 Hash</system:String>
+  <system:String x:Key="DataGridSha1HashCompare">SHA1 to compare</system:String>
 
   <system:String x:Key="AboutWindowTitle">About</system:String>
   <system:String x:Key="AboutVersionString">Version:</system:String>

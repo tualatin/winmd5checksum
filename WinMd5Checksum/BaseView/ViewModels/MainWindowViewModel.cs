@@ -34,7 +34,6 @@ namespace Org.Vs.WinMd5.BaseView.ViewModels
 
     private EStatusbarState _currentStatusbarState;
     private readonly IBaseWindowStatusbarViewModel _baseWindowStatusbarViewModel;
-    private string _fileName;
 
     #region Properties
 
@@ -71,6 +70,7 @@ namespace Org.Vs.WinMd5.BaseView.ViewModels
 
       MdChecksumCollection = new ObservableCollection<WinMdChecksumData>();
       CollectionView = (ListCollectionView) new CollectionViewSource { Source = MdChecksumCollection }.View;
+      HashsumCollectionViewHolder.Cv = CollectionView;
 
       ((AsyncCommand<object>) StartCalculationCommand).PropertyChanged += OnStartCalculationPropertyChanged;
       ;
@@ -206,12 +206,22 @@ namespace Org.Vs.WinMd5.BaseView.ViewModels
       };
 
       var result = openDialog.ShowDialog();
-      _fileName = string.Empty;
 
       if ( result != true )
         return;
 
-      _fileName = openDialog.FileName;
+      string fileName = openDialog.FileName;
+
+      if ( string.IsNullOrWhiteSpace(fileName) )
+        return;
+
+      MdChecksumCollection.Add(new WinMdChecksumData
+      {
+        FileName = fileName
+      });
+
+      OnPropertyChanged(nameof(MdChecksumCollection));
+      OnPropertyChanged(nameof(CollectionView));
     }
 
     private void ExecuteOpenHintWindow(Window window)

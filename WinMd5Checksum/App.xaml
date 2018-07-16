@@ -27,6 +27,8 @@
         <ResourceDictionary Source="UI/Styles/EllipsisHorizontalButtonStyle.xaml" />
 
         <ResourceDictionary Source="UI/UserControls/Styles/VsDataGridStyle.xaml" />
+        <ResourceDictionary Source="UI/Styles/TextBoxDataGridStyle.xaml" />
+        <ResourceDictionary Source="UI/Styles/TabItemToolTipStyle.xaml" />
       </ResourceDictionary.MergedDictionaries>
     </ResourceDictionary>
   </Application.Resources>

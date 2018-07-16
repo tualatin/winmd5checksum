@@ -148,7 +148,7 @@
 
   <Border
     BorderBrush="{StaticResource BrushSolidBlue}"
-    BorderThickness="1 3 1 0"
+    BorderThickness="1 2 1 0"
     >
     <Grid UseLayoutRounding="True">
       <Grid.RowDefinitions>
@@ -610,47 +610,78 @@
                 behaviors:DataGridColumnWidthBehavior.DataGridColumnWidth="{Binding RelativeSource={RelativeSource Self}, Path=Width}"
                 />
 
-              <DataGridTextColumn
-                MinWidth="130"
-                Header="{DynamicResource FileManagerDataGridDescription}"
-                Binding="{Binding Description, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"
-                />
-
               <DataGridTemplateColumn
-                MinWidth="150"
-                Header="{DynamicResource FileManagerDataGridCategory}"
-                >
-                <DataGridTemplateColumn.CellTemplate>
-                  <DataTemplate>
-                    <ComboBox
-                      Text="{Binding Category, UpdateSourceTrigger=LostFocus}"
-                      IsEditable="True"
-                      ItemsSource="{Binding Path=DataContext.Categories, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}"
-                      />
-                  </DataTemplate>
-                </DataGridTemplateColumn.CellTemplate>
-              </DataGridTemplateColumn>
-
-              <DataGridTemplateColumn
-                MinWidth="50"
-                Header="{DynamicResource FileManagerDataGridIsRegex}"
-                IsReadOnly="True"
+                MinWidth="190"
+                MaxWidth="250"
+                Header="{DynamicResource DataGridFile}"
+                behaviors:DataGridColumnWidthBehavior.DataGridColumnWidth="{Binding RelativeSource={RelativeSource Self}, Path=Width}"
                 >
                 <DataGridTemplateColumn.CellTemplate>
                   <DataTemplate>
                     <Grid>
-                      <CheckBox
-                        Width="20"
-                        Height="20"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        IsChecked="{Binding FindSettings.UseRegex, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                        IsHitTestVisible="False"
-                        />
+                      <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="Auto" />
+                      </Grid.ColumnDefinitions>
+
+                      <TextBox
+                        Grid.Column="0"
+                        Text="{Binding File, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                        IsReadOnly="True"
+                        Style="{StaticResource TextBoxDataGridStyle}"
+                        >
+                        <TextBox.ToolTip>
+                          <ToolTip
+                            Content="{Binding FileName}"
+                            Style="{StaticResource TabItemToolTipStyle}"
+                            Visibility="{Binding FileName, Converter={StaticResource StringToVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}"
+                            />
+                        </TextBox.ToolTip>
+                      </TextBox>
                     </Grid>
                   </DataTemplate>
                 </DataGridTemplateColumn.CellTemplate>
               </DataGridTemplateColumn>
+
+              <DataGridTextColumn
+                MinWidth="200"
+                Header="{DynamicResource DataGridMd5Hash}"
+                Binding="{Binding Md5Hash, UpdateSourceTrigger=PropertyChanged}"
+                IsReadOnly="True"
+                />
+
+              <DataGridTextColumn
+                MinWidth="200"
+                Header="{DynamicResource DataGridMd5HashCompare}"
+                Binding="{Binding Md5ToCompareHash, UpdateSourceTrigger=PropertyChanged}"
+                />
+
+              <DataGridTextColumn
+                MinWidth="90"
+                Header="{DynamicResource DataGridResult}"
+                Binding="{Binding Md5Result, UpdateSourceTrigger=PropertyChanged}"
+                IsReadOnly="True"
+                />
+
+              <DataGridTextColumn
+                MinWidth="200"
+                Header="{DynamicResource DataGridSha1}"
+                Binding="{Binding Sha1Hash, UpdateSourceTrigger=PropertyChanged}"
+                IsReadOnly="True"
+                />
+
+              <DataGridTextColumn
+                MinWidth="200"
+                Header="{DynamicResource DataGridSha1HashCompare}"
+                Binding="{Binding Sha1ToCompare, UpdateSourceTrigger=PropertyChanged}"
+                />
+
+              <DataGridTextColumn
+                MinWidth="200"
+                Header="{DynamicResource DataGridResult}"
+                Binding="{Binding Sha1Result, UpdateSourceTrigger=PropertyChanged}"
+                IsReadOnly="True"
+                />
             </userControls1:VsDataGrid.Columns>
           </userControls1:VsDataGrid>
         </Border>

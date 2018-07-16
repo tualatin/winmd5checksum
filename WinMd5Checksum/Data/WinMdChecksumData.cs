@@ -85,5 +85,59 @@ namespace Org.Vs.WinMd5.Data
         OnPropertyChanged();
       }
     }
+
+    private string _sha1Hash;
+
+    /// <summary>
+    /// SHA1 hash
+    /// </summary>
+    public string Sha1Hash
+    {
+      get => _sha1Hash;
+      set
+      {
+        if (Equals(value, _sha1Hash))
+          return;
+
+        _sha1Hash = value;
+        OnPropertyChanged();
+      }
+    }
+
+    private string _sha1ToCompare;
+
+    /// <summary>
+    /// SHA1 compare hash
+    /// </summary>
+    public string Sha1ToCompare
+    {
+      get => _sha1ToCompare;
+      set
+      {
+        if (Equals(value, _sha1ToCompare))
+          return;
+
+        _sha1ToCompare = value;
+        OnPropertyChanged();
+      }
+    }
+
+    private string _sha1Result;
+
+    /// <summary>
+    /// Result (OK/FAILED)
+    /// </summary>
+    public string Sha1Result
+    {
+      get => _sha1Result;
+      set
+      {
+        if ( Equals(value, _sha1Result) )
+          return;
+
+        _sha1Result = value;
+        OnPropertyChanged();
+      }
+    }
   }
 }

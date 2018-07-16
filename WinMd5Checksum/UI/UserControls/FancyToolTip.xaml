@@ -128,7 +128,7 @@
         HorizontalAlignment="Left"
         VerticalAlignment="Top"
         RenderTransformOrigin="0.792,0.486"
-        Source="/T4W;component/Resources/Main.ico"
+        Source="/WinMd5;component/Resources/Key.ico"
         Stretch="Fill"
         >
         <Image.RenderTransform>

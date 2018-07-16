@@ -14,4 +14,5 @@
   <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
   <converters:StringToWindowMediaBrushConverter x:Key="StringToWindowMediaBrushConverter" />
   <converters:RowCollectionConverter x:Key="RowCollectionConverter" />
+  <converters:StringToVisibilityConverter x:Key="StringToVisibilityConverter" />
 </ResourceDictionary>
