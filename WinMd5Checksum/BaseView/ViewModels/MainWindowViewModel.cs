@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -34,6 +35,9 @@ namespace Org.Vs.WinMd5.BaseView.ViewModels
 
     private EStatusbarState _currentStatusbarState;
     private readonly IBaseWindowStatusbarViewModel _baseWindowStatusbarViewModel;
+    private readonly Stopwatch _myStopwatch;
+    private readonly string _elapsedTimeResource;
+    private CancellationTokenSource _cts;
 
     #region Properties
 
@@ -67,13 +71,14 @@ namespace Org.Vs.WinMd5.BaseView.ViewModels
 
       _currentStatusbarState = EStatusbarState.Default;
       _baseWindowStatusbarViewModel = BaseWindowStatusbarViewModel.Instance;
+      _myStopwatch = new Stopwatch();
+      _elapsedTimeResource = Application.Current.TryFindResource("ElapsedTime").ToString();
 
       MdChecksumCollection = new ObservableCollection<WinMdChecksumData>();
       CollectionView = (ListCollectionView) new CollectionViewSource { Source = MdChecksumCollection }.View;
       HashsumCollectionViewHolder.Cv = CollectionView;
 
       ((AsyncCommand<object>) StartCalculationCommand).PropertyChanged += OnStartCalculationPropertyChanged;
-      ;
     }
 
     #region Commands
@@ -163,6 +168,8 @@ namespace Org.Vs.WinMd5.BaseView.ViewModels
     {
       MouseService.SetBusyState();
 
+      _cts?.Cancel();
+      _myStopwatch.Reset();
       _currentStatusbarState = EStatusbarState.Default;
       SetCurrentBusinessData();
     }
@@ -173,8 +180,16 @@ namespace Org.Vs.WinMd5.BaseView.ViewModels
     {
       MouseService.SetBusyState();
 
+      _myStopwatch.Reset();
+      _myStopwatch.Start();
+
       _currentStatusbarState = EStatusbarState.Busy;
       SetCurrentBusinessData();
+
+      _cts?.Dispose();
+      _cts = new CancellationTokenSource();
+
+      await EnvironmentContainer.Instance.StartCalculationAsync(MdChecksumCollection, _cts.Token).ConfigureAwait(false);
     }
 
     private bool CanExecuteClearAllCommand() => MdChecksumCollection != null && MdChecksumCollection.Count > 0 && _currentStatusbarState != EStatusbarState.Busy;
@@ -276,6 +291,7 @@ namespace Org.Vs.WinMd5.BaseView.ViewModels
         return;
 
       _currentStatusbarState = EStatusbarState.Default;
+      _myStopwatch?.Stop();
       SetCurrentBusinessData();
 
       OnPropertyChanged(nameof(MdChecksumCollection));
@@ -321,11 +337,17 @@ namespace Org.Vs.WinMd5.BaseView.ViewModels
       {
       case EStatusbarState.Busy:
 
+        _baseWindowStatusbarViewModel.ElapsedTime = string.Empty;
         _baseWindowStatusbarViewModel.CurrentStatusBarBackgroundColorHex = EnvironmentContainer.StatusBarBusyBackgroundColor;
         _baseWindowStatusbarViewModel.CurrentBusyState = Application.Current.TryFindResource("Record").ToString();
         break;
 
       case EStatusbarState.Default:
+
+        if ( _myStopwatch.ElapsedMilliseconds > 0 && !string.IsNullOrWhiteSpace(_elapsedTimeResource) )
+          _baseWindowStatusbarViewModel.ElapsedTime = string.Format(_elapsedTimeResource, _myStopwatch.Elapsed);
+        else
+          _baseWindowStatusbarViewModel.ElapsedTime = string.Empty;
 
         _baseWindowStatusbarViewModel.CurrentStatusBarBackgroundColorHex = EnvironmentContainer.StatusBarInactiveBackgroundColor;
         _baseWindowStatusbarViewModel.CurrentBusyState = Application.Current.TryFindResource("TrayIconReady").ToString();

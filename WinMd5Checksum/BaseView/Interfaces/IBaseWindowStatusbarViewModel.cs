@@ -22,5 +22,14 @@
       get;
       set;
     }
+
+    /// <summary>
+    /// Elapsed time
+    /// </summary>
+    string ElapsedTime
+    {
+      get;
+      set;
+    }
   }
 }

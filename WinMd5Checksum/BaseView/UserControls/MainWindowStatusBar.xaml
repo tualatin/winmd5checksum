@@ -22,6 +22,7 @@
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="Auto" />
       <ColumnDefinition />
+      <ColumnDefinition Width="Auto" />
     </Grid.ColumnDefinitions>
 
     <Label
@@ -29,6 +30,16 @@
       Margin="5 0"
       VerticalAlignment="Center"
       Content="{Binding Source={x:Static vm:BaseWindowStatusbarViewModel.Instance}, Path=CurrentBusyState, UpdateSourceTrigger=PropertyChanged}"
+      FontSize="11"
+      Foreground="{Binding ElementName=StatusbarGrid, Path=Background, Converter={StaticResource BackgroundToForegroundConverter}, UpdateSourceTrigger=PropertyChanged}"
+      SnapsToDevicePixels="True"
+      />
+
+    <Label
+      Grid.Column="2"
+      Margin="15 0"
+      VerticalAlignment="Center"
+      Content="{Binding Source={x:Static vm:BaseWindowStatusbarViewModel.Instance}, Path=ElapsedTime, UpdateSourceTrigger=PropertyChanged}"
       FontSize="11"
       Foreground="{Binding ElementName=StatusbarGrid, Path=Background, Converter={StaticResource BackgroundToForegroundConverter}, UpdateSourceTrigger=PropertyChanged}"
       SnapsToDevicePixels="True"

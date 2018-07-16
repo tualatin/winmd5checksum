@@ -58,6 +58,24 @@ namespace Org.Vs.WinMd5.BaseView.ViewModels
       }
     }
 
+    private string _elapsedTime;
+
+    /// <summary>
+    /// Elapsed time
+    /// </summary>
+    public string ElapsedTime
+    {
+      get => _elapsedTime;
+      set
+      {
+        if ( Equals(value, _elapsedTime) )
+          return;
+
+        _elapsedTime = value;
+        OnPropertyChanged();
+      }
+    }
+
     #endregion
   }
 }

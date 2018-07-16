@@ -116,6 +116,7 @@
     <Compile Include="BaseView\UserControls\ViewModels\MainWindowStatusBarViewModel.cs" />
     <Compile Include="BaseView\ViewModels\BaseWindowStatusbarViewModel.cs" />
     <Compile Include="BaseView\ViewModels\MainWindowViewModel.cs" />
+    <Compile Include="Controllers\CalculateHash.cs" />
     <Compile Include="Controllers\Commands\AsyncCommand.cs" />
     <Compile Include="Controllers\Commands\Base\AsyncCommandBase.cs" />
     <Compile Include="Controllers\Commands\Interfaces\IAsyncCommand.cs" />
@@ -129,6 +130,7 @@
     <Compile Include="Data\HashsumCollectionViewHolder.cs" />
     <Compile Include="Data\Messages\ShowNotificationPopUpMessage.cs" />
     <Compile Include="Data\WinMdChecksumData.cs" />
+    <Compile Include="Interfaces\ICalculateHash.cs" />
     <Compile Include="UI\Behaviors\DataGridColumnWidthBehavior.cs" />
     <Compile Include="UI\Behaviors\DataGridRowBehavior.cs" />
     <Compile Include="UI\Behaviors\DropDownButtonBehavior.cs" />
@@ -368,9 +370,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Interfaces\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="Config\log4net.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

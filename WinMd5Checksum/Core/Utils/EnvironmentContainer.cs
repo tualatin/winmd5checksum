@@ -1,13 +1,19 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 using Microsoft.Win32;
+using Org.Vs.WinMd5.Controllers;
 using Org.Vs.WinMd5.Core.Data.Base;
 using Org.Vs.WinMd5.Core.Interfaces;
+using Org.Vs.WinMd5.Data;
 using Org.Vs.WinMd5.Data.Messages;
+using Org.Vs.WinMd5.Interfaces;
 using Org.Vs.WinMd5.UI.Extensions;
 using Org.Vs.WinMd5.UI.UserControls;
 
@@ -31,10 +37,13 @@ namespace Org.Vs.WinMd5.Core.Utils
     /// </summary>
     public readonly IEventAggregator CurrentEventManager;
 
+    private readonly ICalculateHash _calculateHashsumController;
+
     private EnvironmentContainer()
     {
       UpTime = DateTime.Now;
       CurrentEventManager = new EventAggregator();
+      _calculateHashsumController = new CalculateHash();
     }
 
     #region StatusBar default settings
@@ -76,7 +85,7 @@ namespace Org.Vs.WinMd5.Core.Utils
       get => _alwaysOnTop;
       set
       {
-        if (value == _alwaysOnTop)
+        if ( value == _alwaysOnTop )
           return;
 
         _alwaysOnTop = value;
@@ -97,7 +106,7 @@ namespace Org.Vs.WinMd5.Core.Utils
     /// </summary>
     /// <param name="brush">Brush to convert</param>
     /// <returns>Color of type <see cref="System.Drawing.Color"/></returns>
-    public static System.Drawing.Color ConvertMediaBrushToDrawingColor(System.Windows.Media.Brush brush)
+    public static System.Drawing.Color ConvertMediaBrushToDrawingColor(Brush brush)
     {
       var mediaColor = ((SolidColorBrush) brush).Color;
       return System.Drawing.Color.FromArgb(mediaColor.A, mediaColor.R, mediaColor.G, mediaColor.B);
@@ -162,5 +171,14 @@ namespace Org.Vs.WinMd5.Core.Utils
         }
       }
     }
+
+    /// <summary>
+    /// Start hash calculation of data collection
+    /// </summary>
+    /// <param name="collection"><see cref="ObservableCollection{T}"/> of <see cref="WinMdChecksumData"/></param>
+    /// <param name="token"><see cref="CancellationToken"/></param>
+    /// <returns>Task</returns>
+    public async Task StartCalculationAsync(ObservableCollection<WinMdChecksumData> collection, CancellationToken token) =>
+      await _calculateHashsumController.StartCalculationAsync(collection, token).ConfigureAwait(false);
   }
 }
