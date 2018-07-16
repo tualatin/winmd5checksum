@@ -15,6 +15,7 @@ using Org.Vs.WinMd5.Controllers.Commands.Interfaces;
 using Org.Vs.WinMd5.Core.Data.Base;
 using Org.Vs.WinMd5.Core.Enums;
 using Org.Vs.WinMd5.Core.Utils;
+using Org.Vs.WinMd5.UI.UserControls;
 
 
 namespace Org.Vs.WinMd5.BaseView.ViewModels
@@ -59,9 +60,28 @@ namespace Org.Vs.WinMd5.BaseView.ViewModels
     /// </summary>
     public IAsyncCommand WndClosingCommand => _wndClosingCommand ?? (_wndClosingCommand = AsyncCommand.Create((p, t) => ExecuteWndClosingCommandAsync(p)));
 
+    private ICommand _aboutCommand;
+
+    /// <summary>
+    /// About command
+    /// </summary>
+    public ICommand AboutCommand => _aboutCommand ?? (_aboutCommand = new RelayCommand(p => ExecuteOpenAboutWindow((Window) p)));
+
     #endregion
 
     #region Command functions
+
+    private void ExecuteOpenAboutWindow(Window window)
+    {
+      if ( window == null )
+        return;
+
+      var about = new AboutWindow
+      {
+        Owner = window
+      };
+      about.ShowDialog();
+    }
 
     private void ExecuteLoadedCommand()
     {

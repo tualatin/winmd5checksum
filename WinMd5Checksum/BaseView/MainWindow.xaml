@@ -14,6 +14,7 @@
   xmlns:utils1="clr-namespace:Org.Vs.WinMd5.UI.Utils"
   xmlns:viewModels="clr-namespace:Org.Vs.WinMd5.BaseView.ViewModels"
   mc:Ignorable="d"
+  x:Name="Md5Checksum"
   Title="{Binding Source={x:Static utils:EnvironmentContainer.ApplicationTitle}}"
   Width="800"
   Height="450"
@@ -477,7 +478,7 @@
                       Margin="0 0 5 0"
                       RenderOptions.BitmapScalingMode="HighQuality"
                       RenderOptions.EdgeMode="Aliased"
-                      Source="/T4W;component/Resources/Search.ico"
+                      Source="/WinMd5;component/Resources/Search.ico"
                       />
                     <TextBlock
                       Text="{DynamicResource GeneralToolTipHint}"
@@ -493,6 +494,7 @@
               Height="24"
               VerticalAlignment="Center"
               Command="{Binding AboutCommand}"
+              CommandParameter="{Binding ElementName=Md5Checksum}"
               TabIndex="6"
               >
               <StackPanel>
@@ -535,7 +537,7 @@
                       Margin="0 0 5 0"
                       RenderOptions.BitmapScalingMode="HighQuality"
                       RenderOptions.EdgeMode="Aliased"
-                      Source="/T4W;component/Resources/Search.ico"
+                      Source="/WinMd5;component/Resources/Search.ico"
                       />
                     <TextBlock
                       Text="{DynamicResource GeneralToolTipHint}"

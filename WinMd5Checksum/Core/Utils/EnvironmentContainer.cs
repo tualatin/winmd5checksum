@@ -33,6 +33,7 @@ namespace Org.Vs.WinMd5.Core.Utils
 
     private EnvironmentContainer()
     {
+      UpTime = DateTime.Now;
       CurrentEventManager = new EventAggregator();
     }
 
@@ -81,6 +82,14 @@ namespace Org.Vs.WinMd5.Core.Utils
         _alwaysOnTop = value;
         OnPropertyChanged();
       }
+    }
+
+    /// <summary>
+    /// Current up time
+    /// </summary>
+    public DateTime UpTime
+    {
+      get;
     }
 
     /// <summary>
