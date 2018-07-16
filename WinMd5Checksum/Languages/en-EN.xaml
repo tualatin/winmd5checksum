@@ -12,4 +12,10 @@
 
   <system:String x:Key="TrayIconReady">Ready...</system:String>
   <system:String x:Key="Record">Calculate...</system:String>
+
+  <system:String x:Key="GeneralToolTipHint">Take a look into Readme file for more informations</system:String>
+
+  <system:String x:Key="ButtonStart">Start</system:String>
+
+  <system:String x:Key="DataGridNo">No</system:String>
 </ResourceDictionary>

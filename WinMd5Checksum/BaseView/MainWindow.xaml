@@ -5,10 +5,13 @@
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
   xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+  xmlns:behaviors="clr-namespace:Org.Vs.WinMd5.UI.Behaviors"
+  xmlns:commands="clr-namespace:Org.Vs.WinMd5.Controllers.Commands"
   xmlns:taskbarNotification="clr-namespace:Hardcodet.Wpf.TaskbarNotification"
   xmlns:userControls="clr-namespace:Org.Vs.WinMd5.BaseView.UserControls"
   xmlns:userControls1="clr-namespace:Org.Vs.WinMd5.UI.UserControls"
   xmlns:utils="clr-namespace:Org.Vs.WinMd5.Core.Utils"
+  xmlns:utils1="clr-namespace:Org.Vs.WinMd5.UI.Utils"
   xmlns:viewModels="clr-namespace:Org.Vs.WinMd5.BaseView.ViewModels"
   mc:Ignorable="d"
   Title="{Binding Source={x:Static utils:EnvironmentContainer.ApplicationTitle}}"
@@ -23,6 +26,8 @@
   Topmost="{Binding Source={x:Static utils:EnvironmentContainer.Instance}, Path=AlwaysOnTop, UpdateSourceTrigger=PropertyChanged}"
   WindowStartupLocation="CenterScreen"
   WindowStyle="None"
+  utils1:FileDragDropHelper.FileDragDropTarget="{Binding}"
+  utils1:FileDragDropHelper.IsFileDragDropEnabled="True"
   >
   <Window.DataContext>
     <viewModels:MainWindowViewModel />
@@ -32,29 +37,637 @@
     <i:EventTrigger EventName="Loaded">
       <i:InvokeCommandAction Command="{Binding LoadedCommand}" />
     </i:EventTrigger>
+
+    <i:EventTrigger EventName="Closing">
+      <commands:InvokeDelegateCommandAction
+        Command="{Binding WndClosingCommand}"
+        CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=InvokeParameter}"
+        />
+    </i:EventTrigger>
   </i:Interaction.Triggers>
 
-  <Grid>
-    <Grid.RowDefinitions>
-      <RowDefinition />
-      <RowDefinition Height="25" />
-    </Grid.RowDefinitions>
+  <Window.Resources>
+    <Style x:Key="StartButtonStyle" BasedOn="{StaticResource {x:Type Button}}" TargetType="{x:Type Button}">
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="{x:Type Button}">
+            <Border
+              Name="Chrome"
+              Background="{TemplateBinding Background}"
+              BorderBrush="{StaticResource BrushSolidBorderMedium}"
+              BorderThickness="{TemplateBinding BorderThickness}"
+              SnapsToDevicePixels="True"
+              >
+              <Grid>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="25" />
+                  <ColumnDefinition />
+                </Grid.ColumnDefinitions>
 
-    <userControls:MainWindowStatusBar Grid.Row="1" />
+                <Polygon
+                  x:Name="TrianglePolygon"
+                  Grid.Column="0"
+                  Margin="2 0 2 0"
+                  HorizontalAlignment="Center"
+                  VerticalAlignment="Center"
+                  Fill="{StaticResource BrushSolidStartGreen}"
+                  Points="0,0 8,5, 0,10"
+                  />
 
-    <!--  TaskbarIcon part  -->
-    <taskbarNotification:TaskbarIcon
-      x:Name="TbIcon"
-      IconSource="/WinMd5;component/Resources/Key.ico"
-      >
-      <taskbarNotification:TaskbarIcon.TrayToolTip>
-        <userControls1:FancyToolTip
-          ApplicationText="{Binding Source={x:Static utils:EnvironmentContainer.ApplicationTitle}}"
-          InfoText="{Binding Source={x:Static viewModels:BaseWindowStatusbarViewModel.Instance}, Path=CurrentBusyState, UpdateSourceTrigger=PropertyChanged}"
-          Opacity="0.85"
-          />
-      </taskbarNotification:TaskbarIcon.TrayToolTip>
-    </taskbarNotification:TaskbarIcon>
+                <TextBlock
+                  Grid.Column="1"
+                  VerticalAlignment="Center"
+                  Text="{TemplateBinding Content}"
+                  />
+              </Grid>
+            </Border>
 
-  </Grid>
+            <ControlTemplate.Triggers>
+              <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="Chrome" Property="Background" Value="{DynamicResource ButtonOverBackground}" />
+                <Setter TargetName="Chrome" Property="BorderBrush" Value="{StaticResource ButtonNormalBorder}" />
+              </Trigger>
+              <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground" Value="{StaticResource BrushSolidGrey35}" />
+                <Setter TargetName="TrianglePolygon" Property="Fill" Value="{StaticResource BrushSolidGrey35}" />
+              </Trigger>
+              <Trigger Property="IsPressed" Value="True">
+                <Setter TargetName="Chrome" Property="Background" Value="{StaticResource BrushSolidOrangePressed}" />
+                <Setter TargetName="Chrome" Property="BorderBrush" Value="{StaticResource ButtonNormalBorder}" />
+              </Trigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+
+    <Style x:Key="StopButtonStyle" BasedOn="{StaticResource {x:Type Button}}" TargetType="{x:Type Button}">
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="{x:Type Button}">
+            <Border
+              Name="Chrome"
+              Background="{TemplateBinding Background}"
+              BorderBrush="{StaticResource BrushSolidBorderMedium}"
+              BorderThickness="{TemplateBinding BorderThickness}"
+              SnapsToDevicePixels="True"
+              >
+              <Grid>
+                <Polygon
+                  x:Name="StopPolygon"
+                  Grid.Column="0"
+                  HorizontalAlignment="Center"
+                  VerticalAlignment="Center"
+                  Fill="{StaticResource BrushSolidStopRed}"
+                  Points="0,0 10,0 10,10 0,10"
+                  />
+              </Grid>
+            </Border>
+
+            <ControlTemplate.Triggers>
+              <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="Chrome" Property="Background" Value="{DynamicResource ButtonOverBackground}" />
+                <Setter TargetName="Chrome" Property="BorderBrush" Value="{StaticResource ButtonNormalBorder}" />
+              </Trigger>
+              <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground" Value="{StaticResource BrushSolidGrey35}" />
+                <Setter TargetName="StopPolygon" Property="Fill" Value="{StaticResource BrushSolidGrey35}" />
+              </Trigger>
+              <Trigger Property="IsPressed" Value="True">
+                <Setter TargetName="Chrome" Property="Background" Value="{StaticResource BrushSolidOrangePressed}" />
+                <Setter TargetName="Chrome" Property="BorderBrush" Value="{StaticResource ButtonNormalBorder}" />
+              </Trigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+  </Window.Resources>
+
+  <Border
+    BorderBrush="{StaticResource BrushSolidBlue}"
+    BorderThickness="1 3 1 0"
+    >
+    <Grid UseLayoutRounding="True">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto" />
+        <RowDefinition />
+        <RowDefinition Height="25" />
+      </Grid.RowDefinitions>
+
+      <Border
+        Grid.Row="0"
+        Background="{StaticResource BrushSolidLightBlue}"
+        >
+        <Grid Margin="5">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+          </Grid.ColumnDefinitions>
+
+          <Button
+            Grid.Column="0"
+            Width="24"
+            Height="24"
+            Margin="0 0 2 0"
+            Command="{Binding OpenCommand}"
+            TabIndex="0"
+            >
+            <StackPanel Margin="3">
+              <Image
+                RenderOptions.BitmapScalingMode="HighQuality"
+                RenderOptions.EdgeMode="Aliased"
+                Source="/WinMd5;component/Resources/openfolder.ico"
+                >
+                <Image.Style>
+                  <Style TargetType="{x:Type Image}">
+                    <Style.Triggers>
+                      <Trigger Property="IsEnabled" Value="False">
+                        <Setter Property="Opacity" Value="0.5" />
+                      </Trigger>
+                    </Style.Triggers>
+                  </Style>
+                </Image.Style>
+              </Image>
+            </StackPanel>
+            <Button.ToolTip>
+              <StackPanel>
+                <TextBlock
+                  Margin="0 0 0 5"
+                  Text="{DynamicResource FileManagerSave}"
+                  FontSize="12"
+                  FontWeight="Bold"
+                  />
+                <TextBlock Text="{DynamicResource FileManagerSaveToolTip}" />
+                <Border
+                  Margin="0 8"
+                  BorderBrush="Silver"
+                  BorderThickness="0 1 0 0"
+                  />
+                <WrapPanel>
+                  <Image
+                    Width="16"
+                    Height="16"
+                    Margin="0 0 5 0"
+                    RenderOptions.BitmapScalingMode="HighQuality"
+                    RenderOptions.EdgeMode="Aliased"
+                    Source="/WinMd5;component/Resources/Search.ico"
+                    />
+                  <TextBlock
+                    Text="{DynamicResource GeneralToolTipHint}"
+                    FontStyle="Italic"
+                    />
+                </WrapPanel>
+              </StackPanel>
+            </Button.ToolTip>
+          </Button>
+
+          <Button
+            Grid.Column="1"
+            Width="24"
+            Height="24"
+            Margin="0 0 2 0"
+            Command="{Binding SaveCommand}"
+            TabIndex="1"
+            >
+            <StackPanel Margin="3">
+              <Image
+                RenderOptions.BitmapScalingMode="HighQuality"
+                RenderOptions.EdgeMode="Aliased"
+                Source="/WinMd5;component/Resources/save.ico"
+                >
+                <Image.Style>
+                  <Style TargetType="{x:Type Image}">
+                    <Style.Triggers>
+                      <Trigger Property="IsEnabled" Value="False">
+                        <Setter Property="Opacity" Value="0.5" />
+                      </Trigger>
+                    </Style.Triggers>
+                  </Style>
+                </Image.Style>
+              </Image>
+            </StackPanel>
+            <Button.ToolTip>
+              <StackPanel>
+                <TextBlock
+                  Margin="0 0 0 5"
+                  Text="{DynamicResource FileManagerSave}"
+                  FontSize="12"
+                  FontWeight="Bold"
+                  />
+                <TextBlock Text="{DynamicResource FileManagerSaveToolTip}" />
+                <Border
+                  Margin="0 8"
+                  BorderBrush="Silver"
+                  BorderThickness="0 1 0 0"
+                  />
+                <WrapPanel>
+                  <Image
+                    Width="16"
+                    Height="16"
+                    Margin="0 0 5 0"
+                    RenderOptions.BitmapScalingMode="HighQuality"
+                    RenderOptions.EdgeMode="Aliased"
+                    Source="/WinMd5;component/Resources/Search.ico"
+                    />
+                  <TextBlock
+                    Text="{DynamicResource GeneralToolTipHint}"
+                    FontStyle="Italic"
+                    />
+                </WrapPanel>
+              </StackPanel>
+            </Button.ToolTip>
+          </Button>
+
+          <Button
+            Grid.Column="2"
+            Width="24"
+            Height="24"
+            Margin="0 0 2 0"
+            Command="{Binding ClearAllCommand}"
+            Style="{StaticResource RemoveItemButtonStyle}"
+            TabIndex="2"
+            >
+            <Button.ToolTip>
+              <StackPanel>
+                <TextBlock
+                  Margin="0 0 0 5"
+                  Text="{DynamicResource FileManagerRemove}"
+                  FontSize="12"
+                  FontWeight="Bold"
+                  />
+                <TextBlock Text="{DynamicResource FileManagerRemoveToolTip}" />
+                <Border
+                  Margin="0 8"
+                  BorderBrush="Silver"
+                  BorderThickness="0 1 0 0"
+                  />
+                <WrapPanel>
+                  <Image
+                    Width="16"
+                    Height="16"
+                    Margin="0 0 5 0"
+                    RenderOptions.BitmapScalingMode="HighQuality"
+                    RenderOptions.EdgeMode="Aliased"
+                    Source="/WinMd5;component/Resources/Search.ico"
+                    />
+                  <TextBlock
+                    Text="{DynamicResource GeneralToolTipHint}"
+                    FontStyle="Italic"
+                    />
+                </WrapPanel>
+              </StackPanel>
+            </Button.ToolTip>
+          </Button>
+
+          <StackPanel
+            Grid.Column="4"
+            Orientation="Horizontal"
+            >
+            <Button
+              Width="75"
+              Height="24"
+              Margin="5 0"
+              VerticalAlignment="Center"
+              Content="{DynamicResource ButtonStart}"
+              Command="{Binding StartCommand}"
+              Style="{StaticResource StartButtonStyle}"
+              TabIndex="3"
+              >
+              <Button.ToolTip>
+                <StackPanel>
+                  <TextBlock
+                    Margin="0 0 0 5"
+                    Text="Tail"
+                    FontSize="12"
+                    FontWeight="Bold"
+                    />
+                  <TextBlock Text="{DynamicResource ButtonStartToolTip}" />
+                  <Border
+                    Margin="0 8"
+                    BorderBrush="Silver"
+                    BorderThickness="0 1 0 0"
+                    />
+                  <WrapPanel>
+                    <Image
+                      Width="16"
+                      Height="16"
+                      Margin="0 0 5 0"
+                      RenderOptions.BitmapScalingMode="HighQuality"
+                      RenderOptions.EdgeMode="Aliased"
+                      Source="/WinMd5;component/Resources/Search.ico"
+                      />
+                    <TextBlock
+                      Text="{DynamicResource GeneralToolTipHint}"
+                      FontStyle="Italic"
+                      />
+                  </WrapPanel>
+                </StackPanel>
+              </Button.ToolTip>
+            </Button>
+
+            <Button
+              Width="24"
+              Height="24"
+              VerticalAlignment="Center"
+              Command="{Binding StopCommand}"
+              Style="{StaticResource StopButtonStyle}"
+              TabIndex="4"
+              >
+              <Button.ToolTip>
+                <StackPanel>
+                  <TextBlock
+                    Margin="0 0 0 5"
+                    Text="Tail"
+                    FontSize="12"
+                    FontWeight="Bold"
+                    />
+                  <TextBlock Text="{DynamicResource ButtonStopToolTip}" />
+                  <Border
+                    Margin="0 8"
+                    BorderBrush="Silver"
+                    BorderThickness="0 1 0 0"
+                    />
+                  <WrapPanel>
+                    <Image
+                      Width="16"
+                      Height="16"
+                      Margin="0 0 5 0"
+                      RenderOptions.BitmapScalingMode="HighQuality"
+                      RenderOptions.EdgeMode="Aliased"
+                      Source="/WinMd5;component/Resources/Search.ico"
+                      />
+                    <TextBlock
+                      Text="{DynamicResource GeneralToolTipHint}"
+                      FontStyle="Italic"
+                      />
+                  </WrapPanel>
+                </StackPanel>
+              </Button.ToolTip>
+            </Button>
+          </StackPanel>
+
+          <StackPanel
+            Grid.Column="5"
+            Margin="5 0 0 0"
+            Orientation="Horizontal"
+            >
+            <Line
+              Margin="0 3 6 3"
+              HorizontalAlignment="Center"
+              VerticalAlignment="Center"
+              SnapsToDevicePixels="True"
+              Stroke="Black"
+              StrokeThickness="0.1"
+              X1="0"
+              X2="0"
+              Y1="0"
+              Y2="20"
+              />
+
+            <Button
+              Width="24"
+              Height="24"
+              Margin="0 0 2 0"
+              VerticalAlignment="Center"
+              Command="{Binding HintCommand}"
+              TabIndex="5"
+              >
+              <StackPanel>
+                <Image
+                  Width="16"
+                  Height="16"
+                  RenderOptions.BitmapScalingMode="HighQuality"
+                  RenderOptions.EdgeMode="Aliased"
+                  Source="/WinMd5;component/Resources/info.png"
+                  >
+                  <Image.Style>
+                    <Style TargetType="{x:Type Image}">
+                      <Style.Triggers>
+                        <Trigger Property="IsEnabled" Value="False">
+                          <Setter Property="Opacity" Value="0.5" />
+                        </Trigger>
+                      </Style.Triggers>
+                    </Style>
+                  </Image.Style>
+                </Image>
+              </StackPanel>
+              <Button.ToolTip>
+                <StackPanel>
+                  <TextBlock
+                    Margin="0 0 0 5"
+                    Text="{DynamicResource ButtonFileManager}"
+                    FontSize="12"
+                    FontWeight="Bold"
+                    />
+                  <TextBlock Text="{DynamicResource ButtonFileManagerToolTip}" />
+                  <Border
+                    Margin="0 8"
+                    BorderBrush="Silver"
+                    BorderThickness="0 1 0 0"
+                    />
+                  <WrapPanel>
+                    <Image
+                      Width="16"
+                      Height="16"
+                      Margin="0 0 5 0"
+                      RenderOptions.BitmapScalingMode="HighQuality"
+                      RenderOptions.EdgeMode="Aliased"
+                      Source="/T4W;component/Resources/Search.ico"
+                      />
+                    <TextBlock
+                      Text="{DynamicResource GeneralToolTipHint}"
+                      FontStyle="Italic"
+                      />
+                  </WrapPanel>
+                </StackPanel>
+              </Button.ToolTip>
+            </Button>
+
+            <Button
+              Width="24"
+              Height="24"
+              VerticalAlignment="Center"
+              Command="{Binding AboutCommand}"
+              TabIndex="6"
+              >
+              <StackPanel>
+                <Image
+                  Width="16"
+                  Height="16"
+                  RenderOptions.BitmapScalingMode="HighQuality"
+                  RenderOptions.EdgeMode="Aliased"
+                  Source="/WinMd5;component/Resources/about.png"
+                  >
+                  <Image.Style>
+                    <Style TargetType="{x:Type Image}">
+                      <Style.Triggers>
+                        <Trigger Property="IsEnabled" Value="False">
+                          <Setter Property="Opacity" Value="0.5" />
+                        </Trigger>
+                      </Style.Triggers>
+                    </Style>
+                  </Image.Style>
+                </Image>
+              </StackPanel>
+              <Button.ToolTip>
+                <StackPanel>
+                  <TextBlock
+                    Margin="0 0 0 5"
+                    Text="{DynamicResource ButtonFileManager}"
+                    FontSize="12"
+                    FontWeight="Bold"
+                    />
+                  <TextBlock Text="{DynamicResource ButtonFileManagerToolTip}" />
+                  <Border
+                    Margin="0 8"
+                    BorderBrush="Silver"
+                    BorderThickness="0 1 0 0"
+                    />
+                  <WrapPanel>
+                    <Image
+                      Width="16"
+                      Height="16"
+                      Margin="0 0 5 0"
+                      RenderOptions.BitmapScalingMode="HighQuality"
+                      RenderOptions.EdgeMode="Aliased"
+                      Source="/T4W;component/Resources/Search.ico"
+                      />
+                    <TextBlock
+                      Text="{DynamicResource GeneralToolTipHint}"
+                      FontStyle="Italic"
+                      />
+                  </WrapPanel>
+                </StackPanel>
+              </Button.ToolTip>
+            </Button>
+          </StackPanel>
+        </Grid>
+      </Border>
+
+      <Border
+        Grid.Row="1"
+        BorderBrush="{StaticResource BrushSolidYellow}"
+        BorderThickness="0 2 0 0"
+        >
+        <Border
+          BorderBrush="{StaticResource BrushSolidBlue}"
+          BorderThickness="0 0 0 1"
+          >
+          <userControls1:VsDataGrid
+            x:Name="TailManagerDataGrid"
+            CanUserAddRows="False"
+            CanUserReorderColumns="True"
+            CanUserSortColumns="True"
+            FrozenColumnCount="2"
+            IsSynchronizedWithCurrentItem="True"
+            ItemsSource="{Binding FileManagerView}"
+            SelectionMode="Extended"
+            TabIndex="9"
+            >
+            <i:Interaction.Triggers>
+              <i:EventTrigger EventName="PreviewDragOver">
+                <commands:InvokeDelegateCommandAction
+                  Command="{Binding PreviewDragEnterCommand}"
+                  CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=InvokeParameter}"
+                  />
+              </i:EventTrigger>
+
+              <i:EventTrigger EventName="PreviewDragEnter">
+                <commands:InvokeDelegateCommandAction
+                  Command="{Binding PreviewDragEnterCommand}"
+                  CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=InvokeParameter}"
+                  />
+              </i:EventTrigger>
+            </i:Interaction.Triggers>
+
+            <i:Interaction.Behaviors>
+              <behaviors:ScrollDataGridRowIntoView />
+            </i:Interaction.Behaviors>
+
+            <userControls1:VsDataGrid.RowStyle>
+              <!--  Because this is to be attached via a style the datagridrow behavior must be an attached behavior  -->
+              <Style TargetType="{x:Type DataGridRow}">
+                <Setter Property="behaviors:DataGridRowBehavior.IsDataGridRowFocussedWhenSelected" Value="True" />
+              </Style>
+            </userControls1:VsDataGrid.RowStyle>
+
+            <userControls1:VsDataGrid.Columns>
+              <DataGridTextColumn
+                MinWidth="50"
+                MaxWidth="100"
+                Header="{DynamicResource DataGridNo}"
+                Binding="{Binding ., Converter={StaticResource RowCollectionConverter}, StringFormat=#;;#}"
+                CanUserSort="False"
+                IsReadOnly="True"
+                behaviors:DataGridColumnWidthBehavior.DataGridColumnWidth="{Binding RelativeSource={RelativeSource Self}, Path=Width}"
+                />
+
+              <DataGridTextColumn
+                MinWidth="130"
+                Header="{DynamicResource FileManagerDataGridDescription}"
+                Binding="{Binding Description, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"
+                />
+
+              <DataGridTemplateColumn
+                MinWidth="150"
+                Header="{DynamicResource FileManagerDataGridCategory}"
+                >
+                <DataGridTemplateColumn.CellTemplate>
+                  <DataTemplate>
+                    <ComboBox
+                      Text="{Binding Category, UpdateSourceTrigger=LostFocus}"
+                      IsEditable="True"
+                      ItemsSource="{Binding Path=DataContext.Categories, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}"
+                      />
+                  </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+              </DataGridTemplateColumn>
+
+              <DataGridTemplateColumn
+                MinWidth="50"
+                Header="{DynamicResource FileManagerDataGridIsRegex}"
+                IsReadOnly="True"
+                >
+                <DataGridTemplateColumn.CellTemplate>
+                  <DataTemplate>
+                    <Grid>
+                      <CheckBox
+                        Width="20"
+                        Height="20"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        IsChecked="{Binding FindSettings.UseRegex, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                        IsHitTestVisible="False"
+                        />
+                    </Grid>
+                  </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+              </DataGridTemplateColumn>
+            </userControls1:VsDataGrid.Columns>
+          </userControls1:VsDataGrid>
+        </Border>
+      </Border>
+
+      <userControls:MainWindowStatusBar Grid.Row="2" />
+
+      <!--  TaskbarIcon part  -->
+      <taskbarNotification:TaskbarIcon
+        x:Name="TbIcon"
+        IconSource="/WinMd5;component/Resources/Key.ico"
+        >
+        <taskbarNotification:TaskbarIcon.TrayToolTip>
+          <userControls1:FancyToolTip
+            ApplicationText="{Binding Source={x:Static utils:EnvironmentContainer.ApplicationTitle}}"
+            InfoText="{Binding Source={x:Static viewModels:BaseWindowStatusbarViewModel.Instance}, Path=CurrentBusyState, UpdateSourceTrigger=PropertyChanged}"
+            Opacity="0.85"
+            />
+        </taskbarNotification:TaskbarIcon.TrayToolTip>
+      </taskbarNotification:TaskbarIcon>
+    </Grid>
+  </Border>
 </Window>
