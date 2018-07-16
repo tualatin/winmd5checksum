@@ -1,0 +1,33 @@
+﻿<Application
+  x:Class="Org.Vs.WinMd5.App"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  Startup="ApplicationStartup"
+  >
+  <Application.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="UI/Styles/Base/Converters.xaml" />
+        <ResourceDictionary Source="UI/Styles/Base/Shared.xaml" />
+        <ResourceDictionary Source="UI/Styles/Base/KeyBindings.xaml" />
+
+        <ResourceDictionary Source="Languages/en-EN.xaml" />
+        <ResourceDictionary Source="BaseView/Styles/TitleBarWindowIconStyle.xaml" />
+        <ResourceDictionary Source="BaseView/Styles/TitleBarButtonsStyle.xaml" />
+        <ResourceDictionary Source="BaseView/Styles/BlueWindowStyle.xaml" />
+
+        <ResourceDictionary Source="UI/Styles/RepeatButtonStyle.xaml" />
+        <ResourceDictionary Source="UI/Styles/AndroidCheckBox.xaml" />
+        <ResourceDictionary Source="UI/Styles/TextBox.xaml" />
+        <ResourceDictionary Source="UI/Styles/Label.xaml" />
+        <ResourceDictionary Source="UI/Styles/Button.xaml" />
+        <ResourceDictionary Source="UI/Styles/ScrollbarResources.xaml" />
+        <ResourceDictionary Source="UI/Styles/MenuStyle.xaml" />
+        <ResourceDictionary Source="UI/Styles/EllipsisMenuButtonStyle.xaml" />
+        <ResourceDictionary Source="UI/Styles/EllipsisHorizontalButtonStyle.xaml" />
+
+        <ResourceDictionary Source="UI/UserControls/Styles/VsDataGridStyle.xaml" />
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+  </Application.Resources>
+</Application>
