@@ -563,7 +563,7 @@
           BorderThickness="0 0 0 1"
           >
           <userControls1:VsDataGrid
-            x:Name="TailManagerDataGrid"
+            x:Name="Md5ChecksumDataGrid"
             CanUserAddRows="False"
             CanUserReorderColumns="True"
             CanUserSortColumns="True"
@@ -612,7 +612,6 @@
 
               <DataGridTemplateColumn
                 MinWidth="190"
-                MaxWidth="250"
                 Header="{DynamicResource DataGridFile}"
                 behaviors:DataGridColumnWidthBehavior.DataGridColumnWidth="{Binding RelativeSource={RelativeSource Self}, Path=Width}"
                 >

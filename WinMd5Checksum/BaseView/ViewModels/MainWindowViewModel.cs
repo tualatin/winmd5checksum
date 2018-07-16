@@ -147,7 +147,8 @@ namespace Org.Vs.WinMd5.BaseView.ViewModels
     /// <summary>
     /// Save command
     /// </summary>
-    public ICommand SaveCommand => _saveCommand ?? (_saveCommand = new RelayCommand(p => _currentStatusbarState != EStatusbarState.Busy, p => ExecuteSaveCommand()));
+    public ICommand SaveCommand => _saveCommand ?? (_saveCommand = new RelayCommand(p => _currentStatusbarState != EStatusbarState.Busy && MdChecksumCollection != null && MdChecksumCollection.Count > 0,
+                                     p => ExecuteSaveCommand()));
 
     #endregion
 

@@ -3,7 +3,7 @@
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
   xmlns:system="clr-namespace:System;assembly=mscorlib"
   >
-  <system:String x:Key="ApplicationTitle">Windows MD5 Checksum</system:String>
+  <system:String x:Key="ApplicationTitle">MD5 Checksum for Windows</system:String>
   <system:String x:Key="AlwaysOnTopToolTip">Always on top</system:String>
   <system:String x:Key="CloseWindowToolTip">Close</system:String>
   <system:String x:Key="MinimizeWindowToolTip">Minimize</system:String>
