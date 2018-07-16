@@ -20,6 +20,7 @@
   Height="450"
   MinWidth="800"
   MinHeight="450"
+  AllowDrop="True"
   AllowsTransparency="True"
   Icon="/WinMd5;component/Resources/Key.ico"
   ResizeMode="CanResizeWithGrip"
@@ -175,7 +176,7 @@
             Width="24"
             Height="24"
             Margin="0 0 2 0"
-            Command="{Binding OpenCommand}"
+            Command="{Binding OpenFileCommand}"
             TabIndex="0"
             >
             <StackPanel Margin="3">
@@ -335,7 +336,7 @@
               Margin="5 0"
               VerticalAlignment="Center"
               Content="{DynamicResource ButtonStart}"
-              Command="{Binding StartCommand}"
+              Command="{Binding StartCalculationCommand}"
               Style="{StaticResource StartButtonStyle}"
               TabIndex="3"
               >
@@ -568,9 +569,8 @@
             CanUserSortColumns="True"
             FrozenColumnCount="2"
             IsSynchronizedWithCurrentItem="True"
-            ItemsSource="{Binding FileManagerView}"
+            ItemsSource="{Binding CollectionView}"
             SelectionMode="Extended"
-            TabIndex="9"
             >
             <i:Interaction.Triggers>
               <i:EventTrigger EventName="PreviewDragOver">

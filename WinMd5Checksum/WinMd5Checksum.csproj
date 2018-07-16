@@ -125,8 +125,10 @@
     <Compile Include="Controllers\Interfaces\IFileDragDropTarget.cs" />
     <Compile Include="Controllers\Interfaces\IViewModelBase.cs" />
     <Compile Include="Core\Enums\EStatusbarState.cs" />
+    <Compile Include="Core\Utils\MouseService.cs" />
     <Compile Include="Data\HashsumCollectionViewHolder.cs" />
     <Compile Include="Data\Messages\ShowNotificationPopUpMessage.cs" />
+    <Compile Include="Data\WinMdChecksumData.cs" />
     <Compile Include="UI\Behaviors\DataGridColumnWidthBehavior.cs" />
     <Compile Include="UI\Behaviors\DataGridRowBehavior.cs" />
     <Compile Include="UI\Behaviors\DropDownButtonBehavior.cs" />

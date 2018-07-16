@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
 using System.IO;
@@ -6,15 +7,19 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Markup;
 using log4net;
+using Microsoft.Win32;
 using Org.Vs.WinMd5.BaseView.Interfaces;
 using Org.Vs.WinMd5.Controllers.Commands;
 using Org.Vs.WinMd5.Controllers.Commands.Interfaces;
+using Org.Vs.WinMd5.Controllers.Interfaces;
 using Org.Vs.WinMd5.Core.Data.Base;
 using Org.Vs.WinMd5.Core.Enums;
 using Org.Vs.WinMd5.Core.Utils;
+using Org.Vs.WinMd5.Data;
 using Org.Vs.WinMd5.UI.UserControls;
 
 
@@ -23,13 +28,34 @@ namespace Org.Vs.WinMd5.BaseView.ViewModels
   /// <summary>
   /// MainWindow view model
   /// </summary>
-  public class MainWindowViewModel : NotifyMaster, IMainWindowViewModel
+  public class MainWindowViewModel : NotifyMaster, IMainWindowViewModel, IFileDragDropTarget
   {
     private static readonly ILog LOG = LogManager.GetLogger(typeof(MainWindowViewModel));
 
     private EStatusbarState _currentStatusbarState;
     private readonly IBaseWindowStatusbarViewModel _baseWindowStatusbarViewModel;
+    private string _fileName;
 
+    #region Properties
+
+    /// <summary>
+    /// <see cref="ObservableCollection{T}"/> of <see cref="WinMdChecksumData"/>
+    /// </summary>
+    public ObservableCollection<WinMdChecksumData> MdChecksumCollection
+    {
+      get;
+    }
+
+    /// <summary>
+    /// <see cref="ListCollectionView"/> of <see cref="WinMdChecksumData"/>
+    /// </summary>
+    public ListCollectionView CollectionView
+    {
+      get;
+      set;
+    }
+
+    #endregion
 
     /// <summary>
     /// Standard constructor
@@ -42,6 +68,12 @@ namespace Org.Vs.WinMd5.BaseView.ViewModels
 
       _currentStatusbarState = EStatusbarState.Default;
       _baseWindowStatusbarViewModel = BaseWindowStatusbarViewModel.Instance;
+
+      MdChecksumCollection = new ObservableCollection<WinMdChecksumData>();
+      CollectionView = (ListCollectionView) new CollectionViewSource { Source = MdChecksumCollection }.View;
+
+      ((AsyncCommand<object>) StartCalculationCommand).PropertyChanged += OnStartCalculationPropertyChanged;
+      ;
     }
 
     #region Commands
@@ -74,9 +106,113 @@ namespace Org.Vs.WinMd5.BaseView.ViewModels
     /// </summary>
     public ICommand HintCommand => _hintCommand ?? (_hintCommand = new RelayCommand(p => ExecuteOpenHintWindow((Window) p)));
 
+    private ICommand _openFileCommand;
+
+    /// <summary>
+    /// Open file command
+    /// </summary>
+    public ICommand OpenFileCommand => _openFileCommand ?? (_openFileCommand = new RelayCommand(p => _currentStatusbarState != EStatusbarState.Busy, p => ExecuteOpenFileCommand()));
+
+    private ICommand _previewDragEnterCommand;
+
+    /// <summary>
+    /// Preview drag enter command
+    /// </summary>
+    public ICommand PreviewDragEnterCommand => _previewDragEnterCommand ?? (_previewDragEnterCommand = new RelayCommand(ExecutePreviewDragEnterCommand));
+
+    private ICommand _clearAllCommand;
+
+    /// <summary>
+    /// Clear all command
+    /// </summary>
+    public ICommand ClearAllCommand => _clearAllCommand ?? (_clearAllCommand = new RelayCommand(p => CanExecuteClearAllCommand(), p => ExecuteClearAllCommand()));
+
+    private IAsyncCommand _startCalculationCommand;
+
+    /// <summary>
+    /// Start calculation command
+    /// </summary>
+    public IAsyncCommand StartCalculationCommand => _startCalculationCommand ?? (_startCalculationCommand = AsyncCommand.Create(p => CanExecuteStartCalculation(),
+                                                      ExecuteStartCalculationCommandAsync));
+
+    private ICommand _stopCommand;
+
+    /// <summary>
+    /// Stop command
+    /// </summary>
+    public ICommand StopCommand => _stopCommand ?? (_stopCommand = new RelayCommand(p => _currentStatusbarState == EStatusbarState.Busy, p => ExecuteStopCommand()));
+
+    private ICommand _saveCommand;
+
+    /// <summary>
+    /// Save command
+    /// </summary>
+    public ICommand SaveCommand => _saveCommand ?? (_saveCommand = new RelayCommand(p => _currentStatusbarState != EStatusbarState.Busy, p => ExecuteSaveCommand()));
+
     #endregion
 
     #region Command functions
+
+    private void ExecuteSaveCommand()
+    {
+
+    }
+
+    private void ExecuteStopCommand()
+    {
+      MouseService.SetBusyState();
+
+      _currentStatusbarState = EStatusbarState.Default;
+      SetCurrentBusinessData();
+    }
+
+    private bool CanExecuteStartCalculation() => MdChecksumCollection != null && MdChecksumCollection.Count > 0 && _currentStatusbarState != EStatusbarState.Busy;
+
+    private async Task ExecuteStartCalculationCommandAsync()
+    {
+      MouseService.SetBusyState();
+
+      _currentStatusbarState = EStatusbarState.Busy;
+      SetCurrentBusinessData();
+    }
+
+    private bool CanExecuteClearAllCommand() => MdChecksumCollection != null && MdChecksumCollection.Count > 0 && _currentStatusbarState != EStatusbarState.Busy;
+
+    private void ExecuteClearAllCommand()
+    {
+      MouseService.SetBusyState();
+      MdChecksumCollection.Clear();
+
+      OnPropertyChanged(nameof(MdChecksumCollection));
+      OnPropertyChanged(nameof(CollectionView));
+    }
+
+    private void ExecutePreviewDragEnterCommand(object parameter)
+    {
+      if ( !(parameter is DragEventArgs e) )
+        return;
+
+      e.Handled = true;
+      e.Effects = e.Data.GetDataPresent(DataFormats.FileDrop) ? DragDropEffects.Move : DragDropEffects.None;
+    }
+
+    private void ExecuteOpenFileCommand()
+    {
+      var openDialog = new OpenFileDialog
+      {
+        Filter = "All files(*.*)|*.*",
+        RestoreDirectory = true,
+        Title = EnvironmentContainer.ApplicationTitle
+      };
+
+      var result = openDialog.ShowDialog();
+      _fileName = string.Empty;
+
+      if ( result != true )
+        return;
+
+      _fileName = openDialog.FileName;
+    }
 
     private void ExecuteOpenHintWindow(Window window)
     {
@@ -122,6 +258,18 @@ namespace Org.Vs.WinMd5.BaseView.ViewModels
     }
 
     #endregion
+
+    private void OnStartCalculationPropertyChanged(object sender, PropertyChangedEventArgs e)
+    {
+      if ( !e.PropertyName.Equals("IsSuccessfullyCompleted") )
+        return;
+
+      _currentStatusbarState = EStatusbarState.Default;
+      SetCurrentBusinessData();
+
+      OnPropertyChanged(nameof(MdChecksumCollection));
+      OnPropertyChanged(nameof(CollectionView));
+    }
 
     private async Task DeleteLogFilesAsync()
     {
@@ -176,6 +324,23 @@ namespace Org.Vs.WinMd5.BaseView.ViewModels
 
         throw new NotImplementedException();
       }
+    }
+
+    public void OnFileDrop(string[] filePaths)
+    {
+      if ( filePaths == null || filePaths.Length == 0 )
+        return;
+
+      foreach ( string file in filePaths )
+      {
+        MdChecksumCollection.Add(new WinMdChecksumData
+        {
+          FileName = file
+        });
+      }
+
+      OnPropertyChanged(nameof(MdChecksumCollection));
+      OnPropertyChanged(nameof(CollectionView));
     }
   }
 }
