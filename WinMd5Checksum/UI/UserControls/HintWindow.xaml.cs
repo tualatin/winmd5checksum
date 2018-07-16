@@ -4,14 +4,14 @@
 namespace Org.Vs.WinMd5.UI.UserControls
 {
   /// <summary>
-  /// Interaction logic for AboutWindow.xaml
+  /// Interaction logic for HintWindow.xaml
   /// </summary>
-  public partial class AboutWindow
+  public partial class HintWindow
   {
     /// <summary>
-    /// Standard constructor
+    /// Standarc constructor
     /// </summary>
-    public AboutWindow()
+    public HintWindow()
     {
       InitializeComponent();
       PreviewKeyDown += HandleEsc;

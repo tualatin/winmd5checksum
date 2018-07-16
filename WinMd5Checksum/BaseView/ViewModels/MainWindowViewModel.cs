@@ -67,9 +67,28 @@ namespace Org.Vs.WinMd5.BaseView.ViewModels
     /// </summary>
     public ICommand AboutCommand => _aboutCommand ?? (_aboutCommand = new RelayCommand(p => ExecuteOpenAboutWindow((Window) p)));
 
+    private ICommand _hintCommand;
+
+    /// <summary>
+    /// Hint command
+    /// </summary>
+    public ICommand HintCommand => _hintCommand ?? (_hintCommand = new RelayCommand(p => ExecuteOpenHintWindow((Window) p)));
+
     #endregion
 
     #region Command functions
+
+    private void ExecuteOpenHintWindow(Window window)
+    {
+      if ( window == null )
+        return;
+
+      var hint = new HintWindow
+      {
+        Owner = window
+      };
+      hint.ShowDialog();
+    }
 
     private void ExecuteOpenAboutWindow(Window window)
     {

@@ -29,5 +29,13 @@ namespace Org.Vs.WinMd5.BaseView.Interfaces
     {
       get;
     }
+
+    /// <summary>
+    /// Hint command
+    /// </summary>
+    ICommand HintCommand
+    {
+      get;
+    }
   }
 }

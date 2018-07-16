@@ -184,6 +184,9 @@
     <Compile Include="UI\UserControls\FancyToolTip.xaml.cs">
       <DependentUpon>FancyToolTip.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UI\UserControls\HintWindow.xaml.cs">
+      <DependentUpon>HintWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\UserControls\Interfaces\IAboutViewModel.cs" />
     <Compile Include="UI\UserControls\ViewModels\AboutViewModel.cs" />
     <Compile Include="UI\UserControls\VsDataGrid.cs" />
@@ -289,6 +292,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="UI\UserControls\HintWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UI\UserControls\Styles\VsDataGridStyle.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -357,6 +364,7 @@
     <Content Include="Config\log4net.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Resources\information.png" />
     <Resource Include="Resources\Info.png" />
     <Resource Include="Resources\save.ico" />
     <Resource Include="Resources\Search.ico" />

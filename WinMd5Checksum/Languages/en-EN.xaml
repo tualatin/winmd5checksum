@@ -30,4 +30,6 @@
   <system:String x:Key="AboutUptimeDays">day(s)</system:String>
   <system:String x:Key="AboutDonate">Donate</system:String>
   <system:String x:Key="AboutDonateToolTip">You like my work, you can donate</system:String>
+
+  <system:String x:Key="HintWindowTitle">Help</system:String>
 </ResourceDictionary>
