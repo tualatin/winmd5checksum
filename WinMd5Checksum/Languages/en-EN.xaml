@@ -9,4 +9,7 @@
   <system:String x:Key="MinimizeWindowToolTip">Minimize</system:String>
   <system:String x:Key="MaximizeWindowToolTip">Maximize</system:String>
   <system:String x:Key="RestoreWindowToolTip">Restore Down</system:String>
+
+  <system:String x:Key="TrayIconReady">Ready...</system:String>
+  <system:String x:Key="Record">Calculate...</system:String>
 </ResourceDictionary>

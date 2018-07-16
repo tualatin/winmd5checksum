@@ -29,7 +29,7 @@
               <ColumnDefinition />
               <ColumnDefinition Width="40" />
               <ColumnDefinition Width="25" />
-              <ColumnDefinition Width="78" />
+              <ColumnDefinition Width="52" />
             </Grid.ColumnDefinitions>
 
             <Label
@@ -187,16 +187,6 @@
       <Trigger Property="Window.IsActive" Value="False">
         <Setter TargetName="WndIcon" Property="Source" Value="/WinMd5;component/Resources/Key.ico" />
         <Setter TargetName="WndTitle" Property="Foreground" Value="Gray" />
-      </Trigger>
-
-      <Trigger Property="WindowState" Value="Maximized">
-        <Setter TargetName="MainWindowToolbarButtons" Property="MaximizeButtonVisibility" Value="Collapsed" />
-        <Setter TargetName="MainWindowToolbarButtons" Property="RestoreButtonVisibility" Value="Visible" />
-      </Trigger>
-
-      <Trigger Property="WindowState" Value="Normal">
-        <Setter TargetName="MainWindowToolbarButtons" Property="MaximizeButtonVisibility" Value="Visible" />
-        <Setter TargetName="MainWindowToolbarButtons" Property="RestoreButtonVisibility" Value="Collapsed" />
       </Trigger>
 
       <MultiTrigger>

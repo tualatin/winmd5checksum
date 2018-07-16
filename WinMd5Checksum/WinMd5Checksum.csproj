@@ -105,15 +105,42 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BaseView\Interfaces\IBaseWindowStatusbarViewModel.cs" />
+    <Compile Include="BaseView\Interfaces\IMainWindowViewModel.cs" />
+    <Compile Include="BaseView\UserControls\MainWindowStatusBar.xaml.cs">
+      <DependentUpon>MainWindowStatusBar.xaml</DependentUpon>
+    </Compile>
     <Compile Include="BaseView\UserControls\MainWindowToolbarButtons.xaml.cs">
       <DependentUpon>MainWindowToolbarButtons.xaml</DependentUpon>
     </Compile>
+    <Compile Include="BaseView\UserControls\ViewModels\MainWindowStatusBarViewModel.cs" />
+    <Compile Include="BaseView\ViewModels\BaseWindowStatusbarViewModel.cs" />
+    <Compile Include="BaseView\ViewModels\MainWindowViewModel.cs" />
+    <Compile Include="Controllers\Commands\AsyncCommand.cs" />
+    <Compile Include="Controllers\Commands\Base\AsyncCommandBase.cs" />
+    <Compile Include="Controllers\Commands\Interfaces\IAsyncCommand.cs" />
+    <Compile Include="Controllers\Commands\InvokeDelegateCommandAction.cs" />
+    <Compile Include="Controllers\Commands\MouseCommand.cs" />
+    <Compile Include="Controllers\Commands\RelayCommand.cs" />
+    <Compile Include="Controllers\Interfaces\IFileDragDropTarget.cs" />
+    <Compile Include="Controllers\Interfaces\IViewModelBase.cs" />
+    <Compile Include="Core\Enums\EStatusbarState.cs" />
     <Compile Include="Data\Messages\ShowNotificationPopUpMessage.cs" />
     <Compile Include="UI\Behaviors\DataGridColumnWidthBehavior.cs" />
     <Compile Include="UI\Behaviors\DataGridRowBehavior.cs" />
     <Compile Include="UI\Behaviors\DropDownButtonBehavior.cs" />
     <Compile Include="UI\Behaviors\FocusBehavior.cs" />
     <Compile Include="UI\Behaviors\ScrollDataGridRowIntoView.cs" />
+    <Compile Include="UI\Converters\BackgroundToForegroundColorConverter.cs" />
+    <Compile Include="UI\Converters\BackgroundToForegroundConverter.cs" />
+    <Compile Include="UI\Converters\BoolToVisibilityConverter.cs" />
+    <Compile Include="UI\Converters\InverseBooleanConverter.cs" />
+    <Compile Include="UI\Converters\InverseBooleanToVisibilityConverter.cs" />
+    <Compile Include="UI\Converters\MediaBrushToMediaColorConverter.cs" />
+    <Compile Include="UI\Converters\NullToBoolConverter.cs" />
+    <Compile Include="UI\Converters\NullToVisibilityConverter.cs" />
+    <Compile Include="UI\Converters\StringToWindowMediaBrushConverter.cs" />
+    <Compile Include="UI\Converters\StringToWindowsMediaColorConverter.cs" />
     <Compile Include="UI\Extensions\VisualTreeEnumerationExtension.cs" />
     <Compile Include="UI\Extensions\WindowExtension.cs" />
     <Compile Include="UI\NotifyIcon\BalloonIcon.cs" />
@@ -174,6 +201,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="BaseView\Styles\TitleBarWindowIconStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="BaseView\UserControls\MainWindowStatusBar.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -307,7 +338,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Controllers\" />
     <Folder Include="Interfaces\" />
   </ItemGroup>
   <ItemGroup>

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Media;
 using Microsoft.Win32;
 using Org.Vs.WinMd5.Core.Data.Base;
 using Org.Vs.WinMd5.Core.Interfaces;
@@ -34,6 +35,20 @@ namespace Org.Vs.WinMd5.Core.Utils
     {
       CurrentEventManager = new EventAggregator();
     }
+
+    #region StatusBar default settings
+
+    /// <summary>
+    /// Default value StatusBarInactiveBackgroundColor
+    /// </summary>
+    public const string StatusBarInactiveBackgroundColor = "#FF68217A";
+
+    /// <summary>
+    /// Default value StatusBarBusyBackgroundColor
+    /// </summary>
+    public const string StatusBarBusyBackgroundColor = "#FFCA5100";
+
+    #endregion
 
     /// <summary>
     /// Application title
@@ -69,6 +84,17 @@ namespace Org.Vs.WinMd5.Core.Utils
     }
 
     /// <summary>
+    /// Converts a <see cref="System.Windows.Media.Brush"/> to <see cref="System.Drawing.Color"/>
+    /// </summary>
+    /// <param name="brush">Brush to convert</param>
+    /// <returns>Color of type <see cref="System.Drawing.Color"/></returns>
+    public static System.Drawing.Color ConvertMediaBrushToDrawingColor(System.Windows.Media.Brush brush)
+    {
+      var mediaColor = ((SolidColorBrush) brush).Color;
+      return System.Drawing.Color.FromArgb(mediaColor.A, mediaColor.R, mediaColor.G, mediaColor.B);
+    }
+
+    /// <summary>
     /// Create popup window
     /// </summary>
     /// <param name="alert">Alert title</param>
@@ -80,7 +106,7 @@ namespace Org.Vs.WinMd5.Core.Utils
         PopUpAlert = alert,
         PopUpAlertDetail = detail
       };
-      EnvironmentContainer.Instance.CurrentEventManager.SendMessage(new ShowNotificationPopUpMessage(alertPopUp));
+      Instance.CurrentEventManager.SendMessage(new ShowNotificationPopUpMessage(alertPopUp));
     }
 
     /// <summary>
