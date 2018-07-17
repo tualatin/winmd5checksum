@@ -721,6 +721,46 @@
                 Binding="{Binding Sha1Result, UpdateSourceTrigger=PropertyChanged}"
                 IsReadOnly="True"
                 />
+
+              <DataGridTemplateColumn
+                MinWidth="70"
+                Header="{DynamicResource DataGridSh256IsEnabled}"
+                behaviors:DataGridColumnWidthBehavior.DataGridColumnWidth="{Binding RelativeSource={RelativeSource Self}, Path=Width}"
+                >
+                <DataGridTemplateColumn.CellTemplate>
+                  <DataTemplate>
+                    <Grid>
+                      <CheckBox
+                        Width="20"
+                        Height="20"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        IsChecked="{Binding Sha256IsEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        />
+                    </Grid>
+                  </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+              </DataGridTemplateColumn>
+
+              <DataGridTextColumn
+                MinWidth="200"
+                Header="{DynamicResource DataGridSha256}"
+                Binding="{Binding Sha256Hash, UpdateSourceTrigger=PropertyChanged}"
+                IsReadOnly="True"
+                />
+
+              <DataGridTextColumn
+                MinWidth="200"
+                Header="{DynamicResource DataGridSha256HashCompare}"
+                Binding="{Binding Sha256ToCompare, UpdateSourceTrigger=PropertyChanged}"
+                />
+
+              <DataGridTextColumn
+                MinWidth="200"
+                Header="{DynamicResource DataGridResult}"
+                Binding="{Binding Sha256Result, UpdateSourceTrigger=PropertyChanged}"
+                IsReadOnly="True"
+                />
             </userControls1:VsDataGrid.Columns>
           </userControls1:VsDataGrid>
         </Border>

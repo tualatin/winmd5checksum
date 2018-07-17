@@ -17,6 +17,6 @@ namespace Org.Vs.WinMd5.Interfaces
     /// <param name="collection"><see cref="ObservableCollection{T}"/> of <see cref="WinMdChecksumData"/></param>
     /// <param name="token"><see cref="CancellationToken"/></param>
     /// <returns>Task</returns>
-    Task StartCalculationAsync(ObservableCollection<WinMdChecksumData> collection, CancellationToken token);
+    Task<ObservableCollection<WinMdChecksumData>> StartCalculationAsync(ObservableCollection<WinMdChecksumData> collection, CancellationToken token);
   }
 }

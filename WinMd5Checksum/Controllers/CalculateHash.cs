@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Security.Cryptography;
@@ -19,95 +18,123 @@ namespace Org.Vs.WinMd5.Controllers
   {
     private static readonly ILog LOG = LogManager.GetLogger(typeof(CalculateHash));
 
-    private ObservableCollection<WinMdChecksumData> _collection;
-
     /// <summary>
     /// Start hash calculation of data collection
     /// </summary>
     /// <param name="collection"><see cref="ObservableCollection{T}"/> of <see cref="WinMdChecksumData"/></param>
     /// <param name="token"><see cref="CancellationToken"/></param>
     /// <returns>Task</returns>
-    public async Task StartCalculationAsync(ObservableCollection<WinMdChecksumData> collection, CancellationToken token)
+    public async Task<ObservableCollection<WinMdChecksumData>> StartCalculationAsync(ObservableCollection<WinMdChecksumData> collection, CancellationToken token)
     {
-      _collection = collection;
+      LOG.Trace("Start calculation");
 
-      var tasks = new List<Task>(4)
+      foreach ( WinMdChecksumData hash in collection )
       {
-        new Task(async () => await CalculateMd5HashAsync(), token),
-        new Task(async () => await CalculateSha1HashAsync(), token),
-        new Task(async () => await CaclulateSha256HashAsnyc(), token),
-        new Task(async () => await CalcaulteSha512HashAsync(), token)
-      };
+        if ( !File.Exists(hash.FileName) )
+          continue;
 
-      Parallel.ForEach(tasks, task =>
-      {
-        task.Start();
-      });
+        using ( var fs = new FileStream(hash.FileName, FileMode.Open) )
+        {
+          await CalculateMd5HashAsync(hash, fs, token).ConfigureAwait(false);
+          await CalculateSha1HashAsync(hash, fs, token).ConfigureAwait(false);
+          await CalculateSha256HashAsnyc(hash, fs, token).ConfigureAwait(false);
+          await CalcaulteSha512HashAsync(hash, fs, token).ConfigureAwait(false);
 
-      await Task.WhenAll(tasks).ConfigureAwait(false);
+          fs.Close();
+        }
+      }
+      return collection;
     }
 
     /// <summary>
     /// MD5
     /// </summary>
+    /// <param name="data"><see cref="WinMdChecksumData"/></param>
+    /// <param name="input"><see cref="Stream"/></param>
+    /// <param name="token"><see cref="CancellationToken"/></param>
     /// <returns>Task</returns>
-    private async Task CalculateMd5HashAsync()
+    private async Task CalculateMd5HashAsync(WinMdChecksumData data, Stream input, CancellationToken token)
     {
-      Parallel.ForEach(_collection, data =>
+      await Task.Run(() =>
       {
+        if ( !data.Md5IsEnabled || input == null )
+        {
+          data.Md5Hash = string.Empty;
+          return;
+        }
 
-      });
+        data.Md5Hash = HashOf<MD5CryptoServiceProvider>(input);
+      }, token).ConfigureAwait(false);
     }
 
     /// <summary>
     /// SHA1
     /// </summary>
+    /// <param name="data"><see cref="WinMdChecksumData"/></param>
+    /// <param name="input"><see cref="Stream"/></param>
+    /// <param name="token"><see cref="CancellationToken"/></param>
     /// <returns>Task</returns>
-    private async Task CalculateSha1HashAsync()
+    private async Task CalculateSha1HashAsync(WinMdChecksumData data, Stream input, CancellationToken token)
     {
-      Parallel.ForEach(_collection, data =>
+      await Task.Run(() =>
       {
+        if ( !data.Sha1IsEnabled || input == null )
+        {
+          data.Sha1Hash = string.Empty;
+          return;
+        }
 
-      });
+        data.Sha1Hash = HashOf<SHA1CryptoServiceProvider>(input);
+      }, token).ConfigureAwait(false);
     }
 
     /// <summary>
     /// SHA256
     /// </summary>
+    /// <param name="data"><see cref="WinMdChecksumData"/></param>
+    /// <param name="input"><see cref="Stream"/></param>
+    /// <param name="token"><see cref="CancellationToken"/></param>
     /// <returns>Task</returns>
-    private async Task CaclulateSha256HashAsnyc()
+    private async Task CalculateSha256HashAsnyc(WinMdChecksumData data, Stream input, CancellationToken token)
     {
-      Parallel.ForEach(_collection, data =>
+      await Task.Run(() =>
       {
+        if ( !data.Sha256IsEnabled || input == null )
+        {
+          data.Sha256Hash = string.Empty;
+          return;
+        }
 
-      });
+        data.Sha256Hash = HashOf<SHA256CryptoServiceProvider>(input);
+      }, token).ConfigureAwait(false);
     }
 
     /// <summary>
     /// SHA512
     /// </summary>
+    /// <param name="data"><see cref="WinMdChecksumData"/></param>
+    /// <param name="input"><see cref="Stream"/></param>
+    /// <param name="token"><see cref="CancellationToken"/></param>
     /// <returns>Task</returns>
-    private async Task CalcaulteSha512HashAsync()
+    private async Task CalcaulteSha512HashAsync(WinMdChecksumData data, Stream input, CancellationToken token)
     {
-      Parallel.ForEach(_collection, data =>
+      await Task.Run(() =>
       {
+        if ( !data.Sha512IsEnabled || input == null )
+        {
+          data.Sha512Hash = string.Empty;
+          return;
+        }
 
-      });
+        data.Sha512Hash = HashOf<SHA512CryptoServiceProvider>(input);
+      }, token).ConfigureAwait(false);
     }
-
-    private string GetMd5HashOf(Stream input) => HashOf<MD5CryptoServiceProvider>(input);
-
-    private string GetSha1HashOf(Stream input) => HashOf<SHA1CryptoServiceProvider>(input);
-
-    private string GetSha256HashOf(Stream input) => HashOf<SHA256CryptoServiceProvider>(input);
-
-    private string GetSha512HashOf(Stream input) => HashOf<SHA512CryptoServiceProvider>(input);
 
     private string HashOf<T>(Stream input) where T : HashAlgorithm, new()
     {
       const int bufferSize = 1024 * 1024 * 20;
-      string hashString;
       System.Diagnostics.Process process = System.Diagnostics.Process.GetCurrentProcess();
+      input.Position = 0;
 
       using ( var provider = new T() )
       {
@@ -126,10 +153,11 @@ namespace Org.Vs.WinMd5.Controllers
           LOG.Debug(@"HashOf<{3}> {0}MB/{1}MB. Memory Used: {2}MB", bytesTransfered / 1000000, input.Length / 1000000, process.PrivateMemorySize64 / 1000000, provider.ToString());
         }
 
-        hashString = BitConverter.ToString(provider.Hash).Replace("-", string.Empty).ToLower();
+        string hashString = BitConverter.ToString(provider.Hash).Replace("-", string.Empty).ToLower();
         provider.Clear();
+
+        return hashString;
       }
-      return hashString;
     }
   }
 }

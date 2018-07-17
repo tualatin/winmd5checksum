@@ -200,7 +200,9 @@ namespace Org.Vs.WinMd5.BaseView.ViewModels
     {
       MouseService.SetBusyState();
       MdChecksumCollection.Clear();
+      _myStopwatch.Reset();
 
+      SetCurrentBusinessData();
       OnPropertyChanged(nameof(MdChecksumCollection));
       OnPropertyChanged(nameof(CollectionView));
     }

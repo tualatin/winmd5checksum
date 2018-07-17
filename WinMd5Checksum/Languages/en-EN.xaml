@@ -30,6 +30,9 @@
   <system:String x:Key="DataGridSh1IsEnabled">SHA1 Active</system:String>
   <system:String x:Key="DataGridSha1">SHA1 Hash</system:String>
   <system:String x:Key="DataGridSha1HashCompare">SHA1 to compare</system:String>
+  <system:String x:Key="DataGridSh256IsEnabled">SHA256 Active</system:String>
+  <system:String x:Key="DataGridSha256">SHA256 Hash</system:String>
+  <system:String x:Key="DataGridSha256HashCompare">SHA256 to compare</system:String>
 
   <system:String x:Key="AboutWindowTitle">About</system:String>
   <system:String x:Key="AboutVersionString">Version:</system:String>

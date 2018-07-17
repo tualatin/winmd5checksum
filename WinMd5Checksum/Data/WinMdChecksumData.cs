@@ -15,7 +15,7 @@ namespace Org.Vs.WinMd5.Data
     public WinMdChecksumData()
     {
       Md5IsEnabled = true;
-      Sha1IsEnabled = true;
+      Sha256IsEnabled = true;
     }
 
     private string _fileName;
