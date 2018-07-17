@@ -33,6 +33,12 @@
   <system:String x:Key="DataGridSh256IsEnabled">SHA256 Active</system:String>
   <system:String x:Key="DataGridSha256">SHA256 Hash</system:String>
   <system:String x:Key="DataGridSha256HashCompare">SHA256 to compare</system:String>
+  <system:String x:Key="DataGridSh512IsEnabled">SHA512 Active</system:String>
+  <system:String x:Key="DataGridSha512">SHA512 Hash</system:String>
+  <system:String x:Key="DataGridSha512HashCompare">SHA512 to compare</system:String>
+
+  <system:String x:Key="ContextMenuShowMd5CompareColumn">MD5 compare</system:String>
+  <system:String x:Key="ContextMenuShowMd5ResultColumn">MD5 result</system:String>
 
   <system:String x:Key="AboutWindowTitle">About</system:String>
   <system:String x:Key="AboutVersionString">Version:</system:String>

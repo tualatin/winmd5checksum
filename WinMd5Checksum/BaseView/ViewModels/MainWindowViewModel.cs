@@ -58,6 +58,19 @@ namespace Org.Vs.WinMd5.BaseView.ViewModels
       set;
     }
 
+    private Visibility _test;
+
+    public Visibility Test
+    {
+      get => _test;
+      set
+      {
+        _test = value;
+        OnPropertyChanged();
+        OnPropertyChanged();
+      }
+    }
+
     #endregion
 
     /// <summary>

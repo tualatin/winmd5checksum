@@ -63,7 +63,8 @@ namespace Org.Vs.WinMd5.Controllers
           return;
         }
 
-        data.Md5Hash = HashOf<MD5CryptoServiceProvider>(input);
+        if ( string.IsNullOrWhiteSpace(data.Md5Hash) )
+          data.Md5Hash = HashOf<MD5CryptoServiceProvider>(input);
       }, token).ConfigureAwait(false);
     }
 
@@ -84,7 +85,8 @@ namespace Org.Vs.WinMd5.Controllers
           return;
         }
 
-        data.Sha1Hash = HashOf<SHA1CryptoServiceProvider>(input);
+        if ( string.IsNullOrWhiteSpace(data.Sha1Hash) )
+          data.Sha1Hash = HashOf<SHA1CryptoServiceProvider>(input);
       }, token).ConfigureAwait(false);
     }
 
@@ -105,7 +107,8 @@ namespace Org.Vs.WinMd5.Controllers
           return;
         }
 
-        data.Sha256Hash = HashOf<SHA256CryptoServiceProvider>(input);
+        if ( string.IsNullOrWhiteSpace(data.Sha256Hash) )
+          data.Sha256Hash = HashOf<SHA256CryptoServiceProvider>(input);
       }, token).ConfigureAwait(false);
     }
 
@@ -126,7 +129,8 @@ namespace Org.Vs.WinMd5.Controllers
           return;
         }
 
-        data.Sha512Hash = HashOf<SHA512CryptoServiceProvider>(input);
+        if ( string.IsNullOrWhiteSpace(data.Sha512Hash) )
+          data.Sha512Hash = HashOf<SHA512CryptoServiceProvider>(input);
       }, token).ConfigureAwait(false);
     }
 

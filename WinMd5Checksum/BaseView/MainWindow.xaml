@@ -549,6 +549,34 @@
                 </StackPanel>
               </Button.ToolTip>
             </Button>
+
+            <Button
+              HorizontalAlignment="Right"
+              Style="{StaticResource MenuButtonStyle}"
+              >
+              <i:Interaction.Behaviors>
+                <behaviors:DropDownButtonBehavior />
+              </i:Interaction.Behaviors>
+
+              <Button.ContextMenu>
+                <ContextMenu>
+                  <MenuItem
+                    x:Name="ShowColumnMd5Compare"
+                    Header="{DynamicResource ContextMenuShowMd5CompareColumn}"
+                    IsCheckable="True"
+                    IsChecked="True"
+                    />
+
+                  <MenuItem
+                    x:Name="ShowColumnMd5Result"
+                    Header="{DynamicResource ContextMenuShowMd5ResultColumn}"
+                    IsCheckable="True"
+                    IsChecked="True"
+                    />
+                </ContextMenu>
+              </Button.ContextMenu>
+            </Button>
+
           </StackPanel>
         </Grid>
       </Border>
@@ -759,6 +787,46 @@
                 MinWidth="200"
                 Header="{DynamicResource DataGridResult}"
                 Binding="{Binding Sha256Result, UpdateSourceTrigger=PropertyChanged}"
+                IsReadOnly="True"
+                />
+
+              <DataGridTemplateColumn
+                MinWidth="70"
+                Header="{DynamicResource DataGridSh512IsEnabled}"
+                behaviors:DataGridColumnWidthBehavior.DataGridColumnWidth="{Binding RelativeSource={RelativeSource Self}, Path=Width}"
+                >
+                <DataGridTemplateColumn.CellTemplate>
+                  <DataTemplate>
+                    <Grid>
+                      <CheckBox
+                        Width="20"
+                        Height="20"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        IsChecked="{Binding Sha512IsEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        />
+                    </Grid>
+                  </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+              </DataGridTemplateColumn>
+
+              <DataGridTextColumn
+                MinWidth="200"
+                Header="{DynamicResource DataGridSha512}"
+                Binding="{Binding Sha512Hash, UpdateSourceTrigger=PropertyChanged}"
+                IsReadOnly="True"
+                />
+
+              <DataGridTextColumn
+                MinWidth="200"
+                Header="{DynamicResource DataGridSha256HashCompare}"
+                Binding="{Binding Sha512ToCompare, UpdateSourceTrigger=PropertyChanged}"
+                />
+
+              <DataGridTextColumn
+                MinWidth="200"
+                Header="{DynamicResource DataGridResult}"
+                Binding="{Binding Sha512Result, UpdateSourceTrigger=PropertyChanged}"
                 IsReadOnly="True"
                 />
             </userControls1:VsDataGrid.Columns>
