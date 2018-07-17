@@ -80,7 +80,7 @@
           Margin="5 0 0 0"
           RenderOptions.BitmapScalingMode="HighQuality"
           RenderOptions.EdgeMode="Aliased"
-          Source="/T4W;component/Resources/Main.ico"
+          Source="/WinMd5;component/Resources/Key.ico"
           />
 
         <TextBlock

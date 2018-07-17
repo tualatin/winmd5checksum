@@ -17,12 +17,17 @@
   <system:String x:Key="GeneralToolTipHint">Take a look into Readme file for more informations</system:String>
 
   <system:String x:Key="ButtonStart">Start</system:String>
+  <system:String x:Key="CalculationStart">Calculating...</system:String>
+  <system:String x:Key="CalculationFinished">Calculation finished...</system:String>
+  <system:String x:Key="CalculationStopped">Calculation stopped.</system:String>
 
   <system:String x:Key="DataGridNo">No</system:String>
   <system:String x:Key="DataGridFile">File</system:String>
+  <system:String x:Key="DataGridMd5IsEnabled">MD5 Active</system:String>
   <system:String x:Key="DataGridMd5Hash">MD5 Hash</system:String>
   <system:String x:Key="DataGridMd5HashCompare">MD5 to compare</system:String>
   <system:String x:Key="DataGridResult">Result</system:String>
+  <system:String x:Key="DataGridSh1IsEnabled">SHA1 Active</system:String>
   <system:String x:Key="DataGridSha1">SHA1 Hash</system:String>
   <system:String x:Key="DataGridSha1HashCompare">SHA1 to compare</system:String>
 

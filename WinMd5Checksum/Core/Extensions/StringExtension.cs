@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using System.Threading;
 using System.Windows;
 using System.Windows.Media;
 
@@ -106,7 +107,7 @@ namespace Org.Vs.WinMd5.Core.Extensions
     {
       var formattedText = new FormattedText(
         value,
-        CultureInfo.DefaultThreadCurrentCulture,
+        Thread.CurrentThread.CurrentUICulture,
         FlowDirection.LeftToRight,
         typeface,
         fontSize,

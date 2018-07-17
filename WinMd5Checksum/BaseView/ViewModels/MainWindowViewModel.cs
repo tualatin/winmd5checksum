@@ -172,6 +172,7 @@ namespace Org.Vs.WinMd5.BaseView.ViewModels
       _myStopwatch.Reset();
       _currentStatusbarState = EStatusbarState.Default;
       SetCurrentBusinessData();
+      EnvironmentContainer.CreatePopUpWindow(EnvironmentContainer.ApplicationTitle, Application.Current.TryFindResource("CalculationStopped").ToString());
     }
 
     private bool CanExecuteStartCalculation() => MdChecksumCollection != null && MdChecksumCollection.Count > 0 && _currentStatusbarState != EStatusbarState.Busy;
@@ -179,6 +180,7 @@ namespace Org.Vs.WinMd5.BaseView.ViewModels
     private async Task ExecuteStartCalculationCommandAsync()
     {
       MouseService.SetBusyState();
+      EnvironmentContainer.CreatePopUpWindow(EnvironmentContainer.ApplicationTitle, Application.Current.TryFindResource("CalculationStart").ToString());
 
       _myStopwatch.Reset();
       _myStopwatch.Start();
@@ -293,6 +295,7 @@ namespace Org.Vs.WinMd5.BaseView.ViewModels
       _currentStatusbarState = EStatusbarState.Default;
       _myStopwatch?.Stop();
       SetCurrentBusinessData();
+      EnvironmentContainer.CreatePopUpWindow(EnvironmentContainer.ApplicationTitle, Application.Current.TryFindResource("CalculationFinished").ToString());
 
       OnPropertyChanged(nameof(MdChecksumCollection));
       OnPropertyChanged(nameof(CollectionView));
