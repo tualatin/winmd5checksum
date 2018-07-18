@@ -284,6 +284,7 @@ namespace Org.Vs.WinMd5.BaseView.ViewModels
     {
       LOG.Trace($"{EnvironmentContainer.ApplicationTitle} startup completed!");
 
+      NotifyTaskCompletion.Create(CreateUserSettingFolderAsync);
       SetCurrentBusinessData();
     }
 
@@ -374,6 +375,25 @@ namespace Org.Vs.WinMd5.BaseView.ViewModels
 
         throw new NotImplementedException();
       }
+    }
+
+    private async Task CreateUserSettingFolderAsync()
+    {
+      await Task.Run(() =>
+      {
+        try
+        {
+          if ( Directory.Exists(EnvironmentContainer.UserSettingsPath) )
+            return;
+
+          LOG.Info("Create user settings folder");
+          Directory.CreateDirectory(EnvironmentContainer.UserSettingsPath);
+        }
+        catch ( Exception ex )
+        {
+          LOG.Error(ex, "{0} caused a(n) {1}", System.Reflection.MethodBase.GetCurrentMethod().Name, ex.GetType().Name);
+        }
+      }).ConfigureAwait(false);
     }
 
     private MainWindow GetMainWindow(DependencyObject button) => button.Ancestors().OfType<MainWindow>().FirstOrDefault();

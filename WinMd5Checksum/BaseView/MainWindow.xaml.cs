@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using log4net;
 using Org.Vs.WinMd5.Core.Utils;
 using Org.Vs.WinMd5.Data.Messages;
@@ -20,7 +21,11 @@ namespace Org.Vs.WinMd5.BaseView
     {
       InitializeComponent();
       EnvironmentContainer.Instance.CurrentEventManager.RegisterHandler<ShowNotificationPopUpMessage>(PopUpVisibilityChanged);
+
+      Closing += OnMainWindowClosing;
     }
+
+    private void OnMainWindowClosing(object sender, CancelEventArgs e) => Md5ChecksumDataGrid.SaveDataGridOptions();
 
     private void PopUpVisibilityChanged(ShowNotificationPopUpMessage args)
     {

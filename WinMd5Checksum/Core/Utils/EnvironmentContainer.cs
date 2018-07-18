@@ -75,6 +75,11 @@ namespace Org.Vs.WinMd5.Core.Utils
     /// </summary>
     public static string ApplicationDonateWebUrl => "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=M436BDAMQL7WE";
 
+    /// <summary>
+    /// UserSettings path
+    /// </summary>
+    public static string UserSettingsPath => Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + $"\\{ApplicationTitle}";
+
     private bool _alwaysOnTop;
 
     /// <summary>
