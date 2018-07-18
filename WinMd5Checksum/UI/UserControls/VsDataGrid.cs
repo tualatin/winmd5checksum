@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Data;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -73,6 +74,9 @@ namespace Org.Vs.WinMd5.UI.UserControls
       Unloaded += OnUnloaded;
     }
 
+    /// <summary>
+    /// Loads current <see cref="VsDataGrid"/> options
+    /// </summary>
     public void LoadDataGridOptions()
     {
       if ( !File.Exists(_userDataGridSettingsFile) )
@@ -94,7 +98,7 @@ namespace Org.Vs.WinMd5.UI.UserControls
           int displayIndex = Convert.ToInt32(row[VsColumnDisplayIndex]);
           column.DisplayIndex = displayIndex;
 
-          double width = Convert.ToDouble(row[VsColumnWidth]);
+          double.TryParse(row[VsColumnWidth].ToString(), NumberStyles.Float, CultureInfo.InvariantCulture, out double width);
           column.Width = width;
 
           int visibility = Convert.ToInt32(row[VsColumnVisibility]);
@@ -151,6 +155,9 @@ namespace Org.Vs.WinMd5.UI.UserControls
     /// </summary>
     public void SaveDataGridOptions()
     {
+      if ( string.IsNullOrWhiteSpace(_userDataGridSettingsFile) )
+        return;
+
       LOG.Trace("Save DataGrid options");
 
       var columns = new DataSet(Name);
