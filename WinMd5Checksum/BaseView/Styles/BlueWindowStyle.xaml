@@ -1,0 +1,208 @@
+﻿<ResourceDictionary
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:behaviors="clr-namespace:Org.Vs.WinMd5.UI.StyleableWindow.Behaviors"
+  xmlns:userControls="clr-namespace:Org.Vs.WinMd5.BaseView.UserControls"
+  xmlns:utils="clr-namespace:Org.Vs.WinMd5.Core.Utils"
+  >
+
+  <!--  Window template  -->
+  <ControlTemplate
+    x:Key="WindowBlueTemplate"
+    TargetType="{x:Type Window}"
+    >
+    <Border
+      Background="{TemplateBinding Background}"
+      BorderBrush="{TemplateBinding BorderBrush}"
+      BorderThickness="{TemplateBinding BorderThickness}"
+      >
+      <Grid Background="{StaticResource BrushSolidLightBlue}">
+        <Grid>
+          <Grid.RowDefinitions>
+            <RowDefinition Height="28" />
+            <RowDefinition />
+          </Grid.RowDefinitions>
+
+          <Grid Margin="7 2">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="Auto" />
+              <ColumnDefinition />
+              <ColumnDefinition Width="40" />
+              <ColumnDefinition Width="25" />
+              <ColumnDefinition Width="52" />
+            </Grid.ColumnDefinitions>
+
+            <Label
+              Margin="0 2 0 0"
+              Padding="0"
+              HorizontalAlignment="Center"
+              behaviors:ControlDoubleClickBehavior.ExecuteCommand="{StaticResource CloseCommand}"
+              behaviors:ControlDoubleClickBehavior.ExecuteCommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
+              >
+              <Image
+                x:Name="WndIcon"
+                Width="16"
+                Source="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=Icon}"
+                Style="{StaticResource WindowIcon}"
+                behaviors:ShowSystemMenuBehavior.LeftButtonShowAt="{Binding ElementName=WindowContent}"
+                behaviors:ShowSystemMenuBehavior.TargetWindow="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
+                />
+            </Label>
+
+            <Border
+              Grid.Column="1"
+              HorizontalAlignment="Stretch"
+              Background="Transparent"
+              behaviors:ControlDoubleClickBehavior.ExecuteCommand="{StaticResource MaximizeCommand}"
+              behaviors:ControlDoubleClickBehavior.ExecuteCommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
+              behaviors:ShowSystemMenuBehavior.RightButtonShow="true"
+              behaviors:ShowSystemMenuBehavior.TargetWindow="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
+              behaviors:WindowDragBehavior.LeftMouseButtonDrag="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
+              >
+
+              <Label
+                x:Name="WndTitle"
+                Margin="8 0 0 0"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                HorizontalContentAlignment="Left"
+                VerticalContentAlignment="Center"
+                Content="{TemplateBinding Property=Title}"
+                FontSize="{TemplateBinding FontSize}"
+                Foreground="{TemplateBinding Foreground}"
+                />
+            </Border>
+
+            <CheckBox
+              Grid.Column="3"
+              Height="23"
+              IsChecked="{Binding Source={x:Static utils:EnvironmentContainer.Instance}, Path=AlwaysOnTop, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+              ToolTip="{DynamicResource AlwaysOnTopToolTip}"
+              />
+
+            <userControls:MainWindowToolbarButtons
+              x:Name="MainWindowToolbarButtons"
+              Grid.Column="4"
+              />
+          </Grid>
+
+          <Border Grid.Row="1">
+            <Grid
+              Margin="1"
+              Background="{TemplateBinding Background}"
+              >
+              <AdornerDecorator>
+                <ContentPresenter x:Name="WindowContent" />
+              </AdornerDecorator>
+              <ResizeGrip
+                x:Name="WindowResizeGrip"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                IsTabStop="false"
+                Visibility="Collapsed"
+                />
+            </Grid>
+          </Border>
+        </Grid>
+        <Thumb
+          x:Name="ThumbTop"
+          Height="6"
+          Margin="14 0"
+          VerticalAlignment="Top"
+          Cursor="SizeNS"
+          Opacity="0"
+          behaviors:WindowResizeBehavior.TopResize="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
+          />
+        <Thumb
+          x:Name="ThumbTopLeft"
+          Width="6"
+          Height="6"
+          HorizontalAlignment="Left"
+          VerticalAlignment="Top"
+          Cursor="SizeNWSE"
+          Opacity="0"
+          behaviors:WindowResizeBehavior.TopLeftResize="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
+          />
+        <Thumb
+          x:Name="ThumbBottom"
+          Height="6"
+          Margin="14 0"
+          VerticalAlignment="Bottom"
+          Cursor="SizeNS"
+          Opacity="0"
+          behaviors:WindowResizeBehavior.BottomResize="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
+          />
+        <Thumb
+          x:Name="ThumbTopRight"
+          Width="6"
+          Height="6"
+          HorizontalAlignment="Right"
+          VerticalAlignment="Top"
+          Cursor="SizeNESW"
+          Opacity="0"
+          behaviors:WindowResizeBehavior.TopRightResize="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
+          />
+        <Thumb
+          x:Name="ThumbRight"
+          Width="6"
+          Margin="0 14"
+          HorizontalAlignment="Right"
+          Cursor="SizeWE"
+          Opacity="0"
+          behaviors:WindowResizeBehavior.RightResize="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
+          />
+        <Thumb
+          x:Name="ThumbBottomRight"
+          Width="6"
+          Height="6"
+          HorizontalAlignment="Right"
+          VerticalAlignment="Bottom"
+          Cursor="SizeNWSE"
+          Opacity="0"
+          behaviors:WindowResizeBehavior.BottomRightResize="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
+          />
+        <Thumb
+          x:Name="ThumbLeft"
+          Width="6"
+          Margin="0 14"
+          HorizontalAlignment="Left"
+          Cursor="SizeWE"
+          Opacity="0"
+          behaviors:WindowResizeBehavior.LeftResize="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
+          />
+        <Thumb
+          x:Name="ThumbBottomLeft"
+          Width="6"
+          Height="6"
+          HorizontalAlignment="Left"
+          VerticalAlignment="Bottom"
+          Cursor="SizeNESW"
+          Opacity="0"
+          behaviors:WindowResizeBehavior.BottomLeftResize="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
+          />
+      </Grid>
+    </Border>
+
+    <ControlTemplate.Triggers>
+      <Trigger Property="Window.IsActive" Value="False">
+        <Setter TargetName="WndIcon" Property="Source" Value="/WinMd5;component/Resources/Key.ico" />
+        <Setter TargetName="WndTitle" Property="Foreground" Value="Gray" />
+      </Trigger>
+
+      <MultiTrigger>
+        <MultiTrigger.Conditions>
+          <Condition Property="ResizeMode" Value="CanResizeWithGrip" />
+          <Condition Property="WindowState" Value="Normal" />
+        </MultiTrigger.Conditions>
+        <Setter TargetName="WindowResizeGrip" Property="Visibility" Value="Visible" />
+      </MultiTrigger>
+    </ControlTemplate.Triggers>
+  </ControlTemplate>
+
+  <Style x:Key="BlueWindowStyle" TargetType="{x:Type Window}">
+    <Setter Property="Background" Value="White" />
+    <Setter Property="BorderBrush" Value="{StaticResource BrushSolidGrey35}" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="Template" Value="{StaticResource WindowBlueTemplate}" />
+  </Style>
+</ResourceDictionary>

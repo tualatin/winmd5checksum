@@ -1,0 +1,56 @@
+﻿<ResourceDictionary
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:system="clr-namespace:System;assembly=mscorlib"
+  >
+  <system:String x:Key="ApplicationTitle">MD5 Checksum for Windows</system:String>
+  <system:String x:Key="AlwaysOnTopToolTip">Always on top</system:String>
+  <system:String x:Key="CloseWindowToolTip">Close</system:String>
+  <system:String x:Key="MinimizeWindowToolTip">Minimize</system:String>
+  <system:String x:Key="MaximizeWindowToolTip">Maximize</system:String>
+  <system:String x:Key="RestoreWindowToolTip">Restore Down</system:String>
+
+  <system:String x:Key="TrayIconReady">Ready...</system:String>
+  <system:String x:Key="Record">Calculating...</system:String>
+  <system:String x:Key="ElapsedTime">Elapsed time: {0}</system:String>
+
+  <system:String x:Key="GeneralToolTipHint">Take a look into Readme file for more informations</system:String>
+
+  <system:String x:Key="ButtonStart">Start</system:String>
+  <system:String x:Key="CalculationStart">Calculating...</system:String>
+  <system:String x:Key="CalculationFinished">Calculation finished...</system:String>
+  <system:String x:Key="CalculationStopped">Calculation stopped.</system:String>
+
+  <system:String x:Key="DataGridNo">No</system:String>
+  <system:String x:Key="DataGridFile">File</system:String>
+  <system:String x:Key="DataGridMd5IsEnabled">MD5 Active</system:String>
+  <system:String x:Key="DataGridMd5Hash">MD5 Hash</system:String>
+  <system:String x:Key="DataGridMd5HashCompare">MD5 to compare</system:String>
+  <system:String x:Key="DataGridResult">Result</system:String>
+  <system:String x:Key="DataGridSh1IsEnabled">SHA1 Active</system:String>
+  <system:String x:Key="DataGridSha1">SHA1 Hash</system:String>
+  <system:String x:Key="DataGridSha1HashCompare">SHA1 to compare</system:String>
+  <system:String x:Key="DataGridSh256IsEnabled">SHA256 Active</system:String>
+  <system:String x:Key="DataGridSha256">SHA256 Hash</system:String>
+  <system:String x:Key="DataGridSha256HashCompare">SHA256 to compare</system:String>
+  <system:String x:Key="DataGridSh512IsEnabled">SHA512 Active</system:String>
+  <system:String x:Key="DataGridSha512">SHA512 Hash</system:String>
+  <system:String x:Key="DataGridSha512HashCompare">SHA512 to compare</system:String>
+
+  <system:String x:Key="MainContextMenuHelp">Help</system:String>
+  <system:String x:Key="MainContextMenuAbout">About</system:String>
+
+  <system:String x:Key="AboutWindowTitle">About</system:String>
+  <system:String x:Key="AboutVersionString">Version:</system:String>
+  <system:String x:Key="AboutBuildDateString">Build date:</system:String>
+  <system:String x:Key="AboutAuthorString">Author:</system:String>
+  <system:String x:Key="AboutAllRightReservedString">All rights reserved</system:String>
+  <system:String x:Key="AboutHomepageString">Homepage:</system:String>
+  <system:String x:Key="AboutUptimeString">Uptime:</system:String>
+  <system:String x:Key="AboutUptimeHours">hour(s)</system:String>
+  <system:String x:Key="AboutUptimeDays">day(s)</system:String>
+  <system:String x:Key="AboutDonate">Donate</system:String>
+  <system:String x:Key="AboutDonateToolTip">You like my work, you can donate</system:String>
+
+  <system:String x:Key="HintWindowTitle">Help</system:String>
+</ResourceDictionary>
