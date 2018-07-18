@@ -26,22 +26,22 @@ namespace Org.Vs.WinMd5.UI.UserControls
     /// <summary>
     /// DisplayIndex
     /// </summary>
-    private static readonly string VsColumnDisplayIndex = "DisplayIndex";
+    private const string VsColumnDisplayIndex = "DisplayIndex";
 
     /// <summary>
     /// Width
     /// </summary>
-    private static readonly string VsColumnWidth = "Width";
+    private const string VsColumnWidth = "Width";
 
     /// <summary>
     /// Visibility
     /// </summary>
-    private static readonly string VsColumnVisibility = "Visibility";
+    private const string VsColumnVisibility = "Visibility";
 
     /// <summary>
     /// SortDirection
     /// </summary>
-    private static readonly string VsColumnSortDirection = "SortDirection";
+    private const string VsColumnSortDirection = "SortDirection";
 
     #endregion
 
