@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Markup;
@@ -21,6 +22,7 @@ using Org.Vs.WinMd5.Core.Data.Base;
 using Org.Vs.WinMd5.Core.Enums;
 using Org.Vs.WinMd5.Core.Utils;
 using Org.Vs.WinMd5.Data;
+using Org.Vs.WinMd5.UI.Extensions;
 using Org.Vs.WinMd5.UI.UserControls;
 
 
@@ -56,19 +58,6 @@ namespace Org.Vs.WinMd5.BaseView.ViewModels
     {
       get;
       set;
-    }
-
-    private Visibility _test;
-
-    public Visibility Test
-    {
-      get => _test;
-      set
-      {
-        _test = value;
-        OnPropertyChanged();
-        OnPropertyChanged();
-      }
     }
 
     #endregion
@@ -115,14 +104,14 @@ namespace Org.Vs.WinMd5.BaseView.ViewModels
     /// <summary>
     /// About command
     /// </summary>
-    public ICommand AboutCommand => _aboutCommand ?? (_aboutCommand = new RelayCommand(p => ExecuteOpenAboutWindow((Window) p)));
+    public ICommand AboutCommand => _aboutCommand ?? (_aboutCommand = new RelayCommand(ExecuteOpenAboutWindow));
 
     private ICommand _hintCommand;
 
     /// <summary>
     /// Hint command
     /// </summary>
-    public ICommand HintCommand => _hintCommand ?? (_hintCommand = new RelayCommand(p => ExecuteOpenHintWindow((Window) p)));
+    public ICommand HintCommand => _hintCommand ?? (_hintCommand = new RelayCommand(ExecuteOpenHintWindow));
 
     private ICommand _openFileCommand;
 
@@ -257,26 +246,36 @@ namespace Org.Vs.WinMd5.BaseView.ViewModels
       OnPropertyChanged(nameof(CollectionView));
     }
 
-    private void ExecuteOpenHintWindow(Window window)
+    private void ExecuteOpenHintWindow(object arg)
     {
-      if ( window == null )
+      if ( !(arg is Button button) )
+        return;
+
+      MainWindow mainWindow = GetMainWindow(button);
+
+      if ( mainWindow == null )
         return;
 
       var hint = new HintWindow
       {
-        Owner = window
+        Owner = mainWindow
       };
       hint.ShowDialog();
     }
 
-    private void ExecuteOpenAboutWindow(Window window)
+    private void ExecuteOpenAboutWindow(object arg)
     {
-      if ( window == null )
+      if ( !(arg is Button button) )
+        return;
+
+      MainWindow mainWindow = GetMainWindow(button);
+
+      if ( mainWindow == null )
         return;
 
       var about = new AboutWindow
       {
-        Owner = window
+        Owner = mainWindow
       };
       about.ShowDialog();
     }
@@ -376,6 +375,8 @@ namespace Org.Vs.WinMd5.BaseView.ViewModels
         throw new NotImplementedException();
       }
     }
+
+    private MainWindow GetMainWindow(DependencyObject button) => button.Ancestors().OfType<MainWindow>().FirstOrDefault();
 
     public void OnFileDrop(string[] filePaths)
     {

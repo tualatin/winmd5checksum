@@ -37,8 +37,8 @@
   <system:String x:Key="DataGridSha512">SHA512 Hash</system:String>
   <system:String x:Key="DataGridSha512HashCompare">SHA512 to compare</system:String>
 
-  <system:String x:Key="ContextMenuShowMd5CompareColumn">MD5 compare</system:String>
-  <system:String x:Key="ContextMenuShowMd5ResultColumn">MD5 result</system:String>
+  <system:String x:Key="MainContextMenuHelp">Help</system:String>
+  <system:String x:Key="MainContextMenuAbout">About</system:String>
 
   <system:String x:Key="AboutWindowTitle">About</system:String>
   <system:String x:Key="AboutVersionString">Version:</system:String>

@@ -14,7 +14,6 @@
   xmlns:utils1="clr-namespace:Org.Vs.WinMd5.UI.Utils"
   xmlns:viewModels="clr-namespace:Org.Vs.WinMd5.BaseView.ViewModels"
   mc:Ignorable="d"
-  x:Name="Md5Checksum"
   Title="{Binding Source={x:Static utils:EnvironmentContainer.ApplicationTitle}}"
   Width="800"
   Height="450"
@@ -415,141 +414,8 @@
 
           <StackPanel
             Grid.Column="5"
-            Margin="5 0 0 0"
             Orientation="Horizontal"
             >
-            <Line
-              Margin="0 3 6 3"
-              HorizontalAlignment="Center"
-              VerticalAlignment="Center"
-              SnapsToDevicePixels="True"
-              Stroke="Black"
-              StrokeThickness="0.1"
-              X1="0"
-              X2="0"
-              Y1="0"
-              Y2="20"
-              />
-
-            <Button
-              Width="24"
-              Height="24"
-              Margin="0 0 2 0"
-              VerticalAlignment="Center"
-              Command="{Binding HintCommand}"
-              CommandParameter="{Binding ElementName=Md5Checksum}"
-              TabIndex="5"
-              >
-              <StackPanel>
-                <Image
-                  Width="16"
-                  Height="16"
-                  RenderOptions.BitmapScalingMode="HighQuality"
-                  RenderOptions.EdgeMode="Aliased"
-                  Source="/WinMd5;component/Resources/info.png"
-                  >
-                  <Image.Style>
-                    <Style TargetType="{x:Type Image}">
-                      <Style.Triggers>
-                        <Trigger Property="IsEnabled" Value="False">
-                          <Setter Property="Opacity" Value="0.5" />
-                        </Trigger>
-                      </Style.Triggers>
-                    </Style>
-                  </Image.Style>
-                </Image>
-              </StackPanel>
-              <Button.ToolTip>
-                <StackPanel>
-                  <TextBlock
-                    Margin="0 0 0 5"
-                    Text="{DynamicResource ButtonFileManager}"
-                    FontSize="12"
-                    FontWeight="Bold"
-                    />
-                  <TextBlock Text="{DynamicResource ButtonFileManagerToolTip}" />
-                  <Border
-                    Margin="0 8"
-                    BorderBrush="Silver"
-                    BorderThickness="0 1 0 0"
-                    />
-                  <WrapPanel>
-                    <Image
-                      Width="16"
-                      Height="16"
-                      Margin="0 0 5 0"
-                      RenderOptions.BitmapScalingMode="HighQuality"
-                      RenderOptions.EdgeMode="Aliased"
-                      Source="/WinMd5;component/Resources/Search.ico"
-                      />
-                    <TextBlock
-                      Text="{DynamicResource GeneralToolTipHint}"
-                      FontStyle="Italic"
-                      />
-                  </WrapPanel>
-                </StackPanel>
-              </Button.ToolTip>
-            </Button>
-
-            <Button
-              Width="24"
-              Height="24"
-              VerticalAlignment="Center"
-              Command="{Binding AboutCommand}"
-              CommandParameter="{Binding ElementName=Md5Checksum}"
-              TabIndex="6"
-              >
-              <StackPanel>
-                <Image
-                  Width="16"
-                  Height="16"
-                  RenderOptions.BitmapScalingMode="HighQuality"
-                  RenderOptions.EdgeMode="Aliased"
-                  Source="/WinMd5;component/Resources/about.png"
-                  >
-                  <Image.Style>
-                    <Style TargetType="{x:Type Image}">
-                      <Style.Triggers>
-                        <Trigger Property="IsEnabled" Value="False">
-                          <Setter Property="Opacity" Value="0.5" />
-                        </Trigger>
-                      </Style.Triggers>
-                    </Style>
-                  </Image.Style>
-                </Image>
-              </StackPanel>
-              <Button.ToolTip>
-                <StackPanel>
-                  <TextBlock
-                    Margin="0 0 0 5"
-                    Text="{DynamicResource ButtonFileManager}"
-                    FontSize="12"
-                    FontWeight="Bold"
-                    />
-                  <TextBlock Text="{DynamicResource ButtonFileManagerToolTip}" />
-                  <Border
-                    Margin="0 8"
-                    BorderBrush="Silver"
-                    BorderThickness="0 1 0 0"
-                    />
-                  <WrapPanel>
-                    <Image
-                      Width="16"
-                      Height="16"
-                      Margin="0 0 5 0"
-                      RenderOptions.BitmapScalingMode="HighQuality"
-                      RenderOptions.EdgeMode="Aliased"
-                      Source="/WinMd5;component/Resources/Search.ico"
-                      />
-                    <TextBlock
-                      Text="{DynamicResource GeneralToolTipHint}"
-                      FontStyle="Italic"
-                      />
-                  </WrapPanel>
-                </StackPanel>
-              </Button.ToolTip>
-            </Button>
-
             <Button
               HorizontalAlignment="Right"
               Style="{StaticResource MenuButtonStyle}"
@@ -561,18 +427,32 @@
               <Button.ContextMenu>
                 <ContextMenu>
                   <MenuItem
-                    x:Name="ShowColumnMd5Compare"
-                    Header="{DynamicResource ContextMenuShowMd5CompareColumn}"
-                    IsCheckable="True"
-                    IsChecked="True"
-                    />
+                    Header="{DynamicResource MainContextMenuHelp}"
+                    Command="{Binding HintCommand}"
+                    CommandParameter="{Binding Path=PlacementTarget, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"
+                    >
+                    <MenuItem.Icon>
+                      <Image
+                        RenderOptions.BitmapScalingMode="HighQuality"
+                        RenderOptions.EdgeMode="Aliased"
+                        Source="/WinMd5;component/Resources/info.png"
+                        />
+                    </MenuItem.Icon>
+                  </MenuItem>
 
                   <MenuItem
-                    x:Name="ShowColumnMd5Result"
-                    Header="{DynamicResource ContextMenuShowMd5ResultColumn}"
-                    IsCheckable="True"
-                    IsChecked="True"
-                    />
+                    Header="{DynamicResource MainContextMenuAbout}"
+                    Command="{Binding AboutCommand}"
+                    CommandParameter="{Binding Path=PlacementTarget, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"
+                    >
+                    <MenuItem.Icon>
+                      <Image
+                        RenderOptions.BitmapScalingMode="HighQuality"
+                        RenderOptions.EdgeMode="Aliased"
+                        Source="/WinMd5;component/Resources/about.png"
+                        />
+                    </MenuItem.Icon>
+                  </MenuItem>
                 </ContextMenu>
               </Button.ContextMenu>
             </Button>
@@ -635,13 +515,11 @@
                 Binding="{Binding ., Converter={StaticResource RowCollectionConverter}, StringFormat=#;;#}"
                 CanUserSort="False"
                 IsReadOnly="True"
-                behaviors:DataGridColumnWidthBehavior.DataGridColumnWidth="{Binding RelativeSource={RelativeSource Self}, Path=Width}"
                 />
 
               <DataGridTemplateColumn
                 MinWidth="190"
                 Header="{DynamicResource DataGridFile}"
-                behaviors:DataGridColumnWidthBehavior.DataGridColumnWidth="{Binding RelativeSource={RelativeSource Self}, Path=Width}"
                 >
                 <DataGridTemplateColumn.CellTemplate>
                   <DataTemplate>
@@ -673,7 +551,6 @@
               <DataGridTemplateColumn
                 MinWidth="70"
                 Header="{DynamicResource DataGridMd5IsEnabled}"
-                behaviors:DataGridColumnWidthBehavior.DataGridColumnWidth="{Binding RelativeSource={RelativeSource Self}, Path=Width}"
                 >
                 <DataGridTemplateColumn.CellTemplate>
                   <DataTemplate>
@@ -713,7 +590,6 @@
               <DataGridTemplateColumn
                 MinWidth="70"
                 Header="{DynamicResource DataGridSh1IsEnabled}"
-                behaviors:DataGridColumnWidthBehavior.DataGridColumnWidth="{Binding RelativeSource={RelativeSource Self}, Path=Width}"
                 >
                 <DataGridTemplateColumn.CellTemplate>
                   <DataTemplate>
@@ -753,7 +629,6 @@
               <DataGridTemplateColumn
                 MinWidth="70"
                 Header="{DynamicResource DataGridSh256IsEnabled}"
-                behaviors:DataGridColumnWidthBehavior.DataGridColumnWidth="{Binding RelativeSource={RelativeSource Self}, Path=Width}"
                 >
                 <DataGridTemplateColumn.CellTemplate>
                   <DataTemplate>
@@ -793,7 +668,6 @@
               <DataGridTemplateColumn
                 MinWidth="70"
                 Header="{DynamicResource DataGridSh512IsEnabled}"
-                behaviors:DataGridColumnWidthBehavior.DataGridColumnWidth="{Binding RelativeSource={RelativeSource Self}, Path=Width}"
                 >
                 <DataGridTemplateColumn.CellTemplate>
                   <DataTemplate>
@@ -819,7 +693,7 @@
 
               <DataGridTextColumn
                 MinWidth="200"
-                Header="{DynamicResource DataGridSha256HashCompare}"
+                Header="{DynamicResource DataGridSha512HashCompare}"
                 Binding="{Binding Sha512ToCompare, UpdateSourceTrigger=PropertyChanged}"
                 />
 

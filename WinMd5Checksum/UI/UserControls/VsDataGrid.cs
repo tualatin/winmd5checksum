@@ -1,8 +1,11 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.ComponentModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using Org.Vs.WinMd5.Core.Utils;
-using Org.Vs.WinMd5.UI.Behaviors;
 using Org.Vs.WinMd5.UI.Extensions;
 
 
@@ -13,9 +16,18 @@ namespace Org.Vs.WinMd5.UI.UserControls
   /// </summary>
   public class VsDataGrid : DataGrid
   {
+    /// <summary>
+    /// Current attached columns
+    /// </summary>
+    private readonly Dictionary<DataGridColumn, DataGrid> _attachedDataGridColumns;
+
     private Grid _horizontalScrollbarGrid;
     private ScrollViewer _scrollViewer;
 
+    /// <summary>
+    /// ActualColumnWidth property descriptor
+    /// </summary>
+    public PropertyDescriptor ActualColumnWidthDescriptor = DependencyPropertyDescriptor.FromProperty(DataGridColumn.ActualWidthProperty, typeof(DataGridColumn));
 
     static VsDataGrid() => DefaultStyleKeyProperty.OverrideMetadata(typeof(VsDataGrid), new FrameworkPropertyMetadata(typeof(VsDataGrid)));
 
@@ -24,14 +36,15 @@ namespace Org.Vs.WinMd5.UI.UserControls
     /// </summary>
     public VsDataGrid()
     {
+      _attachedDataGridColumns = new Dictionary<DataGridColumn, DataGrid>();
+
+      Columns.CollectionChanged += OnColumnsCollectionChanged;
       Loaded += OnLoaded;
       Unloaded += OnUnloaded;
     }
 
     private void OnLoaded(object sender, RoutedEventArgs e)
     {
-      DataGridColumnWidthBehavior.AddColumnWidthChangedEventHandler(this, OnWidthChanged);
-
       _scrollViewer = this.Descendents().OfType<ScrollViewer>().FirstOrDefault();
 
       if ( _scrollViewer == null )
@@ -49,7 +62,7 @@ namespace Org.Vs.WinMd5.UI.UserControls
         return;
 
       _horizontalScrollbarGrid = EnvironmentContainer.Instance.GetHorizontalScrollBarGrid(_scrollViewer);
-      OnWidthChanged(this, null);
+      OnActualWidthChanged(this, EventArgs.Empty);
     }
 
     private void OnUnloaded(object sender, RoutedEventArgs e)
@@ -61,30 +74,49 @@ namespace Org.Vs.WinMd5.UI.UserControls
       }
 
       _horizontalScrollbarGrid = null;
-
-      DataGridColumnWidthBehavior.RemoveColumnWidthChangedEventHandler(this, OnWidthChanged);
-      var control = DataGridColumnWidthBehavior.AttacheDataGridColumns.Where(p => Equals(this, p.Value)).ToList();
-
-      if ( control.Count == 0 )
-        return;
-
-      control.ForEach(p =>
-      {
-        DataGridColumnWidthBehavior.AttacheDataGridColumns.Remove(p.Key);
-      });
     }
 
-    private void OnWidthChanged(object sender, RoutedEventArgs e)
+    private void OnColumnsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+    {
+      if ( e.NewItems != null )
+      {
+        foreach ( object item in e.NewItems )
+        {
+          if ( !(item is DataGridColumn column) )
+            continue;
+
+          if ( _attachedDataGridColumns.ContainsKey(column) )
+            continue;
+
+          _attachedDataGridColumns.Add(column, this);
+          ActualColumnWidthDescriptor.AddValueChanged(column, OnActualWidthChanged);
+        }
+      }
+
+      if ( e.OldItems == null )
+        return;
+
+      foreach ( object item in e.OldItems )
+      {
+        if ( !(item is DataGridColumn column) )
+          continue;
+
+        if ( !_attachedDataGridColumns.ContainsKey(column) )
+          continue;
+
+        _attachedDataGridColumns.Remove(column);
+        ActualColumnWidthDescriptor.RemoveValueChanged(column, OnActualWidthChanged);
+      }
+    }
+
+    private void OnActualWidthChanged(object sender, EventArgs e)
     {
       if ( _horizontalScrollbarGrid == null )
         return;
 
-      if ( !(sender is VsDataGrid dg) )
-        return;
-
       double width = 0;
 
-      foreach ( var column in DataGridColumnWidthBehavior.AttacheDataGridColumns.Where(p => Equals(p.Value, dg)).ToList() )
+      foreach ( var column in _attachedDataGridColumns.Where(p => p.Key.IsFrozen).ToList() )
       {
         width += column.Key.ActualWidth;
       }

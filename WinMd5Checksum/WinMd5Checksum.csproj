@@ -131,7 +131,6 @@
     <Compile Include="Data\Messages\ShowNotificationPopUpMessage.cs" />
     <Compile Include="Data\WinMdChecksumData.cs" />
     <Compile Include="Interfaces\ICalculateHash.cs" />
-    <Compile Include="UI\Behaviors\DataGridColumnWidthBehavior.cs" />
     <Compile Include="UI\Behaviors\DataGridRowBehavior.cs" />
     <Compile Include="UI\Behaviors\DropDownButtonBehavior.cs" />
     <Compile Include="UI\Behaviors\FocusBehavior.cs" />
@@ -148,6 +147,7 @@
     <Compile Include="UI\Converters\StringToVisibilityConverter.cs" />
     <Compile Include="UI\Converters\StringToWindowMediaBrushConverter.cs" />
     <Compile Include="UI\Converters\StringToWindowsMediaColorConverter.cs" />
+    <Compile Include="UI\Converters\VisibilityToInverseBoolConverter.cs" />
     <Compile Include="UI\Extensions\VisualTreeEnumerationExtension.cs" />
     <Compile Include="UI\Extensions\WindowExtension.cs" />
     <Compile Include="UI\NotifyIcon\BalloonIcon.cs" />

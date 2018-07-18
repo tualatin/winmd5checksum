@@ -82,9 +82,11 @@
     <Image
       Grid.RowSpan="2"
       Grid.Column="2"
+      Width="48"
+      Height="48"
       HorizontalAlignment="Right"
       VerticalAlignment="Center"
-      RenderOptions.BitmapScalingMode="NearestNeighbor"
+      RenderOptions.BitmapScalingMode="HighQuality"
       RenderOptions.EdgeMode="Aliased"
       Source="/WinMd5;component/Resources/Key.ico"
       Stretch="Uniform"
