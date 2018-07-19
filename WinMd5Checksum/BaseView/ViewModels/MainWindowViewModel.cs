@@ -13,7 +13,6 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Markup;
 using log4net;
-using Microsoft.Win32;
 using Org.Vs.WinMd5.BaseView.Interfaces;
 using Org.Vs.WinMd5.Controllers.Commands;
 using Org.Vs.WinMd5.Controllers.Commands.Interfaces;
@@ -149,21 +148,54 @@ namespace Org.Vs.WinMd5.BaseView.ViewModels
     /// </summary>
     public ICommand StopCommand => _stopCommand ?? (_stopCommand = new RelayCommand(p => _currentStatusbarState == EStatusbarState.Busy, p => ExecuteStopCommand()));
 
-    private ICommand _saveCommand;
+    private IAsyncCommand _saveCommand;
 
     /// <summary>
     /// Save command
     /// </summary>
-    public ICommand SaveCommand => _saveCommand ?? (_saveCommand = new RelayCommand(p => _currentStatusbarState != EStatusbarState.Busy && MdChecksumCollection != null && MdChecksumCollection.Count > 0,
-                                     p => ExecuteSaveCommand()));
+    public IAsyncCommand SaveCommand => _saveCommand ?? (_saveCommand = AsyncCommand.Create(p => CanExecuteSaveCommand(), ExecuteSaveCommandAsync));
+
+    private ICommand _toggleAlwaysOnTopCommand;
+
+    /// <summary>
+    /// ToggleAlwaysOnTop command
+    /// </summary>
+    public ICommand ToggleAlwaysOnTopCommand => _toggleAlwaysOnTopCommand ?? (_toggleAlwaysOnTopCommand = new RelayCommand(p => ExecuteToggleAlwaysOnTopCommand()));
 
     #endregion
 
     #region Command functions
 
-    private void ExecuteSaveCommand()
-    {
+    private void ExecuteToggleAlwaysOnTopCommand() => EnvironmentContainer.Instance.AlwaysOnTop = !EnvironmentContainer.Instance.AlwaysOnTop;
 
+    private bool CanExecuteSaveCommand()
+    {
+      if ( MdChecksumCollection == null || MdChecksumCollection.Count == 0 )
+        return false;
+
+      if ( MdChecksumCollection.Any(p => string.IsNullOrWhiteSpace(p.Md5Hash) && string.IsNullOrWhiteSpace(p.Sha1Hash) && string.IsNullOrWhiteSpace(p.Sha256Hash) &&
+                                         string.IsNullOrWhiteSpace(p.Sha512Hash)) )
+        return false;
+
+      return _currentStatusbarState != EStatusbarState.Busy;
+    }
+
+    private async Task ExecuteSaveCommandAsync()
+    {
+      if ( InteractionService.ShowQuestionMessageBox(Application.Current.TryFindResource("QWantToSave").ToString()) == MessageBoxResult.No )
+        return;
+
+      MouseService.SetBusyState();
+
+      _cts?.Dispose();
+      _cts = new CancellationTokenSource(TimeSpan.FromMinutes(2));
+
+      bool result = await EnvironmentContainer.Instance.SaveHashAsync(MdChecksumCollection, _cts.Token).ConfigureAwait(false);
+
+      if ( result )
+        InteractionService.ShowInformationMessageBox(Application.Current.TryFindResource("SuccessfullySaved").ToString());
+      else
+        InteractionService.ShowErrorMessageBox(Application.Current.TryFindResource("SaveFailed").ToString());
     }
 
     private void ExecuteStopCommand()
@@ -220,19 +252,10 @@ namespace Org.Vs.WinMd5.BaseView.ViewModels
 
     private void ExecuteOpenFileCommand()
     {
-      var openDialog = new OpenFileDialog
-      {
-        Filter = "All files(*.*)|*.*",
-        RestoreDirectory = true,
-        Title = EnvironmentContainer.ApplicationTitle
-      };
-
-      var result = openDialog.ShowDialog();
+      bool result = InteractionService.OpenFileDialog(out string fileName, "All files(*.*)|*.*", EnvironmentContainer.ApplicationTitle);
 
       if ( result != true )
         return;
-
-      string fileName = openDialog.FileName;
 
       if ( string.IsNullOrWhiteSpace(fileName) )
         return;

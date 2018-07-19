@@ -145,6 +145,14 @@
     </Style>
   </Window.Resources>
 
+  <Window.InputBindings>
+    <KeyBinding Key="{Binding Key, Source={StaticResource StartCalculatingKeyBinding}, Mode=OneTime}" Command="{Binding StartCalculationCommand}" Modifiers="{Binding Modifiers, Source={StaticResource StartCalculatingKeyBinding}, Mode=OneTime}" />
+    <KeyBinding Key="{Binding Key, Source={StaticResource StopCalculatinKeyBinding}, Mode=OneTime}" Command="{Binding StopCommand}" Modifiers="{Binding Modifiers, Source={StaticResource StopCalculatinKeyBinding}, Mode=OneTime}" />
+    <KeyBinding Key="{Binding Key, Source={StaticResource OpenFileKeyBinding}, Mode=OneTime}" Command="{Binding OpenFileCommand}" Modifiers="{Binding Modifiers, Source={StaticResource OpenFileKeyBinding}, Mode=OneTime}" />
+    <KeyBinding Key="{Binding Key, Source={StaticResource ToggleAlwaysOnTopKeyBinding}, Mode=OneTime}" Command="{Binding ToggleAlwaysOnTopCommand}" Modifiers="{Binding Modifiers, Source={StaticResource ToggleAlwaysOnTopKeyBinding}, Mode=OneTime}" />
+    <KeyBinding Key="{Binding Key, Source={StaticResource SaveFileKeyBinding}, Mode=OneTime}" Command="{Binding SaveCommand}" Modifiers="{Binding Modifiers, Source={StaticResource SaveFileKeyBinding}, Mode=OneTime}" />
+  </Window.InputBindings>
+
   <Border
     BorderBrush="{StaticResource BrushSolidBlue}"
     BorderThickness="1 2 1 0"

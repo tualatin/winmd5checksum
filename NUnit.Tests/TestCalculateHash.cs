@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 using System.Windows.Threading;
 using NUnit.Framework;
 using Org.Vs.WinMd5.Controllers;
+using Org.Vs.WinMd5.Controllers.Interfaces;
 using Org.Vs.WinMd5.Data;
-using Org.Vs.WinMd5.Interfaces;
 
 namespace NUnit.Tests
 {

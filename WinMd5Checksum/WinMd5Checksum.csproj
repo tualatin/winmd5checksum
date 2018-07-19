@@ -124,13 +124,16 @@
     <Compile Include="Controllers\Commands\MouseCommand.cs" />
     <Compile Include="Controllers\Commands\RelayCommand.cs" />
     <Compile Include="Controllers\Interfaces\IFileDragDropTarget.cs" />
+    <Compile Include="Controllers\Interfaces\ISaveHashToFile.cs" />
     <Compile Include="Controllers\Interfaces\IViewModelBase.cs" />
+    <Compile Include="Controllers\SaveHashToFile.cs" />
     <Compile Include="Core\Enums\EStatusbarState.cs" />
+    <Compile Include="Core\Utils\InteractionService.cs" />
     <Compile Include="Core\Utils\MouseService.cs" />
     <Compile Include="Data\HashsumCollectionViewHolder.cs" />
     <Compile Include="Data\Messages\ShowNotificationPopUpMessage.cs" />
     <Compile Include="Data\WinMdChecksumData.cs" />
-    <Compile Include="Interfaces\ICalculateHash.cs" />
+    <Compile Include="Controllers\Interfaces\ICalculateHash.cs" />
     <Compile Include="UI\Behaviors\DataGridRowBehavior.cs" />
     <Compile Include="UI\Behaviors\DropDownButtonBehavior.cs" />
     <Compile Include="UI\Behaviors\FocusBehavior.cs" />

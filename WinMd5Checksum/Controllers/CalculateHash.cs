@@ -4,9 +4,10 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using log4net;
+using Org.Vs.WinMd5.Controllers.Interfaces;
 using Org.Vs.WinMd5.Data;
-using Org.Vs.WinMd5.Interfaces;
 
 
 namespace Org.Vs.WinMd5.Controllers
@@ -46,6 +47,14 @@ namespace Org.Vs.WinMd5.Controllers
       return collection;
     }
 
+    private string CompareHash(string result, string expected)
+    {
+      string ok = Application.Current.TryFindResource("HashCompareOk").ToString();
+      string failed = Application.Current.TryFindResource("HashCompareFailed").ToString();
+
+      return string.Compare(result, expected, StringComparison.OrdinalIgnoreCase) == 0 ? ok : failed;
+    }
+
     /// <summary>
     /// MD5
     /// </summary>
@@ -65,6 +74,10 @@ namespace Org.Vs.WinMd5.Controllers
 
         if ( string.IsNullOrWhiteSpace(data.Md5Hash) )
           data.Md5Hash = HashOf<MD5CryptoServiceProvider>(input);
+
+        if ( !string.IsNullOrWhiteSpace(data.Md5ToCompareHash) )
+          data.Md5Result = CompareHash(data.Md5Hash, data.Md5ToCompareHash);
+
       }, token).ConfigureAwait(false);
     }
 
@@ -87,6 +100,10 @@ namespace Org.Vs.WinMd5.Controllers
 
         if ( string.IsNullOrWhiteSpace(data.Sha1Hash) )
           data.Sha1Hash = HashOf<SHA1CryptoServiceProvider>(input);
+
+        if ( !string.IsNullOrWhiteSpace(data.Sha1ToCompare) )
+          data.Sha1Result = CompareHash(data.Sha1Hash, data.Sha1ToCompare);
+
       }, token).ConfigureAwait(false);
     }
 
@@ -109,6 +126,10 @@ namespace Org.Vs.WinMd5.Controllers
 
         if ( string.IsNullOrWhiteSpace(data.Sha256Hash) )
           data.Sha256Hash = HashOf<SHA256CryptoServiceProvider>(input);
+
+        if ( !string.IsNullOrWhiteSpace(data.Sha256ToCompare) )
+          data.Sha256Result = CompareHash(data.Sha256Hash, data.Sha256ToCompare);
+
       }, token).ConfigureAwait(false);
     }
 
@@ -131,6 +152,10 @@ namespace Org.Vs.WinMd5.Controllers
 
         if ( string.IsNullOrWhiteSpace(data.Sha512Hash) )
           data.Sha512Hash = HashOf<SHA512CryptoServiceProvider>(input);
+
+        if ( !string.IsNullOrWhiteSpace(data.Sha512ToCompare) )
+          data.Sha512Result = CompareHash(data.Sha512Hash, data.Sha512ToCompare);
+
       }, token).ConfigureAwait(false);
     }
 

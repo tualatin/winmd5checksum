@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using log4net;
 using Org.Vs.WinMd5.Core.Utils;
 using Org.Vs.WinMd5.UI.Extensions;
@@ -185,6 +186,30 @@ namespace Org.Vs.WinMd5.UI.UserControls
       }
     }
 
+    /// <summary>
+    /// Get horizontal scrollbar grid
+    /// </summary>
+    /// <param name="scrollViewer"><see cref="DependencyObject"/></param>
+    /// <returns><see cref="Grid"/> horizontal scrollbar grid</returns>
+    public Grid GetHorizontalScrollBarGrid(DependencyObject scrollViewer)
+    {
+      if ( scrollViewer == null )
+        return null;
+
+      var scrollBars = scrollViewer.Descendents().OfType<ScrollBar>().Where(p => p.Visibility == Visibility.Visible);
+
+      foreach ( var scrollBar in scrollBars )
+      {
+        var grid = scrollBar.Descendents().OfType<Grid>().FirstOrDefault(p => p.Name == "GridHorizontalScrollBar");
+
+        if ( grid == null )
+          continue;
+
+        return grid;
+      }
+      return null;
+    }
+
     private void OnLoaded(object sender, RoutedEventArgs e)
     {
       _userDataGridSettingsFile = EnvironmentContainer.UserSettingsPath + $@"\{Name}_Layout.xml";
@@ -205,7 +230,7 @@ namespace Org.Vs.WinMd5.UI.UserControls
       if ( _horizontalScrollbarGrid != null )
         return;
 
-      _horizontalScrollbarGrid = EnvironmentContainer.Instance.GetHorizontalScrollBarGrid(_scrollViewer);
+      _horizontalScrollbarGrid = GetHorizontalScrollBarGrid(_scrollViewer);
       OnActualWidthChanged(this, EventArgs.Empty);
     }
 

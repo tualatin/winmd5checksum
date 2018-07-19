@@ -1,20 +1,16 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 using Microsoft.Win32;
 using Org.Vs.WinMd5.Controllers;
+using Org.Vs.WinMd5.Controllers.Interfaces;
 using Org.Vs.WinMd5.Core.Data.Base;
 using Org.Vs.WinMd5.Core.Interfaces;
 using Org.Vs.WinMd5.Data;
 using Org.Vs.WinMd5.Data.Messages;
-using Org.Vs.WinMd5.Interfaces;
-using Org.Vs.WinMd5.UI.Extensions;
 using Org.Vs.WinMd5.UI.UserControls;
 
 
@@ -38,12 +34,14 @@ namespace Org.Vs.WinMd5.Core.Utils
     public readonly IEventAggregator CurrentEventManager;
 
     private readonly ICalculateHash _calculateHashsumController;
+    private readonly ISaveHashToFile _saveHashToFileController;
 
     private EnvironmentContainer()
     {
       UpTime = DateTime.Now;
       CurrentEventManager = new EventAggregator();
       _calculateHashsumController = new CalculateHash();
+      _saveHashToFileController = new SaveHashToFile();
     }
 
     #region StatusBar default settings
@@ -133,30 +131,6 @@ namespace Org.Vs.WinMd5.Core.Utils
     }
 
     /// <summary>
-    /// Get horizontal scrollbar grid
-    /// </summary>
-    /// <param name="scrollViewer"><see cref="DependencyObject"/></param>
-    /// <returns><see cref="Grid"/> horizontal scrollbar grid</returns>
-    public Grid GetHorizontalScrollBarGrid(DependencyObject scrollViewer)
-    {
-      if ( scrollViewer == null )
-        return null;
-
-      var scrollBars = scrollViewer.Descendents().OfType<ScrollBar>().Where(p => p.Visibility == Visibility.Visible);
-
-      foreach ( var scrollBar in scrollBars )
-      {
-        var grid = scrollBar.Descendents().OfType<Grid>().FirstOrDefault(p => p.Name == "GridHorizontalScrollBar");
-
-        if ( grid == null )
-          continue;
-
-        return grid;
-      }
-      return null;
-    }
-
-    /// <summary>
     /// Current installed .NET version
     /// </summary>
     public static int NetFrameworkKey
@@ -185,5 +159,14 @@ namespace Org.Vs.WinMd5.Core.Utils
     /// <returns>Task</returns>
     public async Task StartCalculationAsync(ObservableCollection<WinMdChecksumData> collection, CancellationToken token) =>
       await _calculateHashsumController.StartCalculationAsync(collection, token).ConfigureAwait(false);
+
+    /// <summary>
+    /// Save hash
+    /// </summary>
+    /// <param name="collection"><see cref="ObservableCollection{T}"/> of <see cref="WinMdChecksumData"/></param>
+    /// <param name="token"><see cref="CancellationToken"/></param>
+    /// <returns>If success <c>True<c> otherwise <c>False</c></returns>
+    public async Task<bool> SaveHashAsync(ObservableCollection<WinMdChecksumData> collection, CancellationToken token) =>
+      await _saveHashToFileController.SaveHashAsync(collection, token).ConfigureAwait(false);
   }
 }

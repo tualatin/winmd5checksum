@@ -102,7 +102,7 @@ namespace Org.Vs.WinMd5.BaseView.Interfaces
     /// <summary>
     /// Save command
     /// </summary>
-    ICommand SaveCommand
+    IAsyncCommand SaveCommand
     {
       get;
     }

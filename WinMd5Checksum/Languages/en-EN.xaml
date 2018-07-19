@@ -4,11 +4,14 @@
   xmlns:system="clr-namespace:System;assembly=mscorlib"
   >
   <system:String x:Key="ApplicationTitle">MD5 Checksum for Windows</system:String>
-  <system:String x:Key="AlwaysOnTopToolTip">Always on top</system:String>
+  <system:String x:Key="AlwaysOnTopToolTip">Always on top (ALT+T)</system:String>
   <system:String x:Key="CloseWindowToolTip">Close</system:String>
   <system:String x:Key="MinimizeWindowToolTip">Minimize</system:String>
   <system:String x:Key="MaximizeWindowToolTip">Maximize</system:String>
   <system:String x:Key="RestoreWindowToolTip">Restore Down</system:String>
+
+  <system:String x:Key="HashCompareOk">Ok</system:String>
+  <system:String x:Key="HashCompareFailed">Failed</system:String>
 
   <system:String x:Key="TrayIconReady">Ready...</system:String>
   <system:String x:Key="Record">Calculating...</system:String>
@@ -53,4 +56,9 @@
   <system:String x:Key="AboutDonateToolTip">You like my work, you can donate</system:String>
 
   <system:String x:Key="HintWindowTitle">Help</system:String>
+  <system:String x:Key="QWantToSave">Do you really want to save hash file(s)?</system:String>
+  <system:String x:Key="SuccessfullySaved">Successfully saved!</system:String>
+  <system:String x:Key="SaveFailed">An error occurred, please take a look into the log file.</system:String>
+  <system:String x:Key="Question">Question</system:String>
+  <system:String x:Key="Error">Error</system:String>
 </ResourceDictionary>
