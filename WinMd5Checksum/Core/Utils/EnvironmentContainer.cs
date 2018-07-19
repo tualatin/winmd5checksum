@@ -165,7 +165,7 @@ namespace Org.Vs.WinMd5.Core.Utils
     /// </summary>
     /// <param name="collection"><see cref="ObservableCollection{T}"/> of <see cref="WinMdChecksumData"/></param>
     /// <param name="token"><see cref="CancellationToken"/></param>
-    /// <returns>If success <c>True<c> otherwise <c>False</c></returns>
+    /// <returns>If success <c>True</c> otherwise <c>False</c></returns>
     public async Task<bool> SaveHashAsync(ObservableCollection<WinMdChecksumData> collection, CancellationToken token) =>
       await _saveHashToFileController.SaveHashAsync(collection, token).ConfigureAwait(false);
   }
