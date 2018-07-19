@@ -72,22 +72,17 @@ namespace Org.Vs.WinMd5.Controllers
     /// <returns>Task</returns>
     private void CalculateMd5Hash(WinMdChecksumData data)
     {
-      using ( var input = new FileStream(data.FileName, FileMode.Open, FileAccess.Read, FileShare.Read) )
+      if ( !data.Md5IsEnabled )
       {
-        if ( !data.Md5IsEnabled )
-        {
-          data.Md5Hash = string.Empty;
-          return;
-        }
-
-        if ( string.IsNullOrWhiteSpace(data.Md5Hash) )
-          data.Md5Hash = HashOf<MD5CryptoServiceProvider>(input);
-
-        if ( !string.IsNullOrWhiteSpace(data.Md5ToCompareHash) )
-          data.Md5Result = CompareHash(data.Md5Hash, data.Md5ToCompareHash);
-
-        input.Close();
+        data.Md5Hash = string.Empty;
+        return;
       }
+
+      if ( string.IsNullOrWhiteSpace(data.Md5Hash) )
+        data.Md5Hash = HashOf<MD5CryptoServiceProvider>(data.FileName);
+
+      if ( !string.IsNullOrWhiteSpace(data.Md5ToCompareHash) )
+        data.Md5Result = CompareHash(data.Md5Hash, data.Md5ToCompareHash);
     }
 
     /// <summary>
@@ -97,22 +92,17 @@ namespace Org.Vs.WinMd5.Controllers
     /// <returns>Task</returns>
     private void CalculateSha1Hash(WinMdChecksumData data)
     {
-      using ( var input = new FileStream(data.FileName, FileMode.Open, FileAccess.Read, FileShare.Read) )
+      if ( !data.Sha1IsEnabled )
       {
-        if ( !data.Sha1IsEnabled )
-        {
-          data.Sha1Hash = string.Empty;
-          return;
-        }
-
-        if ( string.IsNullOrWhiteSpace(data.Sha1Hash) )
-          data.Sha1Hash = HashOf<SHA1CryptoServiceProvider>(input);
-
-        if ( !string.IsNullOrWhiteSpace(data.Sha1ToCompare) )
-          data.Sha1Result = CompareHash(data.Sha1Hash, data.Sha1ToCompare);
-
-        input.Close();
+        data.Sha1Hash = string.Empty;
+        return;
       }
+
+      if ( string.IsNullOrWhiteSpace(data.Sha1Hash) )
+        data.Sha1Hash = HashOf<SHA1CryptoServiceProvider>(data.FileName);
+
+      if ( !string.IsNullOrWhiteSpace(data.Sha1ToCompare) )
+        data.Sha1Result = CompareHash(data.Sha1Hash, data.Sha1ToCompare);
     }
 
     /// <summary>
@@ -122,22 +112,17 @@ namespace Org.Vs.WinMd5.Controllers
     /// <returns>Task</returns>
     private void CalculateSha256HashAsnyc(WinMdChecksumData data)
     {
-      using ( var input = new FileStream(data.FileName, FileMode.Open, FileAccess.Read, FileShare.Read) )
+      if ( !data.Sha256IsEnabled )
       {
-        if ( !data.Sha256IsEnabled )
-        {
-          data.Sha256Hash = string.Empty;
-          return;
-        }
-
-        if ( string.IsNullOrWhiteSpace(data.Sha256Hash) )
-          data.Sha256Hash = HashOf<SHA256CryptoServiceProvider>(input);
-
-        if ( !string.IsNullOrWhiteSpace(data.Sha256ToCompare) )
-          data.Sha256Result = CompareHash(data.Sha256Hash, data.Sha256ToCompare);
-
-        input.Close();
+        data.Sha256Hash = string.Empty;
+        return;
       }
+
+      if ( string.IsNullOrWhiteSpace(data.Sha256Hash) )
+        data.Sha256Hash = HashOf<SHA256CryptoServiceProvider>(data.FileName);
+
+      if ( !string.IsNullOrWhiteSpace(data.Sha256ToCompare) )
+        data.Sha256Result = CompareHash(data.Sha256Hash, data.Sha256ToCompare);
     }
 
     /// <summary>
@@ -147,52 +132,52 @@ namespace Org.Vs.WinMd5.Controllers
     /// <returns>Task</returns>
     private void CalcaulteSha512Hash(WinMdChecksumData data)
     {
-      using ( var input = new FileStream(data.FileName, FileMode.Open, FileAccess.Read, FileShare.Read) )
+      if ( !data.Sha512IsEnabled )
       {
-        if ( !data.Sha512IsEnabled )
-        {
-          data.Sha512Hash = string.Empty;
-          return;
-        }
-
-        if ( string.IsNullOrWhiteSpace(data.Sha512Hash) )
-          data.Sha512Hash = HashOf<SHA512CryptoServiceProvider>(input);
-
-        if ( !string.IsNullOrWhiteSpace(data.Sha512ToCompare) )
-          data.Sha512Result = CompareHash(data.Sha512Hash, data.Sha512ToCompare);
-
-        input.Close();
+        data.Sha512Hash = string.Empty;
+        return;
       }
+
+      if ( string.IsNullOrWhiteSpace(data.Sha512Hash) )
+        data.Sha512Hash = HashOf<SHA512CryptoServiceProvider>(data.FileName);
+
+      if ( !string.IsNullOrWhiteSpace(data.Sha512ToCompare) )
+        data.Sha512Result = CompareHash(data.Sha512Hash, data.Sha512ToCompare);
     }
 
-    private string HashOf<T>(Stream input) where T : HashAlgorithm, new()
+    private string HashOf<T>(string fileName) where T : HashAlgorithm, new()
     {
-      const int bufferSize = 1024 * 1024 * 20;
-      System.Diagnostics.Process process = System.Diagnostics.Process.GetCurrentProcess();
-      input.Position = 0;
-
-      using ( var provider = new T() )
+      using ( var input = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read) )
       {
-        int readCount;
-        long bytesTransfered = 0;
-        var buffer = new byte[bufferSize];
+        const int bufferSize = 1024 * 1024 * 20;
+        System.Diagnostics.Process process = System.Diagnostics.Process.GetCurrentProcess();
+        input.Position = 0;
 
-        while ( (readCount = input.Read(buffer, 0, buffer.Length)) != 0 )
+        using ( var provider = new T() )
         {
-          if ( bytesTransfered + readCount == input.Length )
-            provider.TransformFinalBlock(buffer, 0, readCount);
-          else
-            provider.TransformBlock(buffer, 0, bufferSize, buffer, 0);
+          int readCount;
+          long bytesTransfered = 0;
+          var buffer = new byte[bufferSize];
 
-          bytesTransfered += readCount;
-          LOG.Debug(@"HashOf<{3}> {0}MB/{1}MB. Memory Used: {2}MB", bytesTransfered / 1000000, input.Length / 1000000,
-            process.PrivateMemorySize64 / 1000000, provider.ToString());
+          while ( (readCount = input.Read(buffer, 0, buffer.Length)) != 0 )
+          {
+            if ( bytesTransfered + readCount == input.Length )
+              provider.TransformFinalBlock(buffer, 0, readCount);
+            else
+              provider.TransformBlock(buffer, 0, bufferSize, buffer, 0);
+
+            bytesTransfered += readCount;
+            LOG.Debug(@"HashOf<{3}> {0}MB/{1}MB. Memory Used: {2}MB", bytesTransfered / 1000000, input.Length / 1000000,
+              process.PrivateMemorySize64 / 1000000, provider.ToString());
+          }
+
+          string hashString = BitConverter.ToString(provider.Hash).Replace("-", string.Empty).ToLower();
+
+          provider.Clear();
+          input.Close();
+
+          return hashString;
         }
-
-        string hashString = BitConverter.ToString(provider.Hash).Replace("-", string.Empty).ToLower();
-        provider.Clear();
-
-        return hashString;
       }
     }
   }
