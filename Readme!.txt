@@ -5,7 +5,7 @@ If there are problems, winmd5checksum creates a error logfile in the directory. 
 
 Changelog:
 
-1.5.xxxx.x
+1.5.6775.x
 * new enable/disable hash calculations
 * new columnchooser DataGrid
 * new save/restore DataGrid layout
