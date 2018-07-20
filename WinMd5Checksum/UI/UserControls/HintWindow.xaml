@@ -8,7 +8,7 @@
   mc:Ignorable="d"
   Title="{DynamicResource HintWindowTitle}"
   Width="450"
-  Height="200"
+  Height="220"
   ResizeMode="NoResize"
   ShowInTaskbar="False"
   WindowStartupLocation="CenterOwner"
@@ -28,7 +28,7 @@
       Grid.Row="0"
       Grid.Column="1"
       Margin="0 0 0 15"
-      Content="Appliation help"
+      Content="{DynamicResource HintApplicationHelp}"
       FontWeight="Bold"
       />
 
@@ -57,6 +57,8 @@
         <RowDefinition Height="Auto" />
         <RowDefinition Height="Auto" />
         <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
       </Grid.RowDefinitions>
 
       <Grid.ColumnDefinitions>
@@ -64,7 +66,7 @@
         <ColumnDefinition />
       </Grid.ColumnDefinitions>
 
-      <Label
+      <!--<Label
         Grid.Row="0"
         Grid.Column="0"
         Margin="0 0 10 0"
@@ -74,26 +76,52 @@
       <Label
         Grid.Row="0"
         Grid.Column="1"
-        Content="Quiet mode, all results will save in md5/sha256 file"
+        Content="{DynamicResource HintQuietMode}"
         FontWeight="Medium"
-        />
+        />-->
 
       <Label
         Grid.Row="1"
         Grid.Column="0"
-        Margin="0 0 10 10"
         Content="/s"
         />
 
       <Label
         Grid.Row="1"
         Grid.Column="1"
-        Content="Short mode, only hash sums will save in md5/sha256 file"
+        Content="{DynamicResource HintShortMode}"
         FontWeight="Medium"
         />
 
       <Label
         Grid.Row="2"
+        Grid.Column="0"
+        Content="/!md5"
+        />
+
+      <Label
+        Grid.Row="2"
+        Grid.Column="1"
+        Content="{DynamicResource HintMd5Disabled}"
+        FontWeight="Medium"
+        />
+
+      <Label
+        Grid.Row="3"
+        Grid.Column="0"
+        Margin="0 0 0 10"
+        Content="/shaxxx"
+        />
+
+      <Label
+        Grid.Row="3"
+        Grid.Column="1"
+        Content="{DynamicResource HintShaEnabled}"
+        FontWeight="Medium"
+        />
+
+      <Label
+        Grid.Row="4"
         Grid.Column="0"
         Margin="0 0 0 15"
         Content="Examples"
@@ -101,17 +129,17 @@
         />
 
       <Label
-        Grid.Row="3"
+        Grid.Row="5"
         Grid.Column="0"
         Grid.ColumnSpan="2"
-        Content="WinMd5.exe /q /s example.exe"
+        Content="{DynamicResource HintExample1}"
         />
 
       <Label
-        Grid.Row="4"
+        Grid.Row="6"
         Grid.Column="0"
         Grid.ColumnSpan="2"
-        Content="WinMd5.exe /q example.exe"
+        Content="{DynamicResource HintExample2}"
         />
     </Grid>
   </Grid>

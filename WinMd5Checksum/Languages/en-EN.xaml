@@ -67,6 +67,14 @@
   <system:String x:Key="AboutDonateToolTip">You like my work, you can donate</system:String>
 
   <system:String x:Key="HintWindowTitle">Help</system:String>
+  <system:String x:Key="HintApplicationHelp">Application help</system:String>
+  <system:String x:Key="HintQuietMode">Quiet mode, all results will saved in calculation files</system:String>
+  <system:String x:Key="HintShortMode">Short mode, only hash sums will saved in calculation files</system:String>
+  <system:String x:Key="HintMd5Disabled">Without MD5 calculation</system:String>
+  <system:String x:Key="HintShaEnabled">Enable SHAxxx calculation (xxx -&gt; for example /sha1)</system:String>
+  <system:String x:Key="HintExample1">WinMd5.exe /q /s example.exe</system:String>
+  <system:String x:Key="HintExample2">WinMd5.exe /q example.exe</system:String>
+
   <system:String x:Key="QWantToSave">Do you really want to save hash file(s)?</system:String>
   <system:String x:Key="SuccessfullySaved">Successfully saved!</system:String>
   <system:String x:Key="SaveFailed">An error occurred, please take a look into the log file.</system:String>
