@@ -19,6 +19,17 @@
 
   <system:String x:Key="GeneralToolTipHint">Take a look into Readme file for more informations</system:String>
 
+  <system:String x:Key="MainWindowOpenFile">Open file</system:String>
+  <system:String x:Key="MainWindowOpenFileToolTip">Open a file to hash (CTRL+O)</system:String>
+  <system:String x:Key="MainWindowSaveHash">Save hash</system:String>
+  <system:String x:Key="MainWindowSaveHashToolTip">Save hashes to files (CTRL+S)</system:String>
+  <system:String x:Key="MainWindowRemoveAll">Remove all</system:String>
+  <system:String x:Key="MainWindowRemoveAllToolTip">Remove all items from list (CTRL+E)</system:String>
+  <system:String x:Key="MainWindowStartCalculation">Start calculation</system:String>
+  <system:String x:Key="MainWindowStartCalculationToolTip">Start hash calculation (CTRL+R)</system:String>
+  <system:String x:Key="MainWindowStopCalculation">Cancel calculation</system:String>
+  <system:String x:Key="MainWindowStopCalculationToolTip">Cancel hash calculation (CTRL+U)</system:String>
+
   <system:String x:Key="ButtonStart">Start</system:String>
   <system:String x:Key="CalculationStart">Calculating...</system:String>
   <system:String x:Key="CalculationFinished">Calculation finished...</system:String>

@@ -151,6 +151,7 @@
     <KeyBinding Key="{Binding Key, Source={StaticResource OpenFileKeyBinding}, Mode=OneTime}" Command="{Binding OpenFileCommand}" Modifiers="{Binding Modifiers, Source={StaticResource OpenFileKeyBinding}, Mode=OneTime}" />
     <KeyBinding Key="{Binding Key, Source={StaticResource ToggleAlwaysOnTopKeyBinding}, Mode=OneTime}" Command="{Binding ToggleAlwaysOnTopCommand}" Modifiers="{Binding Modifiers, Source={StaticResource ToggleAlwaysOnTopKeyBinding}, Mode=OneTime}" />
     <KeyBinding Key="{Binding Key, Source={StaticResource SaveFileKeyBinding}, Mode=OneTime}" Command="{Binding SaveCommand}" Modifiers="{Binding Modifiers, Source={StaticResource SaveFileKeyBinding}, Mode=OneTime}" />
+    <KeyBinding Key="{Binding Key, Source={StaticResource ClearItemsKeyBinding}, Mode=OneTime}" Command="{Binding ClearAllCommand}" Modifiers="{Binding Modifiers, Source={StaticResource ClearItemsKeyBinding}, Mode=OneTime}" />
   </Window.InputBindings>
 
   <Border
@@ -207,11 +208,11 @@
               <StackPanel>
                 <TextBlock
                   Margin="0 0 0 5"
-                  Text="{DynamicResource FileManagerSave}"
+                  Text="{DynamicResource MainWindowOpenFile}"
                   FontSize="12"
                   FontWeight="Bold"
                   />
-                <TextBlock Text="{DynamicResource FileManagerSaveToolTip}" />
+                <TextBlock Text="{DynamicResource MainWindowOpenFileToolTip}" />
                 <Border
                   Margin="0 8"
                   BorderBrush="Silver"
@@ -264,11 +265,11 @@
               <StackPanel>
                 <TextBlock
                   Margin="0 0 0 5"
-                  Text="{DynamicResource FileManagerSave}"
+                  Text="{DynamicResource MainWindowSaveHash}"
                   FontSize="12"
                   FontWeight="Bold"
                   />
-                <TextBlock Text="{DynamicResource FileManagerSaveToolTip}" />
+                <TextBlock Text="{DynamicResource MainWindowSaveHashToolTip}" />
                 <Border
                   Margin="0 8"
                   BorderBrush="Silver"
@@ -305,11 +306,11 @@
               <StackPanel>
                 <TextBlock
                   Margin="0 0 0 5"
-                  Text="{DynamicResource FileManagerRemove}"
+                  Text="{DynamicResource MainWindowRemoveAll}"
                   FontSize="12"
                   FontWeight="Bold"
                   />
-                <TextBlock Text="{DynamicResource FileManagerRemoveToolTip}" />
+                <TextBlock Text="{DynamicResource MainWindowRemoveAllToolTip}" />
                 <Border
                   Margin="0 8"
                   BorderBrush="Silver"
@@ -351,11 +352,11 @@
                 <StackPanel>
                   <TextBlock
                     Margin="0 0 0 5"
-                    Text="Tail"
+                    Text="{DynamicResource MainWindowStartCalculation}"
                     FontSize="12"
                     FontWeight="Bold"
                     />
-                  <TextBlock Text="{DynamicResource ButtonStartToolTip}" />
+                  <TextBlock Text="{DynamicResource MainWindowStartCalculationToolTip}" />
                   <Border
                     Margin="0 8"
                     BorderBrush="Silver"
@@ -391,11 +392,11 @@
                 <StackPanel>
                   <TextBlock
                     Margin="0 0 0 5"
-                    Text="Tail"
+                    Text="{DynamicResource MainWindowStopCalculation}"
                     FontSize="12"
                     FontWeight="Bold"
                     />
-                  <TextBlock Text="{DynamicResource ButtonStopToolTip}" />
+                  <TextBlock Text="{DynamicResource MainWindowStopCalculationToolTip}" />
                   <Border
                     Margin="0 8"
                     BorderBrush="Silver"
@@ -510,7 +511,17 @@
 
             <userControls1:VsDataGrid.RowStyle>
               <!--  Because this is to be attached via a style the datagridrow behavior must be an attached behavior  -->
-              <Style TargetType="{x:Type DataGridRow}">
+              <Style BasedOn="{StaticResource DataGridRowStyle}" TargetType="{x:Type DataGridRow}">
+                <Setter Property="Background">
+                  <Setter.Value>
+                    <MultiBinding Converter="{StaticResource GridBackgroundMultiConverter}">
+                      <Binding Path="Md5Result" />
+                      <Binding Path="Sha1Result" />
+                      <Binding Path="Sha256Result" />
+                      <Binding Path="Sha512Result" />
+                    </MultiBinding>
+                  </Setter.Value>
+                </Setter>
                 <Setter Property="behaviors:DataGridRowBehavior.IsDataGridRowFocussedWhenSelected" Value="True" />
               </Style>
             </userControls1:VsDataGrid.RowStyle>

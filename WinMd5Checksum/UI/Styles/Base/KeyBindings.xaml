@@ -6,5 +6,6 @@
   <KeyBinding x:Key="SaveFileKeyBinding" Gesture="CTRL+S" />
   <KeyBinding x:Key="StartCalculatingKeyBinding" Gesture="CTRL+R" />
   <KeyBinding x:Key="StopCalculatinKeyBinding" Gesture="CTRL+U" />
+  <KeyBinding x:Key="ClearItemsKeyBinding" Gesture="CTRL+E" />
   <KeyBinding x:Key="ToggleAlwaysOnTopKeyBinding" Gesture="ALT+T" />
 </ResourceDictionary>

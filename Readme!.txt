@@ -14,7 +14,7 @@ Changelog:
 * new UI interface
 * new Log4Net for application logging
 * add donate URL
-* speed improvement
+* speed improvement up to 10%
 
 1.1.5182.x
 * add About dialogue

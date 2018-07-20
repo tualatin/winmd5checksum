@@ -37,7 +37,7 @@ namespace Org.Vs.WinMd5.Controllers
 
         try
         {
-          foreach ( WinMdChecksumData item in collection )
+          Parallel.ForEach(collection, item =>
           {
             if ( !string.IsNullOrWhiteSpace(item.Md5Hash) )
               SaveContentIntoFile(GetHashName(item.FileName, "md5"), item.Md5Hash);
@@ -50,7 +50,7 @@ namespace Org.Vs.WinMd5.Controllers
 
             if ( !string.IsNullOrWhiteSpace(item.Sha512Hash) )
               SaveContentIntoFile(GetHashName(item.FileName, "sha512"), item.Sha512Hash);
-          }
+          });
 
           result = true;
         }

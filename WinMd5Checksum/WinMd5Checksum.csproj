@@ -144,6 +144,7 @@
     <Compile Include="UI\Converters\InverseBooleanConverter.cs" />
     <Compile Include="UI\Converters\InverseBooleanToVisibilityConverter.cs" />
     <Compile Include="UI\Converters\MediaBrushToMediaColorConverter.cs" />
+    <Compile Include="UI\Converters\MultiConverters\DataGridBackgroundMultiConverter.cs" />
     <Compile Include="UI\Converters\NullToBoolConverter.cs" />
     <Compile Include="UI\Converters\NullToVisibilityConverter.cs" />
     <Compile Include="UI\Converters\RowCollectionConverter.cs" />
