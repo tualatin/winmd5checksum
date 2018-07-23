@@ -484,7 +484,7 @@
             CanUserAddRows="False"
             CanUserReorderColumns="True"
             CanUserSortColumns="True"
-            FrozenColumnCount="2"
+            FrozenColumnCount="6"
             IsSynchronizedWithCurrentItem="True"
             ItemsSource="{Binding CollectionView}"
             SelectionMode="Extended"
@@ -569,6 +569,7 @@
 
               <DataGridTemplateColumn
                 MinWidth="70"
+                MaxWidth="100"
                 Header="{DynamicResource DataGridMd5IsEnabled}"
                 >
                 <DataGridTemplateColumn.CellTemplate>
@@ -580,6 +581,66 @@
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
                         IsChecked="{Binding Md5IsEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        />
+                    </Grid>
+                  </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+              </DataGridTemplateColumn>
+
+              <DataGridTemplateColumn
+                MinWidth="70"
+                MaxWidth="100"
+                Header="{DynamicResource DataGridSh1IsEnabled}"
+                >
+                <DataGridTemplateColumn.CellTemplate>
+                  <DataTemplate>
+                    <Grid>
+                      <CheckBox
+                        Width="20"
+                        Height="20"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        IsChecked="{Binding Sha1IsEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        />
+                    </Grid>
+                  </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+              </DataGridTemplateColumn>
+
+              <DataGridTemplateColumn
+                MinWidth="70"
+                MaxWidth="100"
+                Header="{DynamicResource DataGridSh256IsEnabled}"
+                >
+                <DataGridTemplateColumn.CellTemplate>
+                  <DataTemplate>
+                    <Grid>
+                      <CheckBox
+                        Width="20"
+                        Height="20"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        IsChecked="{Binding Sha256IsEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        />
+                    </Grid>
+                  </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+              </DataGridTemplateColumn>
+
+              <DataGridTemplateColumn
+                MinWidth="70"
+                MaxWidth="100"
+                Header="{DynamicResource DataGridSh512IsEnabled}"
+                >
+                <DataGridTemplateColumn.CellTemplate>
+                  <DataTemplate>
+                    <Grid>
+                      <CheckBox
+                        Width="20"
+                        Height="20"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        IsChecked="{Binding Sha512IsEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         />
                     </Grid>
                   </DataTemplate>
@@ -606,25 +667,6 @@
                 IsReadOnly="True"
                 />
 
-              <DataGridTemplateColumn
-                MinWidth="70"
-                Header="{DynamicResource DataGridSh1IsEnabled}"
-                >
-                <DataGridTemplateColumn.CellTemplate>
-                  <DataTemplate>
-                    <Grid>
-                      <CheckBox
-                        Width="20"
-                        Height="20"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        IsChecked="{Binding Sha1IsEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        />
-                    </Grid>
-                  </DataTemplate>
-                </DataGridTemplateColumn.CellTemplate>
-              </DataGridTemplateColumn>
-
               <DataGridTextColumn
                 MinWidth="200"
                 Header="{DynamicResource DataGridSha1}"
@@ -645,25 +687,6 @@
                 IsReadOnly="True"
                 />
 
-              <DataGridTemplateColumn
-                MinWidth="70"
-                Header="{DynamicResource DataGridSh256IsEnabled}"
-                >
-                <DataGridTemplateColumn.CellTemplate>
-                  <DataTemplate>
-                    <Grid>
-                      <CheckBox
-                        Width="20"
-                        Height="20"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        IsChecked="{Binding Sha256IsEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        />
-                    </Grid>
-                  </DataTemplate>
-                </DataGridTemplateColumn.CellTemplate>
-              </DataGridTemplateColumn>
-
               <DataGridTextColumn
                 MinWidth="200"
                 Header="{DynamicResource DataGridSha256}"
@@ -683,25 +706,6 @@
                 Binding="{Binding Sha256Result, UpdateSourceTrigger=PropertyChanged}"
                 IsReadOnly="True"
                 />
-
-              <DataGridTemplateColumn
-                MinWidth="70"
-                Header="{DynamicResource DataGridSh512IsEnabled}"
-                >
-                <DataGridTemplateColumn.CellTemplate>
-                  <DataTemplate>
-                    <Grid>
-                      <CheckBox
-                        Width="20"
-                        Height="20"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        IsChecked="{Binding Sha512IsEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        />
-                    </Grid>
-                  </DataTemplate>
-                </DataGridTemplateColumn.CellTemplate>
-              </DataGridTemplateColumn>
 
               <DataGridTextColumn
                 MinWidth="200"
