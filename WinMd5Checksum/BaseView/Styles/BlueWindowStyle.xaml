@@ -27,9 +27,9 @@
             <Grid.ColumnDefinitions>
               <ColumnDefinition Width="Auto" />
               <ColumnDefinition />
-              <ColumnDefinition Width="40" />
-              <ColumnDefinition Width="25" />
-              <ColumnDefinition Width="52" />
+              <ColumnDefinition Width="Auto" />
+              <ColumnDefinition Width="Auto" />
+              <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
             <Label
@@ -74,6 +74,7 @@
             <CheckBox
               Grid.Column="3"
               Height="23"
+              Margin="0 2 0 0"
               IsChecked="{Binding Source={x:Static utils:EnvironmentContainer.Instance}, Path=AlwaysOnTop, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
               ToolTip="{DynamicResource AlwaysOnTopToolTip}"
               />
