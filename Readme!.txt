@@ -4,6 +4,9 @@ Known issues: https://github.com/tualatin/winmd5checksum/issues
 If there are problems, winmd5checksum creates a error logfile in the directory. Please send me this error file before restart winmd5checksum, because the program deletes the error log file when it is started
 
 Changelog:
+1.5.xxxx.x
+* new SingleClick edit mode in DataGrid
+* bug fix DataGrid layout
 
 1.5.6775.x
 * new enable/disable hash calculations

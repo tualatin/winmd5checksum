@@ -176,6 +176,7 @@
     <Compile Include="Controllers\Interfaces\ICalculateHash.cs" />
     <Compile Include="UI\Behaviors\Base\BehaviorBase.cs" />
     <Compile Include="UI\Behaviors\DataGridRowBehavior.cs" />
+    <Compile Include="UI\Behaviors\DataGridSingleClickBehavior.cs" />
     <Compile Include="UI\Behaviors\DropDownButtonBehavior.cs" />
     <Compile Include="UI\Behaviors\FocusBehavior.cs" />
     <Compile Include="UI\Behaviors\ScrollDataGridRowIntoView.cs" />

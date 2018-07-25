@@ -506,6 +506,7 @@
             </i:Interaction.Triggers>
 
             <i:Interaction.Behaviors>
+              <behaviors:DataGridSingleClickBehavior />
               <behaviors:ScrollDataGridRowIntoView />
             </i:Interaction.Behaviors>
 
@@ -661,7 +662,8 @@
                 />
 
               <DataGridTextColumn
-                MinWidth="90"
+                MinWidth="40"
+                MaxWidth="60"
                 Header="{DynamicResource DataGridResult}"
                 Binding="{Binding Md5Result, UpdateSourceTrigger=PropertyChanged}"
                 IsReadOnly="True"
@@ -681,7 +683,8 @@
                 />
 
               <DataGridTextColumn
-                MinWidth="200"
+                MinWidth="40"
+                MaxWidth="60"
                 Header="{DynamicResource DataGridResult}"
                 Binding="{Binding Sha1Result, UpdateSourceTrigger=PropertyChanged}"
                 IsReadOnly="True"
@@ -701,7 +704,8 @@
                 />
 
               <DataGridTextColumn
-                MinWidth="200"
+                MinWidth="40"
+                MaxWidth="60"
                 Header="{DynamicResource DataGridResult}"
                 Binding="{Binding Sha256Result, UpdateSourceTrigger=PropertyChanged}"
                 IsReadOnly="True"
@@ -721,7 +725,8 @@
                 />
 
               <DataGridTextColumn
-                MinWidth="200"
+                MinWidth="40"
+                MaxWidth="60"
                 Header="{DynamicResource DataGridResult}"
                 Binding="{Binding Sha512Result, UpdateSourceTrigger=PropertyChanged}"
                 IsReadOnly="True"
