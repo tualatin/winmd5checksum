@@ -79,17 +79,18 @@ namespace Org.Vs.WinMd5.BaseView.ViewModels
       CollectionView = (ListCollectionView) new CollectionViewSource { Source = MdChecksumCollection }.View;
       HashsumCollectionViewHolder.Cv = CollectionView;
 
+      ((AsyncCommand<object>) LoadedCommand).PropertyChanged += OnLoadedPropertyChanged;
       ((AsyncCommand<object>) StartCalculationCommand).PropertyChanged += OnStartCalculationPropertyChanged;
     }
 
     #region Commands
 
-    private ICommand _loadedCommand;
+    private IAsyncCommand _loadedCommand;
 
     /// <summary>
     /// Loaded command
     /// </summary>
-    public ICommand LoadedCommand => _loadedCommand ?? (_loadedCommand = new RelayCommand(p => ExecuteLoadedCommand()));
+    public IAsyncCommand LoadedCommand => _loadedCommand ?? (_loadedCommand = AsyncCommand.Create(ExecuteLoadedCommandAsync));
 
     private IAsyncCommand _wndClosingCommand;
 
@@ -166,7 +167,7 @@ namespace Org.Vs.WinMd5.BaseView.ViewModels
 
     #region Command functions
 
-    private void ExecuteToggleAlwaysOnTopCommand() => EnvironmentContainer.Instance.AlwaysOnTop = !EnvironmentContainer.Instance.AlwaysOnTop;
+    private void ExecuteToggleAlwaysOnTopCommand() => EnvironmentContainer.Instance.CurrentSettings.AlwaysOnTop = !EnvironmentContainer.Instance.CurrentSettings.AlwaysOnTop;
 
     private bool CanExecuteSaveCommand()
     {
@@ -303,12 +304,10 @@ namespace Org.Vs.WinMd5.BaseView.ViewModels
       about.ShowDialog();
     }
 
-    private void ExecuteLoadedCommand()
+    private async Task ExecuteLoadedCommandAsync()
     {
-      LOG.Trace($"{EnvironmentContainer.ApplicationTitle} startup completed!");
-
-      NotifyTaskCompletion.Create(CreateUserSettingFolderAsync);
-      SetCurrentBusinessData();
+      await EnvironmentContainer.Instance.ReadSettingsAsync();
+      await CreateUserSettingFolderAsync();
     }
 
     private async Task ExecuteWndClosingCommandAsync(object param)
@@ -319,11 +318,22 @@ namespace Org.Vs.WinMd5.BaseView.ViewModels
       if ( e.Cancel )
         return;
 
-      await DeleteLogFilesAsync().ConfigureAwait(false);
+      await EnvironmentContainer.Instance.WriteSettingsAsync();
+      await DeleteLogFilesAsync();
+
       LOG.Trace($"{EnvironmentContainer.ApplicationTitle} closing, goodbye!");
     }
 
     #endregion
+
+    private void OnLoadedPropertyChanged(object sender, PropertyChangedEventArgs e)
+    {
+      if ( !e.PropertyName.Equals("IsSuccessfullyCompleted") )
+        return;
+
+      SetCurrentBusinessData();
+      LOG.Trace($"{EnvironmentContainer.ApplicationTitle} startup completed!");
+    }
 
     private void OnStartCalculationPropertyChanged(object sender, PropertyChangedEventArgs e)
     {

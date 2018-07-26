@@ -24,7 +24,7 @@
   Icon="/WinMd5;component/Resources/Key.ico"
   ResizeMode="CanResizeWithGrip"
   Style="{StaticResource BlueWindowStyle}"
-  Topmost="{Binding Source={x:Static utils:EnvironmentContainer.Instance}, Path=AlwaysOnTop, UpdateSourceTrigger=PropertyChanged}"
+  Topmost="{Binding Source={x:Static utils:EnvironmentContainer.Instance}, Path=CurrentSettings.AlwaysOnTop, UpdateSourceTrigger=PropertyChanged}"
   WindowStartupLocation="CenterScreen"
   WindowStyle="None"
   utils1:FileDragDropHelper.FileDragDropTarget="{Binding}"

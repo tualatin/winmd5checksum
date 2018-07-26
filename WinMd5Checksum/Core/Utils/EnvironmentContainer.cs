@@ -7,6 +7,8 @@ using System.Windows.Media;
 using Microsoft.Win32;
 using Org.Vs.WinMd5.Controllers;
 using Org.Vs.WinMd5.Controllers.Interfaces;
+using Org.Vs.WinMd5.Core.Controllers;
+using Org.Vs.WinMd5.Core.Data;
 using Org.Vs.WinMd5.Core.Data.Base;
 using Org.Vs.WinMd5.Core.Interfaces;
 using Org.Vs.WinMd5.Data;
@@ -35,6 +37,7 @@ namespace Org.Vs.WinMd5.Core.Utils
 
     private readonly ICalculateHash _calculateHashsumController;
     private readonly ISaveHashToFile _saveHashToFileController;
+    private readonly ISettingsController _settingsController;
 
     private EnvironmentContainer()
     {
@@ -42,6 +45,7 @@ namespace Org.Vs.WinMd5.Core.Utils
       CurrentEventManager = new EventAggregator();
       _calculateHashsumController = new CalculateHash();
       _saveHashToFileController = new SaveHashToFile();
+      _settingsController = new SettingsController();
     }
 
     #region StatusBar default settings
@@ -78,24 +82,6 @@ namespace Org.Vs.WinMd5.Core.Utils
     /// </summary>
     public static string UserSettingsPath => Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + $"\\{ApplicationTitle}";
 
-    private bool _alwaysOnTop;
-
-    /// <summary>
-    /// Always on top
-    /// </summary>
-    public bool AlwaysOnTop
-    {
-      get => _alwaysOnTop;
-      set
-      {
-        if ( value == _alwaysOnTop )
-          return;
-
-        _alwaysOnTop = value;
-        OnPropertyChanged();
-      }
-    }
-
     /// <summary>
     /// Current up time
     /// </summary>
@@ -103,6 +89,11 @@ namespace Org.Vs.WinMd5.Core.Utils
     {
       get;
     }
+
+    /// <summary>
+    /// SettingsController
+    /// </summary>
+    public EnvironmentSettingsData CurrentSettings => _settingsController.CurrentSettings;
 
     /// <summary>
     /// Converts a <see cref="System.Windows.Media.Brush"/> to <see cref="System.Drawing.Color"/>
@@ -150,6 +141,18 @@ namespace Org.Vs.WinMd5.Core.Utils
         }
       }
     }
+
+    /// <summary>
+    /// Read current application settings
+    /// </summary>
+    /// <returns></returns>
+    public async Task ReadSettingsAsync() => await _settingsController.ReadSettingsAsync().ConfigureAwait(false);
+
+    /// <summary>
+    /// Write current application settings
+    /// </summary>
+    /// <returns></returns>
+    public async Task WriteSettingsAsync() => await _settingsController.SaveSettingsAsync().ConfigureAwait(false);
 
     /// <summary>
     /// Start hash calculation of data collection

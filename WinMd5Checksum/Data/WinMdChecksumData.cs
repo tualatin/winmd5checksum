@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using Org.Vs.WinMd5.Core.Data.Base;
+using Org.Vs.WinMd5.Core.Utils;
 
 
 namespace Org.Vs.WinMd5.Data
@@ -14,8 +15,10 @@ namespace Org.Vs.WinMd5.Data
     /// </summary>
     public WinMdChecksumData()
     {
-      Md5IsEnabled = true;
-      Sha256IsEnabled = true;
+      Md5IsEnabled = EnvironmentContainer.Instance.CurrentSettings.Md5IsEnabled;
+      Sha1IsEnabled = EnvironmentContainer.Instance.CurrentSettings.Sha1IsEnabled;
+      Sha256IsEnabled = EnvironmentContainer.Instance.CurrentSettings.Sha256IsEnabled;
+      Sha512IsEnabled = EnvironmentContainer.Instance.CurrentSettings.Sha512IsEnabled;
     }
 
     private string _fileName;
@@ -28,7 +31,7 @@ namespace Org.Vs.WinMd5.Data
       get => _fileName;
       set
       {
-        if (Equals(value, _fileName))
+        if ( Equals(value, _fileName) )
           return;
 
         _fileName = value;
@@ -51,10 +54,12 @@ namespace Org.Vs.WinMd5.Data
       get => _md5IsEnabled;
       set
       {
-        if (value == _md5IsEnabled)
+        if ( value == _md5IsEnabled )
           return;
 
         _md5IsEnabled = value;
+        EnvironmentContainer.Instance.CurrentSettings.Md5IsEnabled = _md5IsEnabled;
+
         OnPropertyChanged();
       }
     }
@@ -69,7 +74,7 @@ namespace Org.Vs.WinMd5.Data
       get => _md5Hash;
       set
       {
-        if (Equals(value, _md5Hash))
+        if ( Equals(value, _md5Hash) )
           return;
 
         _md5Hash = value;
@@ -87,7 +92,7 @@ namespace Org.Vs.WinMd5.Data
       get => _md5ToCompareHash;
       set
       {
-        if (Equals(value, _md5ToCompareHash))
+        if ( Equals(value, _md5ToCompareHash) )
           return;
 
         _md5ToCompareHash = value;
@@ -105,7 +110,7 @@ namespace Org.Vs.WinMd5.Data
       get => _md5Result;
       set
       {
-        if (Equals(value, _md5Result))
+        if ( Equals(value, _md5Result) )
           return;
 
         _md5Result = value;
@@ -123,10 +128,12 @@ namespace Org.Vs.WinMd5.Data
       get => _sha1IsEnabled;
       set
       {
-        if (value == _sha1IsEnabled)
+        if ( value == _sha1IsEnabled )
           return;
 
         _sha1IsEnabled = value;
+        EnvironmentContainer.Instance.CurrentSettings.Sha1IsEnabled = _sha1IsEnabled;
+
         OnPropertyChanged();
       }
     }
@@ -141,7 +148,7 @@ namespace Org.Vs.WinMd5.Data
       get => _sha1Hash;
       set
       {
-        if (Equals(value, _sha1Hash))
+        if ( Equals(value, _sha1Hash) )
           return;
 
         _sha1Hash = value;
@@ -159,7 +166,7 @@ namespace Org.Vs.WinMd5.Data
       get => _sha1ToCompare;
       set
       {
-        if (Equals(value, _sha1ToCompare))
+        if ( Equals(value, _sha1ToCompare) )
           return;
 
         _sha1ToCompare = value;
@@ -199,6 +206,8 @@ namespace Org.Vs.WinMd5.Data
           return;
 
         _sha256IsEnabled = value;
+        EnvironmentContainer.Instance.CurrentSettings.Sha256IsEnabled = _sha256IsEnabled;
+
         OnPropertyChanged();
       }
     }
@@ -271,6 +280,8 @@ namespace Org.Vs.WinMd5.Data
           return;
 
         _sha512IsEnabled = value;
+        EnvironmentContainer.Instance.CurrentSettings.Sha512IsEnabled = _sha512IsEnabled;
+
         OnPropertyChanged();
       }
     }
