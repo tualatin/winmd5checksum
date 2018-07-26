@@ -55,6 +55,7 @@ namespace Org.Vs.WinMd5.Core.Controllers
           LOG.Trace($"Read {EnvironmentContainer.ApplicationTitle} settings");
 
           CurrentSettings.AlwaysOnTop = GetBoolFromSetting("AlwaysOnTop");
+          CurrentSettings.UpperCaseHash = GetBoolFromSetting("UpperCase");
           CurrentSettings.Md5IsEnabled = GetBoolFromSetting("Md5Enable");
           CurrentSettings.Sha1IsEnabled = GetBoolFromSetting("Sha1Enable");
           CurrentSettings.Sha256IsEnabled = GetBoolFromSetting("Sha256Enable");
@@ -81,6 +82,7 @@ namespace Org.Vs.WinMd5.Core.Controllers
             return;
 
           WriteValueToSetting(config, "AlwaysOnTop", CurrentSettings.AlwaysOnTop);
+          WriteValueToSetting(config, "UpperCase", CurrentSettings.UpperCaseHash);
           WriteValueToSetting(config, "Md5Enable", CurrentSettings.Md5IsEnabled);
           WriteValueToSetting(config, "Sha1Enable", CurrentSettings.Sha1IsEnabled);
           WriteValueToSetting(config, "Sha256Enable", CurrentSettings.Sha256IsEnabled);

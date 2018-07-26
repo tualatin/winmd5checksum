@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using log4net;
 using Org.Vs.WinMd5.Controllers.Interfaces;
+using Org.Vs.WinMd5.Core.Utils;
 using Org.Vs.WinMd5.Data;
 
 
@@ -41,7 +42,7 @@ namespace Org.Vs.WinMd5.Controllers
           {
             new Task(() => CalculateMd5Hash(hash), token),
             new Task(() => CalculateSha1Hash(hash), token),
-            new Task(() => CalculateSha256HashAsnyc(hash), token),
+            new Task(() => CalculateSha256Hash(hash), token),
             new Task(() => CalcaulteSha512Hash(hash), token)
           };
 
@@ -110,7 +111,7 @@ namespace Org.Vs.WinMd5.Controllers
     /// </summary>
     /// <param name="data"><see cref="WinMdChecksumData"/></param>
     /// <returns>Task</returns>
-    private void CalculateSha256HashAsnyc(WinMdChecksumData data)
+    private void CalculateSha256Hash(WinMdChecksumData data)
     {
       if ( !data.Sha256IsEnabled )
       {
@@ -171,7 +172,9 @@ namespace Org.Vs.WinMd5.Controllers
               process.PrivateMemorySize64 / 1000000, provider.ToString());
           }
 
-          string hashString = BitConverter.ToString(provider.Hash).Replace("-", string.Empty).ToLower();
+          string hashString = EnvironmentContainer.Instance.CurrentSettings.UpperCaseHash ?
+            BitConverter.ToString(provider.Hash).Replace("-", string.Empty).ToUpper() :
+            BitConverter.ToString(provider.Hash).Replace("-", string.Empty).ToLower();
 
           provider.Clear();
           input.Close();

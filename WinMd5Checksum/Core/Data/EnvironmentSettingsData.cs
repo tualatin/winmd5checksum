@@ -26,6 +26,24 @@ namespace Org.Vs.WinMd5.Core.Data
       }
     }
 
+    private bool _upperCaseHash;
+
+    /// <summary>
+    /// Hashes in upper case
+    /// </summary>
+    public bool UpperCaseHash
+    {
+      get => _upperCaseHash;
+      set
+      {
+        if (value == _upperCaseHash)
+          return;
+
+        _upperCaseHash = value;
+        OnPropertyChanged();
+      }
+    }
+
     private bool _md5IsEnabled;
 
     /// <summary>

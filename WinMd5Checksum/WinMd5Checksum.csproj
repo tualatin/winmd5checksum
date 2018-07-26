@@ -189,6 +189,9 @@
     <Compile Include="UI\Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="UI\Converters\InverseBooleanConverter.cs" />
     <Compile Include="UI\Converters\InverseBooleanToVisibilityConverter.cs" />
+    <Compile Include="UI\Converters\LevelToFileNameConverter.cs" />
+    <Compile Include="UI\Converters\LevelToMarginConverter.cs" />
+    <Compile Include="UI\Converters\LevelToVisibilityConverter.cs" />
     <Compile Include="UI\Converters\MediaBrushToMediaColorConverter.cs" />
     <Compile Include="UI\Converters\MultiConverters\DataGridBackgroundMultiConverter.cs" />
     <Compile Include="UI\Converters\NullToBoolConverter.cs" />
@@ -230,6 +233,9 @@
     <Compile Include="UI\UserControls\AboutWindow.xaml.cs">
       <DependentUpon>AboutWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UI\UserControls\DataModels\Data\VsDataGridHierarchialData.cs" />
+    <Compile Include="UI\UserControls\DataModels\Interfaces\IVsDataGridHierarchicalDataModel.cs" />
+    <Compile Include="UI\UserControls\DataModels\VsDataGridHierarchialDataModel.cs" />
     <Compile Include="UI\UserControls\FancyAlertPopUp.xaml.cs">
       <DependentUpon>FancyAlertPopUp.xaml</DependentUpon>
     </Compile>
@@ -243,6 +249,9 @@
       <DependentUpon>HintWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\UserControls\Interfaces\IAboutViewModel.cs" />
+    <Compile Include="UI\UserControls\SettingsWindow.xaml.cs">
+      <DependentUpon>SettingsWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\UserControls\ViewModels\AboutViewModel.cs" />
     <Compile Include="UI\UserControls\VsDataGrid.cs" />
     <Compile Include="UI\UserControls\VsWindowEx.cs" />
@@ -356,6 +365,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="UI\UserControls\HintWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\UserControls\SettingsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
