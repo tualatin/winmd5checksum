@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Threading;
 using NUnit.Framework;
 using Org.Vs.WinMd5.Controllers;
 using Org.Vs.WinMd5.Controllers.Interfaces;
-using Org.Vs.WinMd5.Data;
 
 namespace NUnit.Tests
 {
@@ -34,27 +30,27 @@ namespace NUnit.Tests
     [Test]
     public async Task TestCalculateHashInParallelAsync()
     {
-      var stopwatch = new Stopwatch();
-      var collection = new ObservableCollection<WinMdChecksumData>
-      {
-        new WinMdChecksumData
-        {
-          FileName = _testFile1,
-          Sha1IsEnabled = true,
-          Sha256IsEnabled = true,
-          Sha512IsEnabled = true
-        },
-        new WinMdChecksumData
-        {
-          FileName = _testFile2,
-          Sha1IsEnabled = false,
-          Sha256IsEnabled = true
-        }
-      };
+      //var stopwatch = new Stopwatch();
+      //var collection = new ObservableCollection<WinMdChecksumData>
+      //{
+      //  new WinMdChecksumData
+      //  {
+      //    FileName = _testFile1,
+      //    Sha1IsEnabled = true,
+      //    Sha256IsEnabled = true,
+      //    Sha512IsEnabled = true
+      //  },
+      //  new WinMdChecksumData
+      //  {
+      //    FileName = _testFile2,
+      //    Sha1IsEnabled = false,
+      //    Sha256IsEnabled = true
+      //  }
+      //};
 
-      stopwatch.Start();
-      var test = await _calculateHashController.StartCalculationAsync(collection, new CancellationTokenSource(TimeSpan.FromMinutes(2)).Token).ConfigureAwait(false);
-      stopwatch.Stop();
+      //stopwatch.Start();
+      //var test = await _calculateHashController.StartCalculationAsync(collection, new CancellationTokenSource(TimeSpan.FromMinutes(2)).Token).ConfigureAwait(false);
+      //stopwatch.Stop();
     }
   }
 }

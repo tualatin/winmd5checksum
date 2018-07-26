@@ -1,11 +1,13 @@
 ﻿using System;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using log4net;
 using Org.Vs.WinMd5.Controllers.Interfaces;
 using Org.Vs.WinMd5.Data;
+using Org.Vs.WinMd5.UI.UserControls.DataModels;
 
 
 namespace Org.Vs.WinMd5.Controllers
@@ -20,10 +22,10 @@ namespace Org.Vs.WinMd5.Controllers
     /// <summary>
     /// Save hash
     /// </summary>
-    /// <param name="collection"><see cref="ObservableCollection{T}"/> of <see cref="WinMdChecksumData"/></param>
+    /// <param name="collection"><see cref="List{T}"/> of <see cref="VsDataGridHierarchialDataModel"/></param>
     /// <param name="token"><see cref="CancellationToken"/></param>
     /// <returns>If success <c>True</c> otherwise <c>False</c></returns>
-    public async Task<bool> SaveHashAsync(ObservableCollection<WinMdChecksumData> collection, CancellationToken token)
+    public async Task<bool> SaveHashAsync(List<VsDataGridHierarchialDataModel> collection, CancellationToken token)
     {
       var result = false;
 
@@ -37,19 +39,22 @@ namespace Org.Vs.WinMd5.Controllers
 
         try
         {
-          Parallel.ForEach(collection, item =>
+          Parallel.ForEach(collection, hash =>
           {
-            if ( !string.IsNullOrWhiteSpace(item.Md5Hash) )
-              SaveContentIntoFile(GetHashName(item.FileName, "md5"), item.Md5Hash);
+            if ( hash.Children.FirstOrDefault(p => (p.Data as WinMdChecksumData)?.FileName == "MD5")?.Data is WinMdChecksumData md5 && !string.IsNullOrWhiteSpace(md5.Hash) )
+              SaveContentIntoFile(GetHashName(md5.FileName, "md5"), md5.Hash);
 
-            if ( !string.IsNullOrWhiteSpace(item.Sha1Hash) )
-              SaveContentIntoFile(GetHashName(item.FileName, "sha1"), item.Sha1Hash);
+            if ( hash.Children.FirstOrDefault(p => (p.Data as WinMdChecksumData)?.FileName == "SHA1")?.Data is WinMdChecksumData sha1 && !string.IsNullOrWhiteSpace(sha1.Hash) )
+              SaveContentIntoFile(GetHashName(sha1.FileName, "sha1"), sha1.Hash);
 
-            if ( !string.IsNullOrWhiteSpace(item.Sha256Hash) )
-              SaveContentIntoFile(GetHashName(item.FileName, "sha256"), item.Sha256Hash);
+            if ( hash.Children.FirstOrDefault(p => (p.Data as WinMdChecksumData)?.FileName == "SHA256")?.Data is WinMdChecksumData sha256 && !string.IsNullOrWhiteSpace(sha256.Hash) )
+              SaveContentIntoFile(GetHashName(sha256.FileName, "sha256"), sha256.Hash);
 
-            if ( !string.IsNullOrWhiteSpace(item.Sha512Hash) )
-              SaveContentIntoFile(GetHashName(item.FileName, "sha512"), item.Sha512Hash);
+            if ( hash.Children.FirstOrDefault(p => (p.Data as WinMdChecksumData)?.FileName == "SHA384")?.Data is WinMdChecksumData sha384 && !string.IsNullOrWhiteSpace(sha384.Hash) )
+              SaveContentIntoFile(GetHashName(sha384.FileName, "sha384"), sha384.Hash);
+
+            if ( hash.Children.FirstOrDefault(p => (p.Data as WinMdChecksumData)?.FileName == "SHA512")?.Data is WinMdChecksumData sha512 && !string.IsNullOrWhiteSpace(sha512.Hash) )
+              SaveContentIntoFile(GetHashName(sha512.FileName, "sha512"), sha512.Hash);
           });
 
           result = true;

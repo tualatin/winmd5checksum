@@ -18,6 +18,7 @@ namespace Org.Vs.WinMd5
   {
     private static readonly ILog LOG = LogManager.GetLogger(typeof(App));
 
+    // TODO parameters!
     private ObservableCollection<WinMdChecksumData> _collection;
     private bool _md5;
     private bool _sha1;
@@ -82,10 +83,10 @@ namespace Org.Vs.WinMd5
           _collection.Add(new WinMdChecksumData
           {
             FileName = arg,
-            Md5IsEnabled = _md5,
-            Sha1IsEnabled = _sha1,
-            Sha256IsEnabled = _sha256,
-            Sha512IsEnabled = _sha512
+            //Md5IsEnabled = _md5,
+            //Sha1IsEnabled = _sha1,
+            //Sha256IsEnabled = _sha256,
+            //Sha512IsEnabled = _sha512
           });
 
           ResetHashCalculation();
@@ -135,19 +136,19 @@ namespace Org.Vs.WinMd5
 
       foreach ( WinMdChecksumData item in _collection )
       {
-        message.AppendLine($"{item.File}");
+        //message.AppendLine($"{item.File}");
 
-        if ( item.Md5IsEnabled )
-          message.AppendLine($"MD5: {item.Md5Hash}");
+        //if ( item.Md5IsEnabled )
+        //  message.AppendLine($"MD5: {item.Md5Hash}");
 
-        if ( item.Sha1IsEnabled )
-          message.AppendLine($"SHA1: {item.Sha1Hash}");
+        //if ( item.Sha1IsEnabled )
+        //  message.AppendLine($"SHA1: {item.Sha1Hash}");
 
-        if ( item.Sha256IsEnabled )
-          message.AppendLine($"SHA256: {item.Sha256Hash}");
+        //if ( item.Sha256IsEnabled )
+        //  message.AppendLine($"SHA256: {item.Sha256Hash}");
 
-        if ( item.Sha512IsEnabled )
-          message.AppendLine($"SHA512: {item.Sha512Hash}");
+        //if ( item.Sha512IsEnabled )
+        //  message.AppendLine($"SHA512: {item.Sha512Hash}");
 
         message.AppendLine();
       }
