@@ -503,6 +503,7 @@
             FrozenColumnCount="2"
             IsSynchronizedWithCurrentItem="True"
             ItemsSource="{Binding CollectionView}"
+            SaveDataGridLayout="False"
             SelectionMode="Extended"
             >
             <i:Interaction.Triggers>
@@ -661,6 +662,7 @@
                       Height="20"
                       HorizontalAlignment="Center"
                       VerticalAlignment="Center"
+                      ClickMode="Press"
                       IsChecked="{Binding Data.HashIsEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                       Visibility="{Binding Level, Converter={StaticResource LevelToVisibilityConverter}}"
                       />

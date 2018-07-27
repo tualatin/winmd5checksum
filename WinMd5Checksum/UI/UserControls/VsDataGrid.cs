@@ -6,6 +6,7 @@ using System.Data;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -57,9 +58,24 @@ namespace Org.Vs.WinMd5.UI.UserControls
     private string _userDataGridSettingsFile;
 
     /// <summary>
+    /// Save DataGrid layout property
+    /// </summary>
+    public static readonly DependencyProperty SaveDataGridLayoutProperty = DependencyProperty.Register(nameof(SaveDataGridLayout), typeof(bool), typeof(VsDataGrid),
+      new PropertyMetadata(true));
+
+    /// <summary>
+    /// Save DataGrid layout
+    /// </summary>
+    public bool SaveDataGridLayout
+    {
+      get => (bool) GetValue(SaveDataGridLayoutProperty);
+      set => SetValue(SaveDataGridLayoutProperty, value);
+    }
+
+    /// <summary>
     /// ActualColumnWidth property descriptor
     /// </summary>
-    public PropertyDescriptor ActualColumnWidthDescriptor = DependencyPropertyDescriptor.FromProperty(DataGridColumn.ActualWidthProperty, typeof(DataGridColumn));
+    private readonly PropertyDescriptor _actualColumnWidthDescriptor = DependencyPropertyDescriptor.FromProperty(DataGridColumn.ActualWidthProperty, typeof(DataGridColumn));
 
     static VsDataGrid() => DefaultStyleKeyProperty.OverrideMetadata(typeof(VsDataGrid), new FrameworkPropertyMetadata(typeof(VsDataGrid)));
 
@@ -78,7 +94,7 @@ namespace Org.Vs.WinMd5.UI.UserControls
     /// <summary>
     /// Loads current <see cref="VsDataGrid"/> options
     /// </summary>
-    public void LoadDataGridOptions()
+    private void LoadDataGridOptions()
     {
       if ( !File.Exists(_userDataGridSettingsFile) )
         return;
@@ -92,9 +108,10 @@ namespace Org.Vs.WinMd5.UI.UserControls
 
       foreach ( DataGridColumn column in Columns )
       {
+        DataRow row = columns.Tables[0].Rows[index];
+
         try
         {
-          DataRow row = columns.Tables[0].Rows[index];
           int displayIndex = Convert.ToInt32(row[VsColumnDisplayIndex]);
           column.DisplayIndex = displayIndex;
 
@@ -155,7 +172,7 @@ namespace Org.Vs.WinMd5.UI.UserControls
     /// </summary>
     public void SaveDataGridOptions()
     {
-      if ( string.IsNullOrWhiteSpace(_userDataGridSettingsFile) )
+      if ( string.IsNullOrWhiteSpace(_userDataGridSettingsFile) || !SaveDataGridLayout )
         return;
 
       LOG.Trace("Save DataGrid options");
@@ -181,7 +198,7 @@ namespace Org.Vs.WinMd5.UI.UserControls
       }
       catch ( Exception ex )
       {
-        LOG.Error(ex, "{0} caused a(n) {1}", System.Reflection.MethodBase.GetCurrentMethod().Name, ex.GetType().Name);
+        LOG.Error(ex, "{0} caused a(n) {1}", MethodBase.GetCurrentMethod().Name, ex.GetType().Name);
       }
     }
 
@@ -190,14 +207,14 @@ namespace Org.Vs.WinMd5.UI.UserControls
     /// </summary>
     /// <param name="scrollViewer"><see cref="DependencyObject"/></param>
     /// <returns><see cref="Grid"/> horizontal scrollbar grid</returns>
-    public Grid GetHorizontalScrollBarGrid(DependencyObject scrollViewer)
+    public static Grid GetHorizontalScrollBarGrid(DependencyObject scrollViewer)
     {
       if ( scrollViewer == null )
         return null;
 
       var scrollBars = scrollViewer.Descendents().OfType<ScrollBar>().Where(p => p.Visibility == Visibility.Visible);
 
-      foreach ( var scrollBar in scrollBars )
+      foreach ( ScrollBar scrollBar in scrollBars )
       {
         var grid = scrollBar.Descendents().OfType<Grid>().FirstOrDefault(p => p.Name == "GridHorizontalScrollBar");
 
@@ -218,7 +235,11 @@ namespace Org.Vs.WinMd5.UI.UserControls
         return;
 
       _scrollViewer.ScrollChanged += OnScrollChanged;
-      LoadDataGridOptions();
+
+      if ( SaveDataGridLayout )
+        LoadDataGridOptions();
+
+      OnScrollChanged(this, null);
     }
 
     private void OnScrollChanged(object sender, ScrollChangedEventArgs e)
@@ -257,7 +278,7 @@ namespace Org.Vs.WinMd5.UI.UserControls
             continue;
 
           _attachedDataGridColumns.Add(column, this);
-          ActualColumnWidthDescriptor.AddValueChanged(column, OnActualWidthChanged);
+          _actualColumnWidthDescriptor.AddValueChanged(column, OnActualWidthChanged);
         }
       }
 
@@ -273,7 +294,7 @@ namespace Org.Vs.WinMd5.UI.UserControls
           continue;
 
         _attachedDataGridColumns.Remove(column);
-        ActualColumnWidthDescriptor.RemoveValueChanged(column, OnActualWidthChanged);
+        _actualColumnWidthDescriptor.RemoveValueChanged(column, OnActualWidthChanged);
       }
     }
 
