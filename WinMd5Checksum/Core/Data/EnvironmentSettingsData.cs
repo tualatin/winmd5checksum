@@ -6,7 +6,7 @@ namespace Org.Vs.WinMd5.Core.Data
   /// <summary>
   /// Environment settings data
   /// </summary>
-  public class EnvironmentSettingsData : NotifyMaster
+  public partial class EnvironmentSettingsData : NotifyMaster
   {
     private bool _alwaysOnTop;
 
@@ -36,7 +36,7 @@ namespace Org.Vs.WinMd5.Core.Data
       get => _upperCaseHash;
       set
       {
-        if (value == _upperCaseHash)
+        if ( value == _upperCaseHash )
           return;
 
         _upperCaseHash = value;
@@ -109,7 +109,7 @@ namespace Org.Vs.WinMd5.Core.Data
       get => _sha384IsEnabled;
       set
       {
-        if (value == _sha384IsEnabled)
+        if ( value == _sha384IsEnabled )
           return;
 
         _sha384IsEnabled = value;

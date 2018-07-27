@@ -76,4 +76,14 @@
   <system:String x:Key="CopyToClipboardToolTip">Copy hash into Clipboard</system:String>
 
   <system:String x:Key="SettingsTitle">Settings</system:String>
+  <system:String x:Key="EnvironmentAlwaysOnTop">Always on top</system:String>
+  <system:String x:Key="EnvironmentAlwaysOnTopToolTip">Application is always on top</system:String>
+  <system:String x:Key="EnvironmentUpperCase">Hashes in uppercase</system:String>
+  <system:String x:Key="EnvironmentUpperCaseToolTip">Print all hashes in uppercase letters</system:String>
+  <system:String x:Key="EnvironmentPreferredHash">Preferred hash</system:String>
+  <system:String x:Key="EnvironmentMd5">MD5 hash</system:String>
+  <system:String x:Key="EnvironmentSha1">SHA1 hash</system:String>
+  <system:String x:Key="EnvironmentSha256">SHA256 hash</system:String>
+  <system:String x:Key="EnvironmentSha384">SHA384 hash</system:String>
+  <system:String x:Key="EnvironmentSha512">SHA512 hash</system:String>
 </ResourceDictionary>

@@ -5,11 +5,11 @@ using System.Windows;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("MD5 Checksum for Windows")]
+[assembly: AssemblyTitle("Hash calculator for Windows")]
 [assembly: AssemblyDescription("MD5, SHA calculator")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Virtual Studios")]
-[assembly: AssemblyProduct("WinMd5Checksum")]
+[assembly: AssemblyProduct("WinHash")]
 [assembly: AssemblyCopyright("Copyright ©  2013 - 2018 M. Zoennchen")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -49,6 +49,6 @@ using System.Windows;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.5.*")]
-[assembly: AssemblyFileVersion("1.5.0")]
+[assembly: AssemblyVersion("1.6.*")]
+[assembly: AssemblyFileVersion("1.6.0")]
 [assembly: log4net.Config.XmlConfigurator(ConfigFile = "Config/log4net.xml", Watch = true)]

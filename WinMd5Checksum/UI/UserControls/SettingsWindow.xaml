@@ -5,14 +5,185 @@
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
   xmlns:local="clr-namespace:Org.Vs.WinMd5.UI.UserControls"
+  xmlns:intr="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+  xmlns:utils="clr-namespace:Org.Vs.WinMd5.Core.Utils"
+  xmlns:viewModels="clr-namespace:Org.Vs.WinMd5.UI.UserControls.ViewModels"
   mc:Ignorable="d"
   Title="{DynamicResource SettingsTitle}"
-  Width="400"
-  Height="400"
+  Width="250"
+  Height="280"
+  CanClose="{Binding SaveCommand.Execution.IsSuccessfullyCompleted}"
   Icon="/WinMd5;component/Resources/system.ico"
   ResizeMode="NoResize"
   ShowInTaskbar="False"
   WindowStartupLocation="CenterOwner"
   >
-  <Grid />
+  <local:VsWindowEx.DataContext>
+    <viewModels:SettingsViewModel />
+  </local:VsWindowEx.DataContext>
+
+  <intr:Interaction.Triggers>
+    <intr:EventTrigger EventName="Closing">
+      <intr:InvokeCommandAction Command="{Binding CloseOptionsCommand}" />
+    </intr:EventTrigger>
+  </intr:Interaction.Triggers>
+
+  <Grid Margin="5">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition />
+      <RowDefinition Height="Auto" />
+    </Grid.RowDefinitions>
+
+    <CheckBox
+      Grid.Row="0"
+      Height="22"
+      Content="{DynamicResource EnvironmentAlwaysOnTop}"
+      IsChecked="{Binding Source={x:Static utils:EnvironmentContainer.Instance}, Path=CurrentSettings.AlwaysOnTop, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+      TabIndex="0"
+      >
+      <CheckBox.ToolTip>
+        <StackPanel>
+          <TextBlock
+            Margin="0 0 0 5"
+            Text="{DynamicResource EnvironmentAlwaysOnTop}"
+            FontSize="12"
+            FontWeight="Bold"
+            />
+          <TextBlock Text="{DynamicResource EnvironmentAlwaysOnTopToolTip}" />
+          <Border
+            Margin="0 8"
+            BorderBrush="Silver"
+            BorderThickness="0 1 0 0"
+            />
+          <WrapPanel>
+            <Image
+              Width="16"
+              Height="16"
+              Margin="0 0 5 0"
+              RenderOptions.BitmapScalingMode="HighQuality"
+              RenderOptions.EdgeMode="Aliased"
+              Source="/WinMd5;component/Resources/Search.ico"
+              />
+            <TextBlock
+              Text="{DynamicResource GeneralToolTipHint}"
+              FontStyle="Italic"
+              />
+          </WrapPanel>
+        </StackPanel>
+      </CheckBox.ToolTip>
+    </CheckBox>
+
+    <CheckBox
+      Grid.Row="1"
+      Height="22"
+      Content="{DynamicResource EnvironmentUpperCase}"
+      IsChecked="{Binding Source={x:Static utils:EnvironmentContainer.Instance}, Path=CurrentSettings.UpperCaseHash, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+      TabIndex="1"
+      >
+      <CheckBox.ToolTip>
+        <StackPanel>
+          <TextBlock
+            Margin="0 0 0 5"
+            Text="{DynamicResource EnvironmentUpperCase}"
+            FontSize="12"
+            FontWeight="Bold"
+            />
+          <TextBlock Text="{DynamicResource EnvironmentUpperCaseToolTip}" />
+          <Border
+            Margin="0 8"
+            BorderBrush="Silver"
+            BorderThickness="0 1 0 0"
+            />
+          <WrapPanel>
+            <Image
+              Width="16"
+              Height="16"
+              Margin="0 0 5 0"
+              RenderOptions.BitmapScalingMode="HighQuality"
+              RenderOptions.EdgeMode="Aliased"
+              Source="/WinMd5;component/Resources/Search.ico"
+              />
+            <TextBlock
+              Text="{DynamicResource GeneralToolTipHint}"
+              FontStyle="Italic"
+              />
+          </WrapPanel>
+        </StackPanel>
+      </CheckBox.ToolTip>
+    </CheckBox>
+
+    <GroupBox
+      Grid.Row="2"
+      Margin="5"
+      Header="{DynamicResource EnvironmentPreferredHash}"
+      >
+      <Grid Margin="5">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <CheckBox
+          Grid.Row="0"
+          Height="22"
+          Content="{DynamicResource EnvironmentMd5}"
+          IsChecked="{Binding Source={x:Static utils:EnvironmentContainer.Instance}, Path=CurrentSettings.Md5IsEnabled, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+          TabIndex="2"
+          />
+
+        <CheckBox
+          Grid.Row="1"
+          Height="22"
+          Content="{DynamicResource EnvironmentSha1}"
+          IsChecked="{Binding Source={x:Static utils:EnvironmentContainer.Instance}, Path=CurrentSettings.Sha1IsEnabled, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+          TabIndex="3"
+          />
+
+        <CheckBox
+          Grid.Row="2"
+          Height="22"
+          Content="{DynamicResource EnvironmentSha256}"
+          IsChecked="{Binding Source={x:Static utils:EnvironmentContainer.Instance}, Path=CurrentSettings.Sha256IsEnabled, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+          TabIndex="3"
+          />
+
+        <CheckBox
+          Grid.Row="3"
+          Height="22"
+          Content="{DynamicResource EnvironmentSha384}"
+          IsChecked="{Binding Source={x:Static utils:EnvironmentContainer.Instance}, Path=CurrentSettings.Sha384IsEnabled, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+          TabIndex="4"
+          />
+
+        <CheckBox
+          Grid.Row="4"
+          Height="22"
+          Content="{DynamicResource EnvironmentSha512}"
+          IsChecked="{Binding Source={x:Static utils:EnvironmentContainer.Instance}, Path=CurrentSettings.Sha512IsEnabled, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+          TabIndex="5"
+          />
+      </Grid>
+    </GroupBox>
+
+    <Button
+      Grid.Row="4"
+      Width="75"
+      Height="24"
+      Margin="0 5 0 0"
+      VerticalAlignment="Center"
+      Content="OK"
+      Command="{Binding SaveCommand}"
+      TabIndex="6"
+      >
+      <Button.InputBindings>
+        <KeyBinding Key="Enter" Command="{Binding SaveCommand}" />
+      </Button.InputBindings>
+    </Button>
+  </Grid>
 </local:VsWindowEx>

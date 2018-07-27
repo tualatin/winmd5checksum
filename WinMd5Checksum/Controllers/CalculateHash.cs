@@ -83,6 +83,10 @@ namespace Org.Vs.WinMd5.Controllers
 
       if ( string.IsNullOrWhiteSpace(data.Hash) )
         data.Hash = HashOf<T>(fileName);
+      else if ( data.Hash.Any(char.IsLower) && EnvironmentContainer.Instance.CurrentSettings.UpperCaseHash )
+        data.Hash = data.Hash.ToUpper();
+      else if ( data.Hash.Any(char.IsUpper) && !EnvironmentContainer.Instance.CurrentSettings.UpperCaseHash )
+        data.Hash = data.Hash.ToLower();
 
       if ( !string.IsNullOrWhiteSpace(data.HashToCompare) )
         data.Result = CompareHash(data.Hash, data.HashToCompare);

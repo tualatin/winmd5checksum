@@ -170,6 +170,7 @@
     <Compile Include="Controllers\SaveHashToFile.cs" />
     <Compile Include="Core\Controllers\SettingsController.cs" />
     <Compile Include="Core\Data\EnvironmentSettingsData.cs" />
+    <Compile Include="Core\Data\EnvironmentSettingsMementoData.cs" />
     <Compile Include="Core\Enums\EStatusbarState.cs" />
     <Compile Include="Core\Interfaces\ISettingsController.cs" />
     <Compile Include="Core\Utils\InteractionService.cs" />
@@ -252,10 +253,12 @@
       <DependentUpon>HintWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\UserControls\Interfaces\IAboutViewModel.cs" />
+    <Compile Include="UI\UserControls\Interfaces\ISettingsViewModel.cs" />
     <Compile Include="UI\UserControls\SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\UserControls\ViewModels\AboutViewModel.cs" />
+    <Compile Include="UI\UserControls\ViewModels\SettingsViewModel.cs" />
     <Compile Include="UI\UserControls\VsDataGrid.cs" />
     <Compile Include="UI\UserControls\VsWindowEx.cs" />
     <Compile Include="UI\Utils\FileDragDropHelper.cs" />
