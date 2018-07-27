@@ -1,5 +1,6 @@
 ﻿using System;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -14,6 +15,8 @@ using Org.Vs.WinMd5.Core.Interfaces;
 using Org.Vs.WinMd5.Data;
 using Org.Vs.WinMd5.Data.Messages;
 using Org.Vs.WinMd5.UI.UserControls;
+using Org.Vs.WinMd5.UI.UserControls.DataModels;
+using Org.Vs.WinMd5.UI.UserControls.DataModels.Data;
 
 
 namespace Org.Vs.WinMd5.Core.Utils
@@ -157,19 +160,67 @@ namespace Org.Vs.WinMd5.Core.Utils
     /// <summary>
     /// Start hash calculation of data collection
     /// </summary>
-    /// <param name="collection"><see cref="ObservableCollection{T}"/> of <see cref="WinMdChecksumData"/></param>
+    /// <param name="collection"><see cref="List{T}"/> of <see cref="VsDataGridHierarchialDataModel"/></param>
     /// <param name="token"><see cref="CancellationToken"/></param>
     /// <returns>Task</returns>
-    public async Task StartCalculationAsync(ObservableCollection<WinMdChecksumData> collection, CancellationToken token) =>
+    public async Task StartCalculationAsync(List<VsDataGridHierarchialDataModel> collection, CancellationToken token) =>
       await _calculateHashsumController.StartCalculationAsync(collection, token).ConfigureAwait(false);
 
     /// <summary>
     /// Save hash
     /// </summary>
-    /// <param name="collection"><see cref="ObservableCollection{T}"/> of <see cref="WinMdChecksumData"/></param>
+    /// <param name="collection"><see cref="List{T}"/> of <see cref="VsDataGridHierarchialDataModel"/></param>
     /// <param name="token"><see cref="CancellationToken"/></param>
     /// <returns>If success <c>True</c> otherwise <c>False</c></returns>
-    public async Task<bool> SaveHashAsync(ObservableCollection<WinMdChecksumData> collection, CancellationToken token) =>
+    public async Task<bool> SaveHashAsync(List<VsDataGridHierarchialDataModel> collection, CancellationToken token) =>
       await _saveHashToFileController.SaveHashAsync(collection, token).ConfigureAwait(false);
+
+    /// <summary>
+    /// Create a <see cref="VsDataGridHierarchialData"/>
+    /// </summary>
+    /// <param name="dataManager"><see cref="VsDataGridHierarchialData"/></param>
+    /// <param name="fileName">file name</param>
+    /// <param name="enabled">Hash calculation is enabled</param>
+    public void CreateHierachialDataObject(VsDataGridHierarchialData dataManager, string fileName, params bool[] enabled)
+    {
+      var fileContainer = new WinMdChecksumData
+      {
+        FileName = fileName
+      };
+
+      var model = new VsDataGridHierarchialDataModel
+      {
+        DataManager = dataManager,
+        Data = fileContainer,
+        IsVisible = true
+      };
+
+      model.AddChild(CreateChildModel(HashNames.Md5, enabled.Length == 0 ? CurrentSettings.Md5IsEnabled : enabled[0]));
+      model.AddChild(CreateChildModel(HashNames.Sha1, enabled.Length == 0 ? CurrentSettings.Sha1IsEnabled : enabled[1]));
+      model.AddChild(CreateChildModel(HashNames.Sha256, enabled.Length == 0 ? CurrentSettings.Sha256IsEnabled : enabled[2]));
+      model.AddChild(CreateChildModel(HashNames.Sha384, enabled.Length == 0 ? CurrentSettings.Sha384IsEnabled : enabled[3]));
+      model.AddChild(CreateChildModel(HashNames.Sha512, enabled.Length == 0 ? CurrentSettings.Sha512IsEnabled : enabled[4]));
+
+      dataManager.RowData.Add(model);
+      dataManager.Initialize();
+
+      dataManager.First().IsExpanded = true;
+    }
+
+    private VsDataGridHierarchialDataModel CreateChildModel(string childName, bool isEnabled)
+    {
+      var child = new WinMdChecksumData
+      {
+        FileName = childName,
+        HashIsEnabled = isEnabled
+      };
+
+      var childModel = new VsDataGridHierarchialDataModel
+      {
+        Data = child
+      };
+
+      return childModel;
+    }
   }
 }

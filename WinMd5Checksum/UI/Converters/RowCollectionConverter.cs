@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections;
 using System.Globalization;
+using System.Linq;
 using System.Windows.Data;
 using Org.Vs.WinMd5.Data;
+using Org.Vs.WinMd5.UI.UserControls.DataModels;
 
 
 namespace Org.Vs.WinMd5.UI.Converters
@@ -21,12 +24,21 @@ namespace Org.Vs.WinMd5.UI.Converters
     /// <returns>Converted value</returns>
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-      int rn = 0;
+      var rn = 0;
 
       if ( HashsumCollectionViewHolder.Cv == null || value == null )
         return rn;
 
-      rn = HashsumCollectionViewHolder.Cv.IndexOf(value);
+      if ( !(value is VsDataGridHierarchialDataModel model) )
+        return rn;
+
+      if ( !model.HasChildren )
+        return rn;
+
+      IEnumerable source = HashsumCollectionViewHolder.Cv.SourceCollection;
+      var data = source.Cast<VsDataGridHierarchialDataModel>();
+      var parents = data.Where(p => p.HasChildren).ToList();
+      rn = parents.IndexOf((VsDataGridHierarchialDataModel) value);
 
       return rn + 1;
     }

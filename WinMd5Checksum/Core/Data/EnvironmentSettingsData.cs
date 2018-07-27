@@ -99,6 +99,24 @@ namespace Org.Vs.WinMd5.Core.Data
       }
     }
 
+    private bool _sha384IsEnabled;
+
+    /// <summary>
+    /// SHA384 IsEnabled
+    /// </summary>
+    public bool Sha384IsEnabled
+    {
+      get => _sha384IsEnabled;
+      set
+      {
+        if (value == _sha384IsEnabled)
+          return;
+
+        _sha384IsEnabled = value;
+        OnPropertyChanged();
+      }
+    }
+
     private bool _sha512IsEnabled;
 
     /// <summary>

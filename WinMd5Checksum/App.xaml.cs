@@ -1,5 +1,7 @@
 ﻿using System;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Windows;
@@ -7,6 +9,8 @@ using log4net;
 using Org.Vs.WinMd5.BaseView;
 using Org.Vs.WinMd5.Core.Utils;
 using Org.Vs.WinMd5.Data;
+using Org.Vs.WinMd5.UI.UserControls.DataModels;
+using Org.Vs.WinMd5.UI.UserControls.DataModels.Data;
 
 
 namespace Org.Vs.WinMd5
@@ -18,10 +22,10 @@ namespace Org.Vs.WinMd5
   {
     private static readonly ILog LOG = LogManager.GetLogger(typeof(App));
 
-    // TODO parameters!
-    private ObservableCollection<WinMdChecksumData> _collection;
+    private List<VsDataGridHierarchialDataModel> _collection;
     private bool _md5;
     private bool _sha1;
+    private bool _sha384;
     private bool _sha256;
     private bool _sha512;
     private bool _shortMode;
@@ -40,7 +44,8 @@ namespace Org.Vs.WinMd5
       {
         ResetHashCalculation();
 
-        _collection = new ObservableCollection<WinMdChecksumData>();
+        _collection = new List<VsDataGridHierarchialDataModel>();
+        var dataManager = new VsDataGridHierarchialData();
 
         foreach ( string arg in e.Args )
         {
@@ -53,6 +58,12 @@ namespace Org.Vs.WinMd5
           if ( string.Compare(arg, "/s", StringComparison.CurrentCultureIgnoreCase) == 0 )
           {
             _shortMode = true;
+            continue;
+          }
+
+          if ( string.Compare(arg, "/uc", StringComparison.InvariantCultureIgnoreCase) == 0 )
+          {
+            EnvironmentContainer.Instance.CurrentSettings.UpperCaseHash = true;
             continue;
           }
 
@@ -74,23 +85,23 @@ namespace Org.Vs.WinMd5
             continue;
           }
 
+          if ( string.Compare(arg, "/sha384", StringComparison.InvariantCultureIgnoreCase) == 0 )
+          {
+            _sha384 = true;
+            continue;
+          }
+
           if ( string.Compare(arg, "/sha512", StringComparison.CurrentCultureIgnoreCase) == 0 )
           {
             _sha512 = true;
             continue;
           }
 
-          _collection.Add(new WinMdChecksumData
-          {
-            FileName = arg,
-            //Md5IsEnabled = _md5,
-            //Sha1IsEnabled = _sha1,
-            //Sha256IsEnabled = _sha256,
-            //Sha512IsEnabled = _sha512
-          });
-
+          EnvironmentContainer.Instance.CreateHierachialDataObject(dataManager, arg, _md5, _sha1, _sha256, _sha384, _sha512);
           ResetHashCalculation();
         }
+
+        _collection = dataManager.Where(p => p.HasChildren).ToList();
 
         RunCalculation();
         Current.Shutdown(0);
@@ -118,8 +129,9 @@ namespace Org.Vs.WinMd5
       string example2 = Current.TryFindResource("HintExample2").ToString();
       string md5Disabled = Current.TryFindResource("HintMd5Disabled").ToString();
       string shaEnabled = Current.TryFindResource("HintShaEnabled").ToString();
+      string upperCase = Current.TryFindResource("HintUpperCase").ToString();
 
-      InteractionService.ShowInformationMessageBox($"{applicationHelp}\n\n/s\t{shortMode}\n/!md5\t{md5Disabled}\n/shaxxx\t{shaEnabled}\n\nExamples\n\n{example1}\n{example2}");
+      InteractionService.ShowInformationMessageBox($"{applicationHelp}\n\n/uc\t{upperCase}\n/s\t{shortMode}\n/!md5\t{md5Disabled}\n/shaxxx\t{shaEnabled}\n\nExamples\n\n{example1}\n{example2}");
     }
 
     private void RunCalculation()
@@ -134,23 +146,45 @@ namespace Org.Vs.WinMd5
 
       var message = new StringBuilder();
 
-      foreach ( WinMdChecksumData item in _collection )
+      foreach ( VsDataGridHierarchialDataModel childModel in _collection )
       {
-        //message.AppendLine($"{item.File}");
-
-        //if ( item.Md5IsEnabled )
-        //  message.AppendLine($"MD5: {item.Md5Hash}");
-
-        //if ( item.Sha1IsEnabled )
-        //  message.AppendLine($"SHA1: {item.Sha1Hash}");
-
-        //if ( item.Sha256IsEnabled )
-        //  message.AppendLine($"SHA256: {item.Sha256Hash}");
-
-        //if ( item.Sha512IsEnabled )
-        //  message.AppendLine($"SHA512: {item.Sha512Hash}");
-
+        message.AppendLine($"{Path.GetFileName((childModel.Data as WinMdChecksumData)?.FileName)}");
         message.AppendLine();
+
+        foreach ( VsDataGridHierarchialDataModel item in childModel.Children )
+        {
+          var mdData = item.Data as WinMdChecksumData;
+
+          if ( mdData != null && Equals(mdData.FileName, HashNames.Md5) && mdData.HashIsEnabled )
+          {
+            message.AppendLine($"MD5: {mdData.Hash}");
+            message.AppendLine();
+          }
+
+          if ( mdData != null && Equals(mdData.FileName, HashNames.Sha1) && mdData.HashIsEnabled )
+          {
+            message.AppendLine($"SHA1: {mdData.Hash}");
+            message.AppendLine();
+          }
+
+          if ( mdData != null && Equals(mdData.FileName, HashNames.Sha256) && mdData.HashIsEnabled )
+          {
+            message.AppendLine($"SHA256: {mdData.Hash}");
+            message.AppendLine();
+          }
+
+          if ( mdData != null && Equals(mdData.FileName, HashNames.Sha384) && mdData.HashIsEnabled )
+          {
+            message.AppendLine($"SHA384: {mdData.Hash}");
+            message.AppendLine();
+          }
+
+          if ( mdData != null && Equals(mdData.FileName, HashNames.Sha512) && mdData.HashIsEnabled )
+          {
+            message.AppendLine($"SHA512: {mdData.Hash}");
+            message.AppendLine();
+          }
+        }
       }
 
       InteractionService.ShowInformationMessageBox(message.ToString());

@@ -8,7 +8,7 @@
   mc:Ignorable="d"
   Title="{DynamicResource HintWindowTitle}"
   Width="450"
-  Height="220"
+  Height="250"
   ResizeMode="NoResize"
   ShowInTaskbar="False"
   WindowStartupLocation="CenterOwner"
@@ -59,6 +59,7 @@
         <RowDefinition Height="Auto" />
         <RowDefinition Height="Auto" />
         <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
       </Grid.RowDefinitions>
 
       <Grid.ColumnDefinitions>
@@ -83,45 +84,58 @@
       <Label
         Grid.Row="1"
         Grid.Column="0"
-        Content="/s"
+        Content="/uc"
         />
 
       <Label
         Grid.Row="1"
+        Grid.Column="1"
+        Content="{DynamicResource HintUpperCase}"
+        FontWeight="Medium"
+        />
+
+      <Label
+        Grid.Row="2"
+        Grid.Column="0"
+        Content="/s"
+        />
+
+      <Label
+        Grid.Row="2"
         Grid.Column="1"
         Content="{DynamicResource HintShortMode}"
         FontWeight="Medium"
         />
 
       <Label
-        Grid.Row="2"
+        Grid.Row="3"
         Grid.Column="0"
         Content="/!md5"
         />
 
       <Label
-        Grid.Row="2"
+        Grid.Row="3"
         Grid.Column="1"
         Content="{DynamicResource HintMd5Disabled}"
         FontWeight="Medium"
         />
 
       <Label
-        Grid.Row="3"
+        Grid.Row="4"
         Grid.Column="0"
         Margin="0 0 0 10"
         Content="/shaxxx"
         />
 
       <Label
-        Grid.Row="3"
+        Grid.Row="4"
         Grid.Column="1"
         Content="{DynamicResource HintShaEnabled}"
         FontWeight="Medium"
         />
 
       <Label
-        Grid.Row="4"
+        Grid.Row="5"
         Grid.Column="0"
         Margin="0 0 0 15"
         Content="Examples"
@@ -129,14 +143,14 @@
         />
 
       <Label
-        Grid.Row="5"
+        Grid.Row="6"
         Grid.Column="0"
         Grid.ColumnSpan="2"
         Content="{DynamicResource HintExample1}"
         />
 
       <Label
-        Grid.Row="6"
+        Grid.Row="7"
         Grid.Column="0"
         Grid.ColumnSpan="2"
         Content="{DynamicResource HintExample2}"

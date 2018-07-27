@@ -17,10 +17,12 @@
   <converters:RowCollectionConverter x:Key="RowCollectionConverter" />
   <converters:StringToVisibilityConverter x:Key="StringToVisibilityConverter" />
   <converters:VisibilityToInverseBoolConverter x:Key="VisibilityToInverseBoolConverter" />
+  <converters:StringToBoolConverter x:Key="StringToBoolConverter" />
 
   <converters:LevelToFileNameConverter x:Key="LevelToFileNameConverter" />
   <converters:LevelToMarginConverter x:Key="LevelToMarginConverter" />
   <converters:LevelToVisibilityConverter x:Key="LevelToVisibilityConverter" />
+  <converters:LevelToFontWeightConverter x:Key="LevelToFontWeightConverter" />
 
   <multiConverters:DataGridBackgroundMultiConverter x:Key="GridBackgroundMultiConverter" />
 </ResourceDictionary>

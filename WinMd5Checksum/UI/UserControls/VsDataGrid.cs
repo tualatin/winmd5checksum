@@ -92,10 +92,9 @@ namespace Org.Vs.WinMd5.UI.UserControls
 
       foreach ( DataGridColumn column in Columns )
       {
-        DataRow row = columns.Tables[0].Rows[index];
-
         try
         {
+          DataRow row = columns.Tables[0].Rows[index];
           int displayIndex = Convert.ToInt32(row[VsColumnDisplayIndex]);
           column.DisplayIndex = displayIndex;
 

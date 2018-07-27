@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Globalization;
-using System.Windows;
 using System.Windows.Data;
 
 
 namespace Org.Vs.WinMd5.UI.Converters
 {
   /// <summary>
-  /// Level to Visibility converter
+  /// String to bool converter
   /// </summary>
-  [ValueConversion(typeof(int), typeof(Visibility))]
-  public class LevelToVisibilityConverter : IValueConverter
+  [ValueConversion(typeof(string), typeof(bool))]
+  public class StringToBoolConverter : IValueConverter
   {
     /// <summary>
     /// Convert
@@ -22,13 +21,10 @@ namespace Org.Vs.WinMd5.UI.Converters
     /// <returns>Visibility value</returns>
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-      if ( !(value is int i) )
-        return Visibility.Collapsed;
+      if ( !(value is string s) )
+        return false;
 
-      if ( parameter is string )
-        return i == 0 ? Visibility.Visible : Visibility.Collapsed;
-
-      return i == 0 ? Visibility.Collapsed : Visibility.Visible;
+      return !string.IsNullOrWhiteSpace(s);
     }
 
     /// <summary>

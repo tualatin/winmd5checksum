@@ -1,25 +1,23 @@
-﻿using System.Collections.ObjectModel;
-using System.Windows.Data;
+﻿using System.Windows.Data;
 using System.Windows.Input;
 using Org.Vs.WinMd5.Controllers.Commands.Interfaces;
-using Org.Vs.WinMd5.Data;
+using Org.Vs.WinMd5.UI.UserControls.DataModels.Data;
 
 
 namespace Org.Vs.WinMd5.BaseView.Interfaces
 {
   public interface IMainWindowViewModel
   {
-
     /// <summary>
-    /// <see cref="ObservableCollection{T}"/> of <see cref="WinMdChecksumData"/>
+    /// <see cref="VsDataGridHierarchialData"/>
     /// </summary>
-    ObservableCollection<WinMdChecksumData> MdChecksumCollection
+    VsDataGridHierarchialData HierarchialData
     {
       get;
     }
 
     /// <summary>
-    /// <see cref="ListCollectionView"/> of <see cref="WinMdChecksumData"/>
+    /// <see cref="ListCollectionView"/>
     /// </summary>
     ListCollectionView CollectionView
     {
@@ -39,6 +37,14 @@ namespace Org.Vs.WinMd5.BaseView.Interfaces
     /// Window closing command
     /// </summary>
     IAsyncCommand WndClosingCommand
+    {
+      get;
+    }
+
+    /// <summary>
+    /// Settings command
+    /// </summary>
+    ICommand SettingsCommand
     {
       get;
     }

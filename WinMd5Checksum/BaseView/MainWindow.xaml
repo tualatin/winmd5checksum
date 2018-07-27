@@ -450,6 +450,22 @@
                   </MenuItem>
 
                   <MenuItem
+                    Header="{DynamicResource SettingsTitle}"
+                    Command="{Binding SettingsCommand}"
+                    CommandParameter="{Binding Path=PlacementTarget, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"
+                    >
+                    <MenuItem.Icon>
+                      <Image
+                        RenderOptions.BitmapScalingMode="HighQuality"
+                        RenderOptions.EdgeMode="Aliased"
+                        Source="/WinMd5;component/Resources/system.ico"
+                        />
+                    </MenuItem.Icon>
+                  </MenuItem>
+
+                  <Separator />
+
+                  <MenuItem
                     Header="{DynamicResource MainContextMenuAbout}"
                     Command="{Binding AboutCommand}"
                     CommandParameter="{Binding Path=PlacementTarget, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"
@@ -484,7 +500,7 @@
             CanUserAddRows="False"
             CanUserReorderColumns="True"
             CanUserSortColumns="True"
-            FrozenColumnCount="6"
+            FrozenColumnCount="2"
             IsSynchronizedWithCurrentItem="True"
             ItemsSource="{Binding CollectionView}"
             SelectionMode="Extended"
@@ -506,7 +522,6 @@
             </i:Interaction.Triggers>
 
             <i:Interaction.Behaviors>
-              <behaviors:DataGridSingleClickBehavior />
               <behaviors:ScrollDataGridRowIntoView />
             </i:Interaction.Behaviors>
 
@@ -516,10 +531,7 @@
                 <Setter Property="Background">
                   <Setter.Value>
                     <MultiBinding Converter="{StaticResource GridBackgroundMultiConverter}">
-                      <Binding Path="Md5Result" />
-                      <Binding Path="Sha1Result" />
-                      <Binding Path="Sha256Result" />
-                      <Binding Path="Sha512Result" />
+                      <Binding Path="Data.Result" />
                     </MultiBinding>
                   </Setter.Value>
                 </Setter>
@@ -528,120 +540,241 @@
             </userControls1:VsDataGrid.RowStyle>
 
             <userControls1:VsDataGrid.Columns>
-              <DataGridTextColumn
+              <DataGridTemplateColumn
                 MinWidth="50"
                 MaxWidth="100"
                 Header="{DynamicResource DataGridNo}"
-                Binding="{Binding ., Converter={StaticResource RowCollectionConverter}, StringFormat=#;;#}"
-                CanUserSort="False"
-                IsReadOnly="True"
-                />
+                >
+                <DataGridTemplateColumn.CellTemplate>
+                  <DataTemplate>
+                    <Grid>
+                      <TextBlock
+                        Margin="5 0 0 0"
+                        Text="{Binding ., Converter={StaticResource RowCollectionConverter}, StringFormat=#;;#}"
+                        Visibility="{Binding Level, Converter={StaticResource LevelToVisibilityConverter}, ConverterParameter=Inverse}"
+                        />
+                    </Grid>
+                  </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+              </DataGridTemplateColumn>
 
               <DataGridTemplateColumn
-                MinWidth="190"
+                MinWidth="210"
                 Header="{DynamicResource DataGridFile}"
                 >
                 <DataGridTemplateColumn.CellTemplate>
                   <DataTemplate>
                     <Grid>
-                      <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition Width="Auto" />
-                      </Grid.ColumnDefinitions>
+                      <StackPanel Orientation="Horizontal">
+                        <ToggleButton
+                          x:Name="Expander"
+                          VerticalAlignment="Center"
+                          ClickMode="Press"
+                          IsChecked="{Binding Path=IsExpanded, UpdateSourceTrigger=PropertyChanged}"
+                          Visibility="{Binding Level, Converter={StaticResource LevelToVisibilityConverter}, ConverterParameter=Inverse}"
+                          >
+                          <ToggleButton.Style>
+                            <Style TargetType="{x:Type ToggleButton}">
+                              <Setter Property="Focusable" Value="False" />
+                              <Setter Property="Height" Value="16" />
+                              <Setter Property="Template">
+                                <Setter.Value>
+                                  <ControlTemplate TargetType="{x:Type ToggleButton}">
+                                    <Border
+                                      Width="16"
+                                      Height="16"
+                                      Background="Transparent"
+                                      BorderBrush="#FF7898B5"
+                                      BorderThickness="0"
+                                      CornerRadius="1"
+                                      SnapsToDevicePixels="true"
+                                      >
+                                      <Path
+                                        x:Name="ExpandPath"
+                                        Margin="1 5 1 1"
+                                        Data="M0,0 L0,6 L6,0 z"
+                                        Fill="{StaticResource BrushSolidBlue}"
+                                        >
+                                        <Path.RenderTransform>
+                                          <RotateTransform Angle="135" CenterX="3" CenterY="3" />
+                                        </Path.RenderTransform>
+                                      </Path>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                      <Trigger Property="IsChecked" Value="True">
+                                        <Setter TargetName="ExpandPath" Property="Fill" Value="{StaticResource BrushSolidGrey02}" />
+                                        <Setter TargetName="ExpandPath" Property="RenderTransform">
+                                          <Setter.Value>
+                                            <RotateTransform Angle="180" CenterX="3" CenterY="3" />
+                                          </Setter.Value>
+                                        </Setter>
+                                        <Setter TargetName="ExpandPath" Property="Stroke" Value="{StaticResource BrushSolidGrey75}" />
+                                      </Trigger>
+                                    </ControlTemplate.Triggers>
+                                  </ControlTemplate>
+                                </Setter.Value>
+                              </Setter>
+                              <Setter Property="Width" Value="16" />
+                            </Style>
+                          </ToggleButton.Style>
+                        </ToggleButton>
 
-                      <TextBox
-                        Grid.Column="0"
-                        Text="{Binding File, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                        IsReadOnly="True"
-                        Style="{StaticResource TextBoxDataGridStyle}"
+                        <Ellipse
+                          Width="5"
+                          Height="5"
+                          Margin="{Binding Level, Converter={StaticResource LevelToMarginConverter}}"
+                          HorizontalAlignment="Center"
+                          VerticalAlignment="Center"
+                          Fill="{DynamicResource BrushSolidBlack}"
+                          Visibility="{Binding Level, Converter={StaticResource LevelToVisibilityConverter}}"
+                          />
+
+                        <TextBlock
+                          Margin="5 0 0 0"
+                          Text="{Binding Data.FileName, Converter={StaticResource LevelToFileNameConverter}}"
+                          FontWeight="{Binding Level, Converter={StaticResource LevelToFontWeightConverter}}"
+                          >
+                          <TextBlock.ToolTip>
+                            <ToolTip
+                              Content="{Binding Data.FileName}"
+                              FontWeight="Normal"
+                              Style="{StaticResource TabItemToolTipStyle}"
+                              Visibility="{Binding Data.FileName, Converter={StaticResource StringToVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}"
+                              />
+                          </TextBlock.ToolTip>
+                        </TextBlock>
+                      </StackPanel>
+                    </Grid>
+                  </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+              </DataGridTemplateColumn>
+
+              <DataGridTemplateColumn
+                MinWidth="90"
+                MaxWidth="100"
+                Header="{DynamicResource DataGridHashIsEnabled}"
+                >
+                <DataGridTemplateColumn.CellTemplate>
+                  <DataTemplate>
+                    <Grid>
+                      <CheckBox
+                        Width="20"
+                        Height="20"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        IsChecked="{Binding Data.HashIsEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        Visibility="{Binding Level, Converter={StaticResource LevelToVisibilityConverter}}"
+                        />
+                    </Grid>
+                  </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+              </DataGridTemplateColumn>
+
+              <DataGridTemplateColumn
+                MinWidth="200"
+                Header="Hash"
+                >
+                <DataGridTemplateColumn.CellTemplate>
+                  <DataTemplate>
+                    <Grid>
+                      <TextBlock
+                        Margin="2 0"
+                        Text="{Binding Data.Hash}"
                         >
-                        <TextBox.ToolTip>
+                        <TextBlock.ToolTip>
                           <ToolTip
-                            Content="{Binding FileName}"
+                            Content="{Binding Data.Hash}"
+                            FontWeight="Normal"
                             Style="{StaticResource TabItemToolTipStyle}"
-                            Visibility="{Binding FileName, Converter={StaticResource StringToVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}"
+                            Visibility="{Binding Data.Hash, Converter={StaticResource StringToVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}"
                             />
-                        </TextBox.ToolTip>
-                      </TextBox>
+                        </TextBlock.ToolTip>
+                      </TextBlock>
+
+                      <Button
+                        Width="16"
+                        Height="16"
+                        Margin="0 0 2 0"
+                        HorizontalAlignment="Right"
+                        Command="{Binding Path=DataContext.CopyToClipboardCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}"
+                        CommandParameter="{Binding Data.Hash}"
+                        IsEnabled="{Binding Data.Hash, Converter={StaticResource StringToBoolConverter}, UpdateSourceTrigger=PropertyChanged}"
+                        ToolTip="{DynamicResource CopyToClipboardToolTip}"
+                        Visibility="{Binding Level, Converter={StaticResource LevelToVisibilityConverter}}"
+                        >
+                        <StackPanel>
+                          <Image
+                            RenderOptions.BitmapScalingMode="HighQuality"
+                            RenderOptions.EdgeMode="Aliased"
+                            Source="/WinMd5;component/Resources/clipboard.png"
+                            >
+                            <Image.Style>
+                              <Style TargetType="{x:Type Image}">
+                                <Style.Triggers>
+                                  <Trigger Property="IsEnabled" Value="False">
+                                    <Setter Property="Opacity" Value="0.25" />
+                                  </Trigger>
+                                </Style.Triggers>
+                              </Style>
+                            </Image.Style>
+                          </Image>
+                        </StackPanel>
+
+                        <Button.Style>
+                          <Style TargetType="{x:Type Button}">
+                            <Setter Property="Background" Value="Transparent" />
+                            <Setter Property="BorderThickness" Value="0" />
+                            <Setter Property="Template">
+                              <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                  <Border
+                                    Name="Chrome"
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="{StaticResource BrushSolidBorderMedium}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    SnapsToDevicePixels="True"
+                                    >
+                                    <ContentPresenter
+                                      Name="Presenter"
+                                      Margin="{TemplateBinding Padding}"
+                                      HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                      RecognizesAccessKey="True"
+                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                      />
+                                  </Border>
+                                  <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                      <Setter TargetName="Chrome" Property="Background" Value="{DynamicResource ButtonOverBackground}" />
+                                      <Setter TargetName="Chrome" Property="BorderBrush" Value="{StaticResource ButtonNormalBorder}" />
+                                      <Setter TargetName="Chrome" Property="BorderThickness" Value="1" />
+                                    </Trigger>
+                                    <Trigger Property="IsPressed" Value="True">
+                                      <Setter TargetName="Chrome" Property="Background" Value="{StaticResource BrushSolidOrangePressed}" />
+                                      <Setter TargetName="Chrome" Property="BorderBrush" Value="{StaticResource ButtonNormalBorder}" />
+                                    </Trigger>
+                                  </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                              </Setter.Value>
+                            </Setter>
+                          </Style>
+                        </Button.Style>
+                      </Button>
                     </Grid>
                   </DataTemplate>
                 </DataGridTemplateColumn.CellTemplate>
               </DataGridTemplateColumn>
 
               <DataGridTemplateColumn
-                MinWidth="70"
-                MaxWidth="100"
-                Header="{DynamicResource DataGridMd5IsEnabled}"
+                MinWidth="200"
+                Header="{DynamicResource DataGridCompare}"
                 >
                 <DataGridTemplateColumn.CellTemplate>
                   <DataTemplate>
                     <Grid>
-                      <CheckBox
-                        Width="20"
-                        Height="20"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        IsChecked="{Binding Md5IsEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        />
-                    </Grid>
-                  </DataTemplate>
-                </DataGridTemplateColumn.CellTemplate>
-              </DataGridTemplateColumn>
-
-              <DataGridTemplateColumn
-                MinWidth="70"
-                MaxWidth="100"
-                Header="{DynamicResource DataGridSh1IsEnabled}"
-                >
-                <DataGridTemplateColumn.CellTemplate>
-                  <DataTemplate>
-                    <Grid>
-                      <CheckBox
-                        Width="20"
-                        Height="20"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        IsChecked="{Binding Sha1IsEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        />
-                    </Grid>
-                  </DataTemplate>
-                </DataGridTemplateColumn.CellTemplate>
-              </DataGridTemplateColumn>
-
-              <DataGridTemplateColumn
-                MinWidth="70"
-                MaxWidth="100"
-                Header="{DynamicResource DataGridSh256IsEnabled}"
-                >
-                <DataGridTemplateColumn.CellTemplate>
-                  <DataTemplate>
-                    <Grid>
-                      <CheckBox
-                        Width="20"
-                        Height="20"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        IsChecked="{Binding Sha256IsEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        />
-                    </Grid>
-                  </DataTemplate>
-                </DataGridTemplateColumn.CellTemplate>
-              </DataGridTemplateColumn>
-
-              <DataGridTemplateColumn
-                MinWidth="70"
-                MaxWidth="100"
-                Header="{DynamicResource DataGridSh512IsEnabled}"
-                >
-                <DataGridTemplateColumn.CellTemplate>
-                  <DataTemplate>
-                    <Grid>
-                      <CheckBox
-                        Width="20"
-                        Height="20"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        IsChecked="{Binding Sha512IsEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      <TextBox
+                        Text="{Binding Data.HashToCompare, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        Visibility="{Binding Level, Converter={StaticResource LevelToVisibilityConverter}}"
                         />
                     </Grid>
                   </DataTemplate>
@@ -649,86 +782,10 @@
               </DataGridTemplateColumn>
 
               <DataGridTextColumn
-                MinWidth="200"
-                Header="{DynamicResource DataGridMd5Hash}"
-                Binding="{Binding Md5Hash, UpdateSourceTrigger=PropertyChanged}"
-                IsReadOnly="True"
-                />
-
-              <DataGridTextColumn
-                MinWidth="200"
-                Header="{DynamicResource DataGridMd5HashCompare}"
-                Binding="{Binding Md5ToCompareHash, UpdateSourceTrigger=PropertyChanged}"
-                />
-
-              <DataGridTextColumn
-                MinWidth="40"
-                MaxWidth="60"
+                MinWidth="90"
+                MaxWidth="110"
                 Header="{DynamicResource DataGridResult}"
-                Binding="{Binding Md5Result, UpdateSourceTrigger=PropertyChanged}"
-                IsReadOnly="True"
-                />
-
-              <DataGridTextColumn
-                MinWidth="200"
-                Header="{DynamicResource DataGridSha1}"
-                Binding="{Binding Sha1Hash, UpdateSourceTrigger=PropertyChanged}"
-                IsReadOnly="True"
-                />
-
-              <DataGridTextColumn
-                MinWidth="200"
-                Header="{DynamicResource DataGridSha1HashCompare}"
-                Binding="{Binding Sha1ToCompare, UpdateSourceTrigger=PropertyChanged}"
-                />
-
-              <DataGridTextColumn
-                MinWidth="40"
-                MaxWidth="60"
-                Header="{DynamicResource DataGridResult}"
-                Binding="{Binding Sha1Result, UpdateSourceTrigger=PropertyChanged}"
-                IsReadOnly="True"
-                />
-
-              <DataGridTextColumn
-                MinWidth="200"
-                Header="{DynamicResource DataGridSha256}"
-                Binding="{Binding Sha256Hash, UpdateSourceTrigger=PropertyChanged}"
-                IsReadOnly="True"
-                />
-
-              <DataGridTextColumn
-                MinWidth="200"
-                Header="{DynamicResource DataGridSha256HashCompare}"
-                Binding="{Binding Sha256ToCompare, UpdateSourceTrigger=PropertyChanged}"
-                />
-
-              <DataGridTextColumn
-                MinWidth="40"
-                MaxWidth="60"
-                Header="{DynamicResource DataGridResult}"
-                Binding="{Binding Sha256Result, UpdateSourceTrigger=PropertyChanged}"
-                IsReadOnly="True"
-                />
-
-              <DataGridTextColumn
-                MinWidth="200"
-                Header="{DynamicResource DataGridSha512}"
-                Binding="{Binding Sha512Hash, UpdateSourceTrigger=PropertyChanged}"
-                IsReadOnly="True"
-                />
-
-              <DataGridTextColumn
-                MinWidth="200"
-                Header="{DynamicResource DataGridSha512HashCompare}"
-                Binding="{Binding Sha512ToCompare, UpdateSourceTrigger=PropertyChanged}"
-                />
-
-              <DataGridTextColumn
-                MinWidth="40"
-                MaxWidth="60"
-                Header="{DynamicResource DataGridResult}"
-                Binding="{Binding Sha512Result, UpdateSourceTrigger=PropertyChanged}"
+                Binding="{Binding Data.Result}"
                 IsReadOnly="True"
                 />
             </userControls1:VsDataGrid.Columns>

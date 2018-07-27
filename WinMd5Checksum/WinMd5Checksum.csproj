@@ -174,6 +174,7 @@
     <Compile Include="Core\Interfaces\ISettingsController.cs" />
     <Compile Include="Core\Utils\InteractionService.cs" />
     <Compile Include="Core\Utils\MouseService.cs" />
+    <Compile Include="Data\HashNames.cs" />
     <Compile Include="Data\HashsumCollectionViewHolder.cs" />
     <Compile Include="Data\Messages\ShowNotificationPopUpMessage.cs" />
     <Compile Include="Data\WinMdChecksumData.cs" />
@@ -190,6 +191,7 @@
     <Compile Include="UI\Converters\InverseBooleanConverter.cs" />
     <Compile Include="UI\Converters\InverseBooleanToVisibilityConverter.cs" />
     <Compile Include="UI\Converters\LevelToFileNameConverter.cs" />
+    <Compile Include="UI\Converters\LevelToFontWeightConverter.cs" />
     <Compile Include="UI\Converters\LevelToMarginConverter.cs" />
     <Compile Include="UI\Converters\LevelToVisibilityConverter.cs" />
     <Compile Include="UI\Converters\MediaBrushToMediaColorConverter.cs" />
@@ -197,6 +199,7 @@
     <Compile Include="UI\Converters\NullToBoolConverter.cs" />
     <Compile Include="UI\Converters\NullToVisibilityConverter.cs" />
     <Compile Include="UI\Converters\RowCollectionConverter.cs" />
+    <Compile Include="UI\Converters\StringToBoolConverter.cs" />
     <Compile Include="UI\Converters\StringToVisibilityConverter.cs" />
     <Compile Include="UI\Converters\StringToWindowMediaBrushConverter.cs" />
     <Compile Include="UI\Converters\StringToWindowsMediaColorConverter.cs" />
@@ -431,7 +434,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.6.1">
@@ -449,6 +454,8 @@
     <Content Include="Config\log4net.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Resources\clipboard.png" />
+    <Resource Include="Resources\system.ico" />
     <Resource Include="Resources\information.png" />
     <Resource Include="Resources\Info.png" />
     <Resource Include="Resources\save.ico" />

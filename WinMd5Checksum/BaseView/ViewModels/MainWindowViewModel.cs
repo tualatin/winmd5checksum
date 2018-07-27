@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
@@ -23,6 +22,7 @@ using Org.Vs.WinMd5.Core.Utils;
 using Org.Vs.WinMd5.Data;
 using Org.Vs.WinMd5.UI.Extensions;
 using Org.Vs.WinMd5.UI.UserControls;
+using Org.Vs.WinMd5.UI.UserControls.DataModels.Data;
 
 
 namespace Org.Vs.WinMd5.BaseView.ViewModels
@@ -43,9 +43,9 @@ namespace Org.Vs.WinMd5.BaseView.ViewModels
     #region Properties
 
     /// <summary>
-    /// <see cref="ObservableCollection{T}"/> of <see cref="WinMdChecksumData"/>
+    /// <see cref="VsDataGridHierarchialData"/>
     /// </summary>
-    public ObservableCollection<WinMdChecksumData> MdChecksumCollection
+    public VsDataGridHierarchialData HierarchialData
     {
       get;
     }
@@ -75,8 +75,8 @@ namespace Org.Vs.WinMd5.BaseView.ViewModels
       _myStopwatch = new Stopwatch();
       _elapsedTimeResource = Application.Current.TryFindResource("ElapsedTime").ToString();
 
-      MdChecksumCollection = new ObservableCollection<WinMdChecksumData>();
-      CollectionView = (ListCollectionView) new CollectionViewSource { Source = MdChecksumCollection }.View;
+      HierarchialData = new VsDataGridHierarchialData();
+      CollectionView = (ListCollectionView) new CollectionViewSource { Source = HierarchialData }.View;
       HashsumCollectionViewHolder.Cv = CollectionView;
 
       ((AsyncCommand<object>) LoadedCommand).PropertyChanged += OnLoadedPropertyChanged;
@@ -163,19 +163,70 @@ namespace Org.Vs.WinMd5.BaseView.ViewModels
     /// </summary>
     public ICommand ToggleAlwaysOnTopCommand => _toggleAlwaysOnTopCommand ?? (_toggleAlwaysOnTopCommand = new RelayCommand(p => ExecuteToggleAlwaysOnTopCommand()));
 
+    private ICommand _settingsCommand;
+
+    /// <summary>
+    /// Settings command
+    /// </summary>
+    public ICommand SettingsCommand => _settingsCommand ?? (_settingsCommand = new RelayCommand(ExecuteSettingsCommand));
+
+    private ICommand _copyToClipboardCommand;
+
+    /// <summary>
+    /// Copy to Clipboard command
+    /// </summary>
+    public ICommand CopyToClipboardCommand => _copyToClipboardCommand ?? (_copyToClipboardCommand = new RelayCommand(ExecuteCopyToClipboardCommand));
+
     #endregion
 
     #region Command functions
+
+    private void ExecuteCopyToClipboardCommand(object arg)
+    {
+      if ( !(arg is string s) )
+        return;
+
+      try
+      {
+        Clipboard.SetText(s);
+        InteractionService.ShowInformationMessageBox(Application.Current.TryFindResource("ClipboardSuccess").ToString());
+      }
+      catch ( Exception ex )
+      {
+        LOG.Error(ex, "{0} caused a(n) {1}", System.Reflection.MethodBase.GetCurrentMethod().Name, ex.GetType().Name);
+      }
+    }
+
+    private void ExecuteSettingsCommand(object arg)
+    {
+      if ( !(arg is Button button) )
+        return;
+
+      MainWindow mainWindow = GetMainWindow(button);
+
+      if ( mainWindow == null )
+        return;
+
+      var settings = new SettingsWindow
+      {
+        Owner = mainWindow
+      };
+      settings.ShowDialog();
+    }
 
     private void ExecuteToggleAlwaysOnTopCommand() => EnvironmentContainer.Instance.CurrentSettings.AlwaysOnTop = !EnvironmentContainer.Instance.CurrentSettings.AlwaysOnTop;
 
     private bool CanExecuteSaveCommand()
     {
-      if ( MdChecksumCollection == null || MdChecksumCollection.Count == 0 )
+      if ( HierarchialData == null || HierarchialData.Count == 0 )
         return false;
 
-      if ( MdChecksumCollection.Any(p => string.IsNullOrWhiteSpace(p.Md5Hash) && string.IsNullOrWhiteSpace(p.Sha1Hash) && string.IsNullOrWhiteSpace(p.Sha256Hash) &&
-                                         string.IsNullOrWhiteSpace(p.Sha512Hash)) )
+      var visibleList = HierarchialData.Where(p => p.HasChildren).ToList();
+
+      if ( visibleList.Count == 0 )
+        return false;
+
+      if ( visibleList.SelectMany(p => p.Children).Where(p => !string.IsNullOrWhiteSpace((p.Data as WinMdChecksumData)?.Hash)).ToList().Count == 0 )
         return false;
 
       return _currentStatusbarState != EStatusbarState.Busy;
@@ -191,7 +242,7 @@ namespace Org.Vs.WinMd5.BaseView.ViewModels
       _cts?.Dispose();
       _cts = new CancellationTokenSource(TimeSpan.FromMinutes(2));
 
-      bool result = await EnvironmentContainer.Instance.SaveHashAsync(MdChecksumCollection, _cts.Token).ConfigureAwait(false);
+      bool result = await EnvironmentContainer.Instance.SaveHashAsync(HierarchialData.Where(p => p.HasChildren).ToList(), _cts.Token).ConfigureAwait(false);
 
       if ( result )
         InteractionService.ShowInformationMessageBox(Application.Current.TryFindResource("SuccessfullySaved").ToString());
@@ -210,7 +261,7 @@ namespace Org.Vs.WinMd5.BaseView.ViewModels
       EnvironmentContainer.CreatePopUpWindow(EnvironmentContainer.ApplicationTitle, Application.Current.TryFindResource("CalculationStopped").ToString());
     }
 
-    private bool CanExecuteStartCalculation() => MdChecksumCollection != null && MdChecksumCollection.Count > 0 && _currentStatusbarState != EStatusbarState.Busy;
+    private bool CanExecuteStartCalculation() => HierarchialData != null && HierarchialData.Count > 0 && _currentStatusbarState != EStatusbarState.Busy;
 
     private async Task ExecuteStartCalculationCommandAsync()
     {
@@ -226,19 +277,21 @@ namespace Org.Vs.WinMd5.BaseView.ViewModels
       _cts?.Dispose();
       _cts = new CancellationTokenSource();
 
-      await EnvironmentContainer.Instance.StartCalculationAsync(MdChecksumCollection, _cts.Token).ConfigureAwait(false);
+      await EnvironmentContainer.Instance.StartCalculationAsync(HierarchialData.Where(p => p.HasChildren).ToList(), _cts.Token).ConfigureAwait(false);
     }
 
-    private bool CanExecuteClearAllCommand() => MdChecksumCollection != null && MdChecksumCollection.Count > 0 && _currentStatusbarState != EStatusbarState.Busy;
+    private bool CanExecuteClearAllCommand() => HierarchialData != null && HierarchialData.Count > 0 && _currentStatusbarState != EStatusbarState.Busy;
 
     private void ExecuteClearAllCommand()
     {
       MouseService.SetBusyState();
-      MdChecksumCollection.Clear();
+
+      HierarchialData.RowData.Clear();
+      HierarchialData.Clear();
       _myStopwatch.Reset();
 
       SetCurrentBusinessData();
-      OnPropertyChanged(nameof(MdChecksumCollection));
+      OnPropertyChanged(nameof(HierarchialData));
       OnPropertyChanged(nameof(CollectionView));
     }
 
@@ -261,12 +314,9 @@ namespace Org.Vs.WinMd5.BaseView.ViewModels
       if ( string.IsNullOrWhiteSpace(fileName) )
         return;
 
-      MdChecksumCollection.Add(new WinMdChecksumData
-      {
-        FileName = fileName
-      });
+      EnvironmentContainer.Instance.CreateHierachialDataObject(HierarchialData, fileName);
 
-      OnPropertyChanged(nameof(MdChecksumCollection));
+      OnPropertyChanged(nameof(HierarchialData));
       OnPropertyChanged(nameof(CollectionView));
     }
 
@@ -345,7 +395,7 @@ namespace Org.Vs.WinMd5.BaseView.ViewModels
       SetCurrentBusinessData();
       EnvironmentContainer.CreatePopUpWindow(EnvironmentContainer.ApplicationTitle, Application.Current.TryFindResource("CalculationFinished").ToString());
 
-      OnPropertyChanged(nameof(MdChecksumCollection));
+      OnPropertyChanged(nameof(HierarchialData));
       OnPropertyChanged(nameof(CollectionView));
     }
 
@@ -438,13 +488,10 @@ namespace Org.Vs.WinMd5.BaseView.ViewModels
 
       foreach ( string file in filePaths )
       {
-        MdChecksumCollection.Add(new WinMdChecksumData
-        {
-          FileName = file
-        });
+        EnvironmentContainer.Instance.CreateHierachialDataObject(HierarchialData, file);
       }
 
-      OnPropertyChanged(nameof(MdChecksumCollection));
+      OnPropertyChanged(nameof(HierarchialData));
       OnPropertyChanged(nameof(CollectionView));
     }
   }

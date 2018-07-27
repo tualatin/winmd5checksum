@@ -42,19 +42,15 @@ namespace Org.Vs.WinMd5.Controllers
           var tasks = new List<Task>
           {
             new Task(() => CalulcateHash<MD5CryptoServiceProvider>(hash.Children
-              .FirstOrDefault(p => (p.Data as WinMdChecksumData)?.FileName == "MD5")?.Data as WinMdChecksumData), token),
+              .FirstOrDefault(p => (p.Data as WinMdChecksumData)?.FileName == HashNames.Md5)?.Data as WinMdChecksumData, (hash.Data as WinMdChecksumData)?.FileName), token),
             new Task(() => CalulcateHash<SHA1CryptoServiceProvider>(hash.Children
-              .FirstOrDefault(p => (p.Data as WinMdChecksumData)?.FileName == "SHA1")?.Data as WinMdChecksumData), token),
+              .FirstOrDefault(p => (p.Data as WinMdChecksumData)?.FileName == HashNames.Sha1)?.Data as WinMdChecksumData, (hash.Data as WinMdChecksumData)?.FileName), token),
             new Task(() => CalulcateHash<SHA256CryptoServiceProvider>(hash.Children
-              .FirstOrDefault(p => (p.Data as WinMdChecksumData)?.FileName == "SHA256")?.Data as WinMdChecksumData), token),
+              .FirstOrDefault(p => (p.Data as WinMdChecksumData)?.FileName == HashNames.Sha256)?.Data as WinMdChecksumData, (hash.Data as WinMdChecksumData)?.FileName), token),
             new Task(() => CalulcateHash<SHA384CryptoServiceProvider>(hash.Children
-              .FirstOrDefault(p => (p.Data as WinMdChecksumData)?.FileName == "SHA384")?.Data as WinMdChecksumData), token),
+              .FirstOrDefault(p => (p.Data as WinMdChecksumData)?.FileName == HashNames.Sha384)?.Data as WinMdChecksumData, (hash.Data as WinMdChecksumData)?.FileName), token),
             new Task(() => CalulcateHash<SHA512CryptoServiceProvider>(hash.Children
-              .FirstOrDefault(p => (p.Data as WinMdChecksumData)?.FileName == "SHA512")?.Data as WinMdChecksumData), token)
-            //new Task(() => CalculateMd5Hash(hash), token),
-            //new Task(() => CalculateSha1Hash(hash), token),
-            //new Task(() => CalculateSha256Hash(hash), token),
-            //new Task(() => CalcaulteSha512Hash(hash), token)
+              .FirstOrDefault(p => (p.Data as WinMdChecksumData)?.FileName == HashNames.Sha512)?.Data as WinMdChecksumData, (hash.Data as WinMdChecksumData)?.FileName), token)
           };
 
           Parallel.ForEach(tasks, task =>
@@ -77,7 +73,7 @@ namespace Org.Vs.WinMd5.Controllers
       return string.Compare(result, expected, StringComparison.OrdinalIgnoreCase) == 0 ? ok : failed;
     }
 
-    private void CalulcateHash<T>(WinMdChecksumData data) where T : HashAlgorithm, new()
+    private void CalulcateHash<T>(WinMdChecksumData data, string fileName) where T : HashAlgorithm, new()
     {
       if ( !data.HashIsEnabled )
       {
@@ -86,91 +82,11 @@ namespace Org.Vs.WinMd5.Controllers
       }
 
       if ( string.IsNullOrWhiteSpace(data.Hash) )
-        data.Hash = HashOf<T>(data.FileName);
+        data.Hash = HashOf<T>(fileName);
 
       if ( !string.IsNullOrWhiteSpace(data.HashToCompare) )
         data.Result = CompareHash(data.Hash, data.HashToCompare);
     }
-
-    /// <summary>
-    /// MD5
-    /// </summary>
-    /// <param name="data"><see cref="WinMdChecksumData"/></param>
-    /// <returns>Task</returns>
-    //private void CalculateMd5Hash(WinMdChecksumData data)
-    //{
-    //  if ( !data.HashIsEnabled )
-    //  {
-    //    data.Hash = string.Empty;
-    //    return;
-    //  }
-
-    //  if ( string.IsNullOrWhiteSpace(data.Hash) )
-    //    data.Hash = HashOf<MD5CryptoServiceProvider>(data.FileName);
-
-    //  if ( !string.IsNullOrWhiteSpace(data.HashToCompare) )
-    //    data.Result = CompareHash(data.Hash, data.HashToCompare);
-    //}
-
-    /// <summary>
-    /// SHA1
-    /// </summary>
-    /// <param name="data"><see cref="WinMdChecksumData"/></param>
-    /// <returns>Task</returns>
-    //private void CalculateSha1Hash(WinMdChecksumData data)
-    //{
-    //  if ( !data.HashIsEnabled )
-    //  {
-    //    data.Hash = string.Empty;
-    //    return;
-    //  }
-
-    //  if ( string.IsNullOrWhiteSpace(data.Hash) )
-    //    data.Hash = HashOf<SHA1CryptoServiceProvider>(data.FileName);
-
-    //  if ( !string.IsNullOrWhiteSpace(data.HashToCompare) )
-    //    data.Result = CompareHash(data.Hash, data.HashToCompare);
-    //}
-
-    /// <summary>
-    /// SHA256
-    /// </summary>
-    /// <param name="data"><see cref="WinMdChecksumData"/></param>
-    /// <returns>Task</returns>
-    //private void CalculateSha256Hash(WinMdChecksumData data)
-    //{
-    //  if ( !data.HashIsEnabled )
-    //  {
-    //    data.Hash = string.Empty;
-    //    return;
-    //  }
-
-    //  if ( string.IsNullOrWhiteSpace(data.Hash) )
-    //    data.Hash = HashOf<SHA256CryptoServiceProvider>(data.FileName);
-
-    //  if ( !string.IsNullOrWhiteSpace(data.HashToCompare) )
-    //    data.Result = CompareHash(data.Hash, data.HashToCompare);
-    //}
-
-    /// <summary>
-    /// SHA512
-    /// </summary>
-    /// <param name="data"><see cref="WinMdChecksumData"/></param>
-    /// <returns>Task</returns>
-    //private void CalcaulteSha512Hash(WinMdChecksumData data)
-    //{
-    //  if ( !data.HashIsEnabled )
-    //  {
-    //    data.Hash = string.Empty;
-    //    return;
-    //  }
-
-    //  if ( string.IsNullOrWhiteSpace(data.Hash) )
-    //    data.Hash = HashOf<SHA512CryptoServiceProvider>(data.FileName);
-
-    //  if ( !string.IsNullOrWhiteSpace(data.HashToCompare) )
-    //    data.Result = CompareHash(data.Hash, data.HashToCompare);
-    //}
 
     private string HashOf<T>(string fileName) where T : HashAlgorithm, new()
     {
