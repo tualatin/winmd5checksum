@@ -656,16 +656,14 @@
                 >
                 <DataGridTemplateColumn.CellTemplate>
                   <DataTemplate>
-                    <Grid>
-                      <CheckBox
-                        Width="20"
-                        Height="20"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        IsChecked="{Binding Data.HashIsEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        Visibility="{Binding Level, Converter={StaticResource LevelToVisibilityConverter}}"
-                        />
-                    </Grid>
+                    <CheckBox
+                      Width="20"
+                      Height="20"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center"
+                      IsChecked="{Binding Data.HashIsEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      Visibility="{Binding Level, Converter={StaticResource LevelToVisibilityConverter}}"
+                      />
                   </DataTemplate>
                 </DataGridTemplateColumn.CellTemplate>
               </DataGridTemplateColumn>
@@ -696,6 +694,7 @@
                         Height="16"
                         Margin="0 0 2 0"
                         HorizontalAlignment="Right"
+                        ClickMode="Press"
                         Command="{Binding Path=DataContext.CopyToClipboardCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}"
                         CommandParameter="{Binding Data.Hash}"
                         IsEnabled="{Binding Data.Hash, Converter={StaticResource StringToBoolConverter}, UpdateSourceTrigger=PropertyChanged}"
@@ -771,12 +770,11 @@
                 >
                 <DataGridTemplateColumn.CellTemplate>
                   <DataTemplate>
-                    <Grid>
-                      <TextBox
-                        Text="{Binding Data.HashToCompare, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        Visibility="{Binding Level, Converter={StaticResource LevelToVisibilityConverter}}"
-                        />
-                    </Grid>
+                    <TextBox
+                      Text="{Binding Data.HashToCompare, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      Style="{StaticResource TextBoxDataGridStyle}"
+                      Visibility="{Binding Level, Converter={StaticResource LevelToVisibilityConverter}}"
+                      />
                   </DataTemplate>
                 </DataGridTemplateColumn.CellTemplate>
               </DataGridTemplateColumn>
