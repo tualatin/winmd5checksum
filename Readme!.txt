@@ -5,6 +5,8 @@ If there are problems, winmd5checksum creates a error logfile in the directory. 
 
 Changelog:
 1.5.xxxx.x
+* new copy hash into Clipboard by clicking a column button
+* new hierachial DataGrid layout
 * new SHA384 hash
 * new some user settings savable
 * new hashes in upper case or lower case -> see settings
