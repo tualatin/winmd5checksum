@@ -73,13 +73,20 @@
   <system:String x:Key="Error">Error</system:String>
 
   <system:String x:Key="ClipboardSuccess">Hash successfully copied to Clipbard.</system:String>
-  <system:String x:Key="CopyToClipboardToolTip">Copy hash into Clipboard</system:String>
+  <system:String x:Key="CopyToClipboardToolTip">Copy hash</system:String>
+
+  <system:String x:Key="ContextMenuOpen">Open</system:String>
+  <system:String x:Key="ContextMenuExit">Exit</system:String>
 
   <system:String x:Key="SettingsTitle">Settings</system:String>
   <system:String x:Key="EnvironmentAlwaysOnTop">Always on top</system:String>
   <system:String x:Key="EnvironmentAlwaysOnTopToolTip">Application is always on top</system:String>
   <system:String x:Key="EnvironmentUpperCase">Hashes in uppercase</system:String>
   <system:String x:Key="EnvironmentUpperCaseToolTip">Print all hashes in uppercase letters</system:String>
+  <system:String x:Key="EnvironmentMinimizeToTray">Minimize to tray</system:String>
+  <system:String x:Key="EnvironmentMinimizeToTrayToolTip">Minimize to tray instead of taskbar</system:String>
+  <system:String x:Key="EnvironmentCloseToTray">Close to tray</system:String>
+  <system:String x:Key="EnvironmentCloseToTrayToolTip">Close button minimize main window instead of terminating the application</system:String>
   <system:String x:Key="EnvironmentPreferredHash">Preferred hash</system:String>
   <system:String x:Key="EnvironmentMd5">MD5 hash</system:String>
   <system:String x:Key="EnvironmentSha1">SHA1 hash</system:String>

@@ -20,6 +20,9 @@ namespace Org.Vs.WinMd5.Core.Data
 
       AlwaysOnTop = memento.AlwaysOnTop;
       UpperCaseHash = memento.UpperCaseHash;
+      MinimizeToTray = memento.MinimizeToTray;
+      CloseToTray = memento.CloseToTray;
+
       Md5IsEnabled = memento.Md5IsEnabled;
       Sha1IsEnabled = memento.Sha1IsEnabled;
       Sha256IsEnabled = memento.Sha256IsEnabled;
@@ -36,6 +39,9 @@ namespace Org.Vs.WinMd5.Core.Data
       {
         AlwaysOnTop = obj.AlwaysOnTop;
         UpperCaseHash = obj.UpperCaseHash;
+        MinimizeToTray = obj.MinimizeToTray;
+        CloseToTray = obj.CloseToTray;
+
         Md5IsEnabled = obj.Md5IsEnabled;
         Sha1IsEnabled = obj.Sha1IsEnabled;
         Sha256IsEnabled = obj.Sha256IsEnabled;
@@ -55,6 +61,22 @@ namespace Org.Vs.WinMd5.Core.Data
       /// Hashes in upper case
       /// </summary>
       public bool UpperCaseHash
+      {
+        get;
+      }
+
+      /// <summary>
+      /// Minimize to tray
+      /// </summary>
+      public bool MinimizeToTray
+      {
+        get;
+      }
+
+      /// <summary>
+      /// Close to tray
+      /// </summary>
+      public bool CloseToTray
       {
         get;
       }

@@ -457,6 +457,7 @@
     <Content Include="Config\log4net.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Resources\transparent.png" />
     <Resource Include="Resources\clipboard.png" />
     <Resource Include="Resources\system.ico" />
     <Resource Include="Resources\information.png" />

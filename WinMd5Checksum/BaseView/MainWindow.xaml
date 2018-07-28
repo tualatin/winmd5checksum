@@ -677,21 +677,13 @@
                 <DataGridTemplateColumn.CellTemplate>
                   <DataTemplate>
                     <Grid>
-                      <TextBlock
-                        Margin="2 0"
-                        Text="{Binding Data.Hash}"
-                        >
-                        <TextBlock.ToolTip>
-                          <ToolTip
-                            Content="{Binding Data.Hash}"
-                            FontWeight="Normal"
-                            Style="{StaticResource TabItemToolTipStyle}"
-                            Visibility="{Binding Data.Hash, Converter={StaticResource StringToVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}"
-                            />
-                        </TextBlock.ToolTip>
-                      </TextBlock>
+                      <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition />
+                      </Grid.ColumnDefinitions>
 
                       <Button
+                        Grid.Column="0"
                         Width="16"
                         Height="16"
                         Margin="0 0 2 0"
@@ -761,6 +753,21 @@
                           </Style>
                         </Button.Style>
                       </Button>
+
+                      <TextBlock
+                        Grid.Column="1"
+                        Margin="2 0"
+                        Text="{Binding Data.Hash}"
+                        >
+                        <TextBlock.ToolTip>
+                          <ToolTip
+                            Content="{Binding Data.Hash}"
+                            FontWeight="Normal"
+                            Style="{StaticResource TabItemToolTipStyle}"
+                            Visibility="{Binding Data.Hash, Converter={StaticResource StringToVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}"
+                            />
+                        </TextBlock.ToolTip>
+                      </TextBlock>
                     </Grid>
                   </DataTemplate>
                 </DataGridTemplateColumn.CellTemplate>
@@ -799,7 +806,39 @@
       <taskbarNotification:TaskbarIcon
         x:Name="TbIcon"
         IconSource="/WinMd5;component/Resources/Key.ico"
+        TrayLeftMouseDown="OnTaskbarIconLeftMouseDown"
         >
+        <taskbarNotification:TaskbarIcon.ContextMenu>
+          <ContextMenu>
+            <MenuItem
+              Header="{DynamicResource ContextMenuOpen}"
+              Click="OnContextMenuItemOpenClick"
+              >
+              <MenuItem.Icon>
+                <Image
+                  RenderOptions.BitmapScalingMode="HighQuality"
+                  RenderOptions.EdgeMode="Aliased"
+                  Source="/WinMd5;component/Resources/transparent.png"
+                  />
+              </MenuItem.Icon>
+            </MenuItem>
+
+            <Separator />
+
+            <MenuItem
+              Header="{DynamicResource ContextMenuExit}"
+              Click="OnContextMenuItemExitClick"
+              >
+              <MenuItem.Icon>
+                <Image
+                  RenderOptions.BitmapScalingMode="HighQuality"
+                  RenderOptions.EdgeMode="Aliased"
+                  Source="/WinMd5;component/Resources/transparent.png"
+                  />
+              </MenuItem.Icon>
+            </MenuItem>
+          </ContextMenu>
+        </taskbarNotification:TaskbarIcon.ContextMenu>
         <taskbarNotification:TaskbarIcon.TrayToolTip>
           <userControls1:FancyToolTip
             ApplicationText="{Binding Source={x:Static utils:EnvironmentContainer.ApplicationTitle}}"

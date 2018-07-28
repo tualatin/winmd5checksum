@@ -44,6 +44,42 @@ namespace Org.Vs.WinMd5.Core.Data
       }
     }
 
+    private bool _minimizeToTray;
+
+    /// <summary>
+    /// Minimize to tray
+    /// </summary>
+    public bool MinimizeToTray
+    {
+      get => _minimizeToTray;
+      set
+      {
+        if ( value == _minimizeToTray )
+          return;
+
+        _minimizeToTray = value;
+        OnPropertyChanged();
+      }
+    }
+
+    private bool _closeToTray;
+
+    /// <summary>
+    /// Close to tray
+    /// </summary>
+    public bool CloseToTray
+    {
+      get => _closeToTray;
+      set
+      {
+        if ( value == _closeToTray )
+          return;
+
+        _closeToTray = value;
+        OnPropertyChanged();
+      }
+    }
+
     private bool _md5IsEnabled;
 
     /// <summary>

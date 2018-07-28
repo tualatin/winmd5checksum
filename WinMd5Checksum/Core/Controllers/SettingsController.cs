@@ -56,11 +56,15 @@ namespace Org.Vs.WinMd5.Core.Controllers
 
           CurrentSettings.AlwaysOnTop = GetBoolFromSetting("AlwaysOnTop");
           CurrentSettings.UpperCaseHash = GetBoolFromSetting("UpperCase");
+          CurrentSettings.MinimizeToTray = GetBoolFromSetting("MinimizeToTray");
+          CurrentSettings.CloseToTray = GetBoolFromSetting("CloseToTray");
+
           CurrentSettings.Md5IsEnabled = GetBoolFromSetting("Md5Enable");
           CurrentSettings.Sha1IsEnabled = GetBoolFromSetting("Sha1Enable");
           CurrentSettings.Sha256IsEnabled = GetBoolFromSetting("Sha256Enable");
           CurrentSettings.Sha384IsEnabled = GetBoolFromSetting("Sha384Enable");
           CurrentSettings.Sha512IsEnabled = GetBoolFromSetting("Sha512Enable");
+
         }
         catch ( Exception ex )
         {
@@ -84,6 +88,9 @@ namespace Org.Vs.WinMd5.Core.Controllers
 
           WriteValueToSetting(config, "AlwaysOnTop", CurrentSettings.AlwaysOnTop);
           WriteValueToSetting(config, "UpperCase", CurrentSettings.UpperCaseHash);
+          WriteValueToSetting(config, "MinimizeToTray", CurrentSettings.MinimizeToTray);
+          WriteValueToSetting(config, "CloseToTray", CurrentSettings.CloseToTray);
+
           WriteValueToSetting(config, "Md5Enable", CurrentSettings.Md5IsEnabled);
           WriteValueToSetting(config, "Sha1Enable", CurrentSettings.Sha1IsEnabled);
           WriteValueToSetting(config, "Sha256Enable", CurrentSettings.Sha256IsEnabled);

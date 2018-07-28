@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Windows;
 using log4net;
 using Org.Vs.WinMd5.Core.Utils;
 using Org.Vs.WinMd5.Data.Messages;
@@ -14,6 +15,8 @@ namespace Org.Vs.WinMd5.BaseView
   {
     private static readonly ILog LOG = LogManager.GetLogger(typeof(MainWindow));
 
+    private bool _shouldClose;
+
     /// <summary>
     /// Standard constructor
     /// </summary>
@@ -25,7 +28,27 @@ namespace Org.Vs.WinMd5.BaseView
       Closing += OnMainWindowClosing;
     }
 
-    private void OnMainWindowClosing(object sender, CancelEventArgs e) => Md5ChecksumDataGrid.SaveDataGridOptions();
+    protected override void OnStateChanged(EventArgs e)
+    {
+      if ( WindowState == WindowState.Minimized && EnvironmentContainer.Instance.CurrentSettings.MinimizeToTray )
+        Hide();
+
+      base.OnStateChanged(e);
+    }
+
+    private void OnMainWindowClosing(object sender, CancelEventArgs e)
+    {
+      if ( EnvironmentContainer.Instance.CurrentSettings.CloseToTray && !_shouldClose )
+      {
+        WindowState = WindowState.Minimized;
+
+        Hide();
+        e.Cancel = true;
+        return;
+      }
+
+      Md5ChecksumDataGrid.SaveDataGridOptions();
+    }
 
     private void PopUpVisibilityChanged(ShowNotificationPopUpMessage args)
     {
@@ -40,6 +63,27 @@ namespace Org.Vs.WinMd5.BaseView
       {
         LOG.Error(ex, "{0} caused a(n) {1}", System.Reflection.MethodBase.GetCurrentMethod().Name, ex.GetType().Name);
       }
+    }
+
+    private void OnTaskbarIconLeftMouseDown(object sender, RoutedEventArgs e)
+    {
+      if ( WindowState != WindowState.Minimized )
+        return;
+
+      Show();
+
+      WindowState = WindowState.Normal;
+
+      Activate();
+      Focus();
+    }
+
+    private void OnContextMenuItemOpenClick(object sender, RoutedEventArgs e) => OnTaskbarIconLeftMouseDown(this, new RoutedEventArgs());
+
+    private void OnContextMenuItemExitClick(object sender, RoutedEventArgs e)
+    {
+      _shouldClose = true;
+      Close();
     }
   }
 }
