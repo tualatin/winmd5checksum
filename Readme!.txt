@@ -1,7 +1,6 @@
 ﻿.NET 4.x required!
 Source: git@github.com:tualatin/winmd5checksum.git
 Known issues: https://github.com/tualatin/winmd5checksum/issues
-If there are problems, winmd5checksum creates a error logfile in the directory. Please send me this error file before restart winmd5checksum, because the program deletes the error log file when it is started
 
 Changelog:
 1.6.6783.x
