@@ -11,6 +11,7 @@ Changelog:
 * new hashes in upper case or lower case -> see settings
 * new SingleClick edit mode in DataGrid
 * bug fix DataGrid layout
+* bug fix compare hashes
 
 1.5.6775.x
 * new enable/disable hash calculations
