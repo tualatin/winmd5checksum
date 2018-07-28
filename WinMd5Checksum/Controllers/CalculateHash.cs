@@ -88,8 +88,7 @@ namespace Org.Vs.WinMd5.Controllers
       else if ( data.Hash.Any(char.IsUpper) && !EnvironmentContainer.Instance.CurrentSettings.UpperCaseHash )
         data.Hash = data.Hash.ToLower();
 
-      if ( !string.IsNullOrWhiteSpace(data.HashToCompare) )
-        data.Result = CompareHash(data.Hash, data.HashToCompare);
+      data.Result = !string.IsNullOrWhiteSpace(data.HashToCompare) ? CompareHash(data.Hash, data.HashToCompare) : string.Empty;
     }
 
     private string HashOf<T>(string fileName) where T : HashAlgorithm, new()
