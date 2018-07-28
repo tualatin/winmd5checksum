@@ -14,6 +14,7 @@
   xmlns:utils1="clr-namespace:Org.Vs.WinMd5.UI.Utils"
   xmlns:viewModels="clr-namespace:Org.Vs.WinMd5.BaseView.ViewModels"
   mc:Ignorable="d"
+  x:Name="WinHashWindow"
   Title="{Binding Source={x:Static utils:EnvironmentContainer.ApplicationTitle}}"
   Width="800"
   Height="450"
@@ -152,6 +153,7 @@
     <KeyBinding Key="{Binding Key, Source={StaticResource ToggleAlwaysOnTopKeyBinding}, Mode=OneTime}" Command="{Binding ToggleAlwaysOnTopCommand}" Modifiers="{Binding Modifiers, Source={StaticResource ToggleAlwaysOnTopKeyBinding}, Mode=OneTime}" />
     <KeyBinding Key="{Binding Key, Source={StaticResource SaveFileKeyBinding}, Mode=OneTime}" Command="{Binding SaveCommand}" Modifiers="{Binding Modifiers, Source={StaticResource SaveFileKeyBinding}, Mode=OneTime}" />
     <KeyBinding Key="{Binding Key, Source={StaticResource ClearItemsKeyBinding}, Mode=OneTime}" Command="{Binding ClearAllCommand}" Modifiers="{Binding Modifiers, Source={StaticResource ClearItemsKeyBinding}, Mode=OneTime}" />
+    <KeyBinding Key="{Binding Key, Source={StaticResource OpenHelpKeyBinding}, Mode=OneTime}" Command="{Binding OpenHelpCommand}" CommandParameter="{Binding ElementName=WinHashWindow}" Modifiers="{Binding Modifiers, Source={StaticResource OpenHelpKeyBinding}, Mode=OneTime}" />
   </Window.InputBindings>
 
   <Border
@@ -439,6 +441,7 @@
                     Header="{DynamicResource MainContextMenuHelp}"
                     Command="{Binding HintCommand}"
                     CommandParameter="{Binding Path=PlacementTarget, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"
+                    InputGestureText="F1"
                     >
                     <MenuItem.Icon>
                       <Image
@@ -476,6 +479,18 @@
                         RenderOptions.EdgeMode="Aliased"
                         Source="/WinMd5;component/Resources/about.png"
                         />
+                    </MenuItem.Icon>
+                  </MenuItem>
+
+                  <Separator />
+
+                  <MenuItem
+                    Header="{DynamicResource ContextMenuExit}"
+                    Command="{Binding ExitCommand}"
+                    CommandParameter="{Binding Path=PlacementTarget, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"
+                    >
+                    <MenuItem.Icon>
+                      <Image Source="/WinMd5;component/Resources/transparent.png" />
                     </MenuItem.Icon>
                   </MenuItem>
                 </ContextMenu>
@@ -815,11 +830,7 @@
               Click="OnContextMenuItemOpenClick"
               >
               <MenuItem.Icon>
-                <Image
-                  RenderOptions.BitmapScalingMode="HighQuality"
-                  RenderOptions.EdgeMode="Aliased"
-                  Source="/WinMd5;component/Resources/transparent.png"
-                  />
+                <Image Source="/WinMd5;component/Resources/transparent.png" />
               </MenuItem.Icon>
             </MenuItem>
 
@@ -830,11 +841,7 @@
               Click="OnContextMenuItemExitClick"
               >
               <MenuItem.Icon>
-                <Image
-                  RenderOptions.BitmapScalingMode="HighQuality"
-                  RenderOptions.EdgeMode="Aliased"
-                  Source="/WinMd5;component/Resources/transparent.png"
-                  />
+                <Image Source="/WinMd5;component/Resources/transparent.png" />
               </MenuItem.Icon>
             </MenuItem>
           </ContextMenu>

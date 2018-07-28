@@ -71,6 +71,16 @@ namespace Org.Vs.WinMd5.Core.Utils
     public static string ApplicationTitle => Application.Current.TryFindResource("ApplicationTitle").ToString();
 
     /// <summary>
+    /// Application Homepage URL
+    /// </summary>
+    public static string ApplicationHomePageWebUrl => "https://github.com/tualatin/winmd5checksum";
+
+    /// <summary>
+    /// Application Issue URL
+    /// </summary>
+    public static string ApplicationIssueWebUrl => "https://github.com/tualatin/winmd5checksum/issues";
+
+    /// <summary>
     /// Application release URL
     /// </summary>
     public static string ApplicationReleaseWebUrl => "https://github.com/tualatin/winmd5checksum/releases";

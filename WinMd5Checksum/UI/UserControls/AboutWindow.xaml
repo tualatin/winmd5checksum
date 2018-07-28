@@ -10,8 +10,8 @@
   xmlns:viewModels="clr-namespace:Org.Vs.WinMd5.UI.UserControls.ViewModels"
   mc:Ignorable="d"
   Title="{DynamicResource AboutWindowTitle}"
-  Width="400"
-  Height="300"
+  Width="410"
+  Height="350"
   ResizeMode="NoResize"
   ShowInTaskbar="False"
   WindowStartupLocation="CenterOwner"
@@ -42,11 +42,13 @@
       <RowDefinition Height="30" />
       <RowDefinition Height="30" />
       <RowDefinition Height="30" />
+      <RowDefinition Height="30" />
+      <RowDefinition Height="30" />
       <RowDefinition />
     </Grid.RowDefinitions>
 
     <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="73" />
+      <ColumnDefinition Width="Auto" />
       <ColumnDefinition Width="90" />
       <ColumnDefinition Width="229*" />
     </Grid.ColumnDefinitions>
@@ -133,12 +135,13 @@
       Content="{DynamicResource AboutAllRightReservedString}"
       />
 
-    <!--  ReSharper disable once Xaml.MissingGridIndex  -->
     <Label
       Grid.Row="5"
+      Grid.Column="0"
       VerticalAlignment="Center"
       Content="{DynamicResource AboutHomepageString}"
       />
+
     <TextBlock
       Grid.Row="5"
       Grid.Column="1"
@@ -147,9 +150,9 @@
       >
       <Hyperlink
         Name="Hyperlink"
-        NavigateUri="{Binding Source={x:Static utils:EnvironmentContainer.ApplicationReleaseWebUrl}}"
+        NavigateUri="{Binding Source={x:Static utils:EnvironmentContainer.ApplicationHomePageWebUrl}}"
         >
-        <TextBlock Text="{Binding Source={x:Static utils:EnvironmentContainer.ApplicationReleaseWebUrl}}" />
+        <TextBlock Text="{Binding Source={x:Static utils:EnvironmentContainer.ApplicationHomePageWebUrl}}" />
         <i:Interaction.Triggers>
           <i:EventTrigger EventName="RequestNavigate">
             <i:InvokeCommandAction
@@ -161,8 +164,67 @@
       </Hyperlink>
     </TextBlock>
 
-    <Button
+    <Label
       Grid.Row="6"
+      Grid.Column="0"
+      Margin="0 0 5 0"
+      VerticalAlignment="Center"
+      Content="{DynamicResource AboutDownloadPageString}"
+      />
+
+    <TextBlock
+      Grid.Row="6"
+      Grid.Column="1"
+      Grid.ColumnSpan="2"
+      VerticalAlignment="Center"
+      >
+      <Hyperlink
+        Name="DownloadLink"
+        NavigateUri="{Binding Source={x:Static utils:EnvironmentContainer.ApplicationReleaseWebUrl}}"
+        >
+        <TextBlock Text="{Binding Source={x:Static utils:EnvironmentContainer.ApplicationReleaseWebUrl}}" />
+        <i:Interaction.Triggers>
+          <i:EventTrigger EventName="RequestNavigate">
+            <i:InvokeCommandAction
+              Command="{Binding RequestNavigateCommand}"
+              CommandParameter="{Binding NavigateUri, ElementName=DownloadLink}"
+              />
+          </i:EventTrigger>
+        </i:Interaction.Triggers>
+      </Hyperlink>
+    </TextBlock>
+
+    <Label
+      Grid.Row="7"
+      Grid.Column="0"
+      VerticalAlignment="Center"
+      Content="{DynamicResource AboutIssuePageString}"
+      />
+
+    <TextBlock
+      Grid.Row="7"
+      Grid.Column="1"
+      Grid.ColumnSpan="2"
+      VerticalAlignment="Center"
+      >
+      <Hyperlink
+        Name="IssuesLink"
+        NavigateUri="{Binding Source={x:Static utils:EnvironmentContainer.ApplicationIssueWebUrl}}"
+        >
+        <TextBlock Text="{Binding Source={x:Static utils:EnvironmentContainer.ApplicationIssueWebUrl}}" />
+        <i:Interaction.Triggers>
+          <i:EventTrigger EventName="RequestNavigate">
+            <i:InvokeCommandAction
+              Command="{Binding RequestNavigateCommand}"
+              CommandParameter="{Binding NavigateUri, ElementName=IssuesLink}"
+              />
+          </i:EventTrigger>
+        </i:Interaction.Triggers>
+      </Hyperlink>
+    </TextBlock>
+
+    <Button
+      Grid.Row="8"
       Grid.Column="0"
       Grid.ColumnSpan="3"
       Width="24"
@@ -222,12 +284,12 @@
 
     <!--  ReSharper disable once Xaml.MissingGridIndex  -->
     <Label
-      Grid.Row="7"
+      Grid.Row="9"
       VerticalAlignment="Center"
       Content="{DynamicResource AboutUptimeString}"
       />
     <Label
-      Grid.Row="7"
+      Grid.Row="9"
       Grid.Column="1"
       Grid.ColumnSpan="2"
       Margin="0 2"

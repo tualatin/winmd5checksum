@@ -11,7 +11,7 @@
   mc:Ignorable="d"
   Title="{DynamicResource SettingsTitle}"
   Width="250"
-  Height="340"
+  Height="320"
   CanClose="{Binding SaveCommand.Execution.IsSuccessfullyCompleted}"
   Icon="/WinMd5;component/Resources/system.ico"
   ResizeMode="NoResize"
@@ -122,7 +122,7 @@
       Height="22"
       Content="{DynamicResource EnvironmentMinimizeToTray}"
       IsChecked="{Binding Source={x:Static utils:EnvironmentContainer.Instance}, Path=CurrentSettings.MinimizeToTray, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-      TabIndex="1"
+      TabIndex="2"
       >
       <CheckBox.ToolTip>
         <StackPanel>
@@ -156,13 +156,12 @@
       </CheckBox.ToolTip>
     </CheckBox>
 
-
     <CheckBox
       Grid.Row="3"
       Height="22"
       Content="{DynamicResource EnvironmentCloseToTray}"
       IsChecked="{Binding Source={x:Static utils:EnvironmentContainer.Instance}, Path=CurrentSettings.CloseToTray, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-      TabIndex="1"
+      TabIndex="3"
       >
       <CheckBox.ToolTip>
         <StackPanel>
@@ -215,7 +214,7 @@
           Height="22"
           Content="{DynamicResource EnvironmentMd5}"
           IsChecked="{Binding Source={x:Static utils:EnvironmentContainer.Instance}, Path=CurrentSettings.Md5IsEnabled, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-          TabIndex="2"
+          TabIndex="4"
           />
 
         <CheckBox
@@ -223,7 +222,7 @@
           Height="22"
           Content="{DynamicResource EnvironmentSha1}"
           IsChecked="{Binding Source={x:Static utils:EnvironmentContainer.Instance}, Path=CurrentSettings.Sha1IsEnabled, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-          TabIndex="3"
+          TabIndex="5"
           />
 
         <CheckBox
@@ -231,7 +230,7 @@
           Height="22"
           Content="{DynamicResource EnvironmentSha256}"
           IsChecked="{Binding Source={x:Static utils:EnvironmentContainer.Instance}, Path=CurrentSettings.Sha256IsEnabled, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-          TabIndex="3"
+          TabIndex="6"
           />
 
         <CheckBox
@@ -239,7 +238,7 @@
           Height="22"
           Content="{DynamicResource EnvironmentSha384}"
           IsChecked="{Binding Source={x:Static utils:EnvironmentContainer.Instance}, Path=CurrentSettings.Sha384IsEnabled, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-          TabIndex="4"
+          TabIndex="7"
           />
 
         <CheckBox
@@ -247,7 +246,7 @@
           Height="22"
           Content="{DynamicResource EnvironmentSha512}"
           IsChecked="{Binding Source={x:Static utils:EnvironmentContainer.Instance}, Path=CurrentSettings.Sha512IsEnabled, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-          TabIndex="5"
+          TabIndex="8"
           />
       </Grid>
     </GroupBox>
@@ -260,7 +259,7 @@
       VerticalAlignment="Center"
       Content="OK"
       Command="{Binding SaveCommand}"
-      TabIndex="6"
+      TabIndex="9"
       >
       <Button.InputBindings>
         <KeyBinding Key="Enter" Command="{Binding SaveCommand}" />

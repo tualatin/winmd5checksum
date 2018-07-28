@@ -15,7 +15,20 @@ namespace Org.Vs.WinMd5.BaseView
   {
     private static readonly ILog LOG = LogManager.GetLogger(typeof(MainWindow));
 
-    private bool _shouldClose;
+    /// <summary>
+    /// Should close property
+    /// </summary>
+    public static readonly DependencyProperty ShouldCloseProperty = DependencyProperty.Register(nameof(ShouldClose), typeof(bool), typeof(MainWindow),
+      new PropertyMetadata(false));
+
+    /// <summary>
+    /// Should close
+    /// </summary>
+    public bool ShouldClose
+    {
+      get => (bool) GetValue(ShouldCloseProperty);
+      set => SetValue(ShouldCloseProperty, value);
+    }
 
     /// <summary>
     /// Standard constructor
@@ -38,7 +51,7 @@ namespace Org.Vs.WinMd5.BaseView
 
     private void OnMainWindowClosing(object sender, CancelEventArgs e)
     {
-      if ( EnvironmentContainer.Instance.CurrentSettings.CloseToTray && !_shouldClose )
+      if ( EnvironmentContainer.Instance.CurrentSettings.CloseToTray && !ShouldClose )
       {
         WindowState = WindowState.Minimized;
 
@@ -82,7 +95,7 @@ namespace Org.Vs.WinMd5.BaseView
 
     private void OnContextMenuItemExitClick(object sender, RoutedEventArgs e)
     {
-      _shouldClose = true;
+      ShouldClose = true;
       Close();
     }
   }

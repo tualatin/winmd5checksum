@@ -112,5 +112,21 @@ namespace Org.Vs.WinMd5.BaseView.Interfaces
     {
       get;
     }
+
+    /// <summary>
+    /// Exit command
+    /// </summary>
+    ICommand ExitCommand
+    {
+      get;
+    }
+
+    /// <summary>
+    /// Open help command
+    /// </summary>
+    ICommand OpenHelpCommand
+    {
+      get;
+    }
   }
 }

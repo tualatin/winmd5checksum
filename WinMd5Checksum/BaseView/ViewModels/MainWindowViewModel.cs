@@ -177,9 +177,49 @@ namespace Org.Vs.WinMd5.BaseView.ViewModels
     /// </summary>
     public ICommand CopyToClipboardCommand => _copyToClipboardCommand ?? (_copyToClipboardCommand = new RelayCommand(ExecuteCopyToClipboardCommand));
 
+    private ICommand _exitCommand;
+
+    /// <summary>
+    /// Exit command
+    /// </summary>
+    public ICommand ExitCommand => _exitCommand ?? (_exitCommand = new RelayCommand(ExecuteExitCommand));
+
+    private ICommand _openHelpCommand;
+
+    /// <summary>
+    /// Open help command
+    /// </summary>
+    public ICommand OpenHelpCommand => _openHelpCommand ?? (_openHelpCommand = new RelayCommand(p => ExecuteOpenHelpCommand((Window) p)));
+
     #endregion
 
     #region Command functions
+
+    private void ExecuteOpenHelpCommand(Window window)
+    {
+      if ( window == null )
+        return;
+
+      var hint = new HintWindow
+      {
+        Owner = window
+      };
+      hint.ShowDialog();
+    }
+
+    private void ExecuteExitCommand(object arg)
+    {
+      if ( !(arg is Button button) )
+        return;
+
+      MainWindow mainWindow = GetMainWindow(button);
+
+      if ( mainWindow == null )
+        return;
+
+      mainWindow.ShouldClose = true;
+      mainWindow.Close();
+    }
 
     private void ExecuteCopyToClipboardCommand(object arg)
     {

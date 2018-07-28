@@ -8,4 +8,5 @@
   <KeyBinding x:Key="StopCalculatinKeyBinding" Gesture="CTRL+U" />
   <KeyBinding x:Key="ClearItemsKeyBinding" Gesture="CTRL+E" />
   <KeyBinding x:Key="ToggleAlwaysOnTopKeyBinding" Gesture="ALT+T" />
+  <KeyBinding x:Key="OpenHelpKeyBinding" Gesture="F1" />
 </ResourceDictionary>
