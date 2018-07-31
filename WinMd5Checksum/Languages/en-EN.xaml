@@ -89,6 +89,8 @@
   <system:String x:Key="EnvironmentMinimizeToTrayToolTip">Minimize to tray instead of taskbar</system:String>
   <system:String x:Key="EnvironmentCloseToTray">Close to tray</system:String>
   <system:String x:Key="EnvironmentCloseToTrayToolTip">Close button minimize main window instead of terminating the application</system:String>
+  <system:String x:Key="EnvironmentSingleInstance">Single instance</system:String>
+  <system:String x:Key="EnvironmentSingleInstanceToolTip">Start only a single instance of application</system:String>
   <system:String x:Key="EnvironmentPreferredHash">Preferred hash</system:String>
   <system:String x:Key="EnvironmentMd5">MD5 hash</system:String>
   <system:String x:Key="EnvironmentSha1">SHA1 hash</system:String>

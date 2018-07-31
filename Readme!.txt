@@ -3,6 +3,10 @@ Source: git@github.com:tualatin/winmd5checksum.git
 Known issues: https://github.com/tualatin/winmd5checksum/issues
 
 Changelog:
+1.6.xxxx.x
+* new Single instance (see Settings dialog)
+* bug fix create empty folder in user dir
+
 1.6.6783.x
 * new copy hash into Clipboard by clicking a column button
 * new hierachial DataGrid layout

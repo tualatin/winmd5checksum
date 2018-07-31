@@ -28,7 +28,7 @@ namespace Org.Vs.WinMd5.BaseView.Interfaces
     /// <summary>
     /// Loaded command
     /// </summary>
-    IAsyncCommand LoadedCommand
+    ICommand LoadedCommand
     {
       get;
     }

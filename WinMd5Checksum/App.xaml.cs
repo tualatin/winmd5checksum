@@ -7,6 +7,7 @@ using System.Threading;
 using System.Windows;
 using log4net;
 using Org.Vs.WinMd5.BaseView;
+using Org.Vs.WinMd5.Core.Data.Base;
 using Org.Vs.WinMd5.Core.Utils;
 using Org.Vs.WinMd5.Data;
 using Org.Vs.WinMd5.UI.UserControls.DataModels;
@@ -22,6 +23,9 @@ namespace Org.Vs.WinMd5
   {
     private static readonly ILog LOG = LogManager.GetLogger(typeof(App));
 
+    private readonly Guid _winHashGui = new Guid("2ff45286-9806-41ca-a99a-41c0efe8980f");
+
+    private MainWindow _mainWindow;
     private List<VsDataGridHierarchialDataModel> _collection;
     private bool _md5;
     private bool _sha1;
@@ -108,9 +112,29 @@ namespace Org.Vs.WinMd5
         return;
       }
 
-      var wnd = new MainWindow();
+      NotifyTaskCompletion.Create(EnvironmentContainer.Instance.ReadSettingsAsync()).PropertyChanged += OnReadSettingsPropertyChanged;
       AppDomain.CurrentDomain.UnhandledException += CurrentDomainUnhandledException;
-      wnd.Show();
+    }
+
+    private void OnReadSettingsPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+    {
+      if ( !e.PropertyName.Equals("IsSuccessfullyCompleted") )
+        return;
+
+
+      if ( EnvironmentContainer.Instance.CurrentSettings.SingleInstance )
+      {
+        var instance = new SingleInstance(_winHashGui);
+
+        instance.Run(() =>
+        {
+          new MainWindow().Show();
+          return MainWindow;
+        }, null);
+        return;
+      }
+
+      _mainWindow.Show();
     }
 
     private void ResetHashCalculation()
@@ -192,5 +216,7 @@ namespace Org.Vs.WinMd5
 
     private static void CurrentDomainUnhandledException(object sender, UnhandledExceptionEventArgs e) =>
       LOG.Error("{0} caused a(n) {1} {2}", System.Reflection.MethodBase.GetCurrentMethod().Name, e.ExceptionObject.GetType().Name, e.ExceptionObject);
+
+    public bool SignalExternalCommandLineArgs(IList<string> args) => true;
   }
 }

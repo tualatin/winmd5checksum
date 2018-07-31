@@ -79,18 +79,17 @@ namespace Org.Vs.WinMd5.BaseView.ViewModels
       CollectionView = (ListCollectionView) new CollectionViewSource { Source = HierarchialData }.View;
       HashsumCollectionViewHolder.Cv = CollectionView;
 
-      ((AsyncCommand<object>) LoadedCommand).PropertyChanged += OnLoadedPropertyChanged;
       ((AsyncCommand<object>) StartCalculationCommand).PropertyChanged += OnStartCalculationPropertyChanged;
     }
 
     #region Commands
 
-    private IAsyncCommand _loadedCommand;
+    private ICommand _loadedCommand;
 
     /// <summary>
     /// Loaded command
     /// </summary>
-    public IAsyncCommand LoadedCommand => _loadedCommand ?? (_loadedCommand = AsyncCommand.Create(ExecuteLoadedCommandAsync));
+    public ICommand LoadedCommand => _loadedCommand ?? (_loadedCommand = new RelayCommand(p => ExecuteLoadedCommand()));
 
     private IAsyncCommand _wndClosingCommand;
 
@@ -394,10 +393,10 @@ namespace Org.Vs.WinMd5.BaseView.ViewModels
       about.ShowDialog();
     }
 
-    private async Task ExecuteLoadedCommandAsync()
+    private void ExecuteLoadedCommand()
     {
-      await EnvironmentContainer.Instance.ReadSettingsAsync();
-      //await CreateUserSettingFolderAsync();
+      SetCurrentBusinessData();
+      LOG.Trace($"{EnvironmentContainer.ApplicationTitle} startup completed!");
     }
 
     private async Task ExecuteWndClosingCommandAsync(object param)
@@ -415,15 +414,6 @@ namespace Org.Vs.WinMd5.BaseView.ViewModels
     }
 
     #endregion
-
-    private void OnLoadedPropertyChanged(object sender, PropertyChangedEventArgs e)
-    {
-      if ( !e.PropertyName.Equals("IsSuccessfullyCompleted") )
-        return;
-
-      SetCurrentBusinessData();
-      LOG.Trace($"{EnvironmentContainer.ApplicationTitle} startup completed!");
-    }
 
     private void OnStartCalculationPropertyChanged(object sender, PropertyChangedEventArgs e)
     {

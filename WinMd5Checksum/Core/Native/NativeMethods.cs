@@ -467,5 +467,23 @@ namespace Org.Vs.WinMd5.Core.Native
     /// <returns></returns>
     [DllImport("user32.dll")]
     internal static extern IntPtr SendMessage(IntPtr hwnd, uint msg, IntPtr wParam, IntPtr lParam);
+
+    /// <summary>
+    /// Determines whether the specified window is minimized (iconic).
+    /// </summary>
+    /// <param name="hwnd">A handle to the window to be tested.</param>
+    /// <returns>If the window is iconic, the return value is nonzero.
+    /// If the window is not iconic, the return value is zero.</returns>
+    [DllImport("user32.dll")]
+    internal static extern bool IsIconic(IntPtr hwnd);
+
+    /// <summary>
+    /// Restores a minimized (iconic) window to its previous size and position; it then activates the window.
+    /// </summary>
+    /// <param name="hwnd">A handle to the window to be restored and activated.</param>
+    /// <returns>If the function succeeds, the return value is nonzero.
+    /// If the function fails, the return value is zero.To get extended error information, call GetLastError.</returns>
+    [DllImport("user32.dll")]
+    internal static extern bool OpenIcon(IntPtr hwnd);
   }
 }

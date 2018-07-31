@@ -22,6 +22,7 @@ namespace Org.Vs.WinMd5.Core.Data
       UpperCaseHash = memento.UpperCaseHash;
       MinimizeToTray = memento.MinimizeToTray;
       CloseToTray = memento.CloseToTray;
+      SingleInstance = memento.SingleInstance;
 
       Md5IsEnabled = memento.Md5IsEnabled;
       Sha1IsEnabled = memento.Sha1IsEnabled;
@@ -41,12 +42,21 @@ namespace Org.Vs.WinMd5.Core.Data
         UpperCaseHash = obj.UpperCaseHash;
         MinimizeToTray = obj.MinimizeToTray;
         CloseToTray = obj.CloseToTray;
+        SingleInstance = obj.SingleInstance;
 
         Md5IsEnabled = obj.Md5IsEnabled;
         Sha1IsEnabled = obj.Sha1IsEnabled;
         Sha256IsEnabled = obj.Sha256IsEnabled;
         Sha384IsEnabled = obj.Sha384IsEnabled;
         Sha512IsEnabled = obj.Sha512IsEnabled;
+      }
+
+      /// <summary>
+      /// Single instance
+      /// </summary>
+      public bool SingleInstance
+      {
+        get;
       }
 
       /// <summary>

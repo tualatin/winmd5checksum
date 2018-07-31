@@ -58,6 +58,7 @@ namespace Org.Vs.WinMd5.Core.Controllers
           CurrentSettings.UpperCaseHash = GetBoolFromSetting("UpperCase");
           CurrentSettings.MinimizeToTray = GetBoolFromSetting("MinimizeToTray");
           CurrentSettings.CloseToTray = GetBoolFromSetting("CloseToTray");
+          CurrentSettings.SingleInstance = GetBoolFromSetting("SingleInstance");
 
           CurrentSettings.Md5IsEnabled = GetBoolFromSetting("Md5Enable");
           CurrentSettings.Sha1IsEnabled = GetBoolFromSetting("Sha1Enable");
@@ -90,6 +91,7 @@ namespace Org.Vs.WinMd5.Core.Controllers
           WriteValueToSetting(config, "UpperCase", CurrentSettings.UpperCaseHash);
           WriteValueToSetting(config, "MinimizeToTray", CurrentSettings.MinimizeToTray);
           WriteValueToSetting(config, "CloseToTray", CurrentSettings.CloseToTray);
+          WriteValueToSetting(config, "SingleInstance", CurrentSettings.SingleInstance);
 
           WriteValueToSetting(config, "Md5Enable", CurrentSettings.Md5IsEnabled);
           WriteValueToSetting(config, "Sha1Enable", CurrentSettings.Sha1IsEnabled);

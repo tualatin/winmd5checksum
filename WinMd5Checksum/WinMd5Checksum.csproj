@@ -125,6 +125,7 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Remoting" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.SDK.Expression.Blend.1.0.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
     </Reference>
@@ -175,6 +176,7 @@
     <Compile Include="Core\Interfaces\ISettingsController.cs" />
     <Compile Include="Core\Utils\InteractionService.cs" />
     <Compile Include="Core\Utils\MouseService.cs" />
+    <Compile Include="Core\Utils\SingleInstance.cs" />
     <Compile Include="Data\HashNames.cs" />
     <Compile Include="Data\HashsumCollectionViewHolder.cs" />
     <Compile Include="Data\Messages\ShowNotificationPopUpMessage.cs" />

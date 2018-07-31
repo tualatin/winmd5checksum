@@ -8,6 +8,24 @@ namespace Org.Vs.WinMd5.Core.Data
   /// </summary>
   public partial class EnvironmentSettingsData : NotifyMaster
   {
+    private bool _singleInstance;
+
+    /// <summary>
+    /// Single instance
+    /// </summary>
+    public bool SingleInstance
+    {
+      get => _singleInstance;
+      set
+      {
+        if (value == _singleInstance)
+          return;
+
+        _singleInstance = value;
+        OnPropertyChanged();
+      }
+    }
+
     private bool _alwaysOnTop;
 
     /// <summary>

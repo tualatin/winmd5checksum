@@ -11,7 +11,7 @@
   mc:Ignorable="d"
   Title="{DynamicResource SettingsTitle}"
   Width="250"
-  Height="320"
+  Height="350"
   CanClose="{Binding SaveCommand.Execution.IsSuccessfullyCompleted}"
   Icon="/WinMd5;component/Resources/system.ico"
   ResizeMode="NoResize"
@@ -30,6 +30,7 @@
 
   <Grid Margin="5">
     <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
       <RowDefinition Height="Auto" />
       <RowDefinition Height="Auto" />
       <RowDefinition Height="Auto" />
@@ -195,8 +196,47 @@
       </CheckBox.ToolTip>
     </CheckBox>
 
-    <GroupBox
+    <CheckBox
       Grid.Row="4"
+      Height="22"
+      Content="{DynamicResource EnvironmentSingleInstance}"
+      IsChecked="{Binding Source={x:Static utils:EnvironmentContainer.Instance}, Path=CurrentSettings.SingleInstance, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+      TabIndex="4"
+      >
+      <CheckBox.ToolTip>
+        <StackPanel>
+          <TextBlock
+            Margin="0 0 0 5"
+            Text="{DynamicResource EnvironmentSingleInstance}"
+            FontSize="12"
+            FontWeight="Bold"
+            />
+          <TextBlock Text="{DynamicResource EnvironmentSingleInstanceToolTip}" />
+          <Border
+            Margin="0 8"
+            BorderBrush="Silver"
+            BorderThickness="0 1 0 0"
+            />
+          <WrapPanel>
+            <Image
+              Width="16"
+              Height="16"
+              Margin="0 0 5 0"
+              RenderOptions.BitmapScalingMode="HighQuality"
+              RenderOptions.EdgeMode="Aliased"
+              Source="/WinMd5;component/Resources/Search.ico"
+              />
+            <TextBlock
+              Text="{DynamicResource GeneralToolTipHint}"
+              FontStyle="Italic"
+              />
+          </WrapPanel>
+        </StackPanel>
+      </CheckBox.ToolTip>
+    </CheckBox>
+
+    <GroupBox
+      Grid.Row="5"
       Margin="5"
       Header="{DynamicResource EnvironmentPreferredHash}"
       >
@@ -214,7 +254,7 @@
           Height="22"
           Content="{DynamicResource EnvironmentMd5}"
           IsChecked="{Binding Source={x:Static utils:EnvironmentContainer.Instance}, Path=CurrentSettings.Md5IsEnabled, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-          TabIndex="4"
+          TabIndex="5"
           />
 
         <CheckBox
@@ -222,7 +262,7 @@
           Height="22"
           Content="{DynamicResource EnvironmentSha1}"
           IsChecked="{Binding Source={x:Static utils:EnvironmentContainer.Instance}, Path=CurrentSettings.Sha1IsEnabled, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-          TabIndex="5"
+          TabIndex="6"
           />
 
         <CheckBox
@@ -230,7 +270,7 @@
           Height="22"
           Content="{DynamicResource EnvironmentSha256}"
           IsChecked="{Binding Source={x:Static utils:EnvironmentContainer.Instance}, Path=CurrentSettings.Sha256IsEnabled, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-          TabIndex="6"
+          TabIndex="7"
           />
 
         <CheckBox
@@ -238,7 +278,7 @@
           Height="22"
           Content="{DynamicResource EnvironmentSha384}"
           IsChecked="{Binding Source={x:Static utils:EnvironmentContainer.Instance}, Path=CurrentSettings.Sha384IsEnabled, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-          TabIndex="7"
+          TabIndex="8"
           />
 
         <CheckBox
@@ -246,20 +286,20 @@
           Height="22"
           Content="{DynamicResource EnvironmentSha512}"
           IsChecked="{Binding Source={x:Static utils:EnvironmentContainer.Instance}, Path=CurrentSettings.Sha512IsEnabled, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-          TabIndex="8"
+          TabIndex="9"
           />
       </Grid>
     </GroupBox>
 
     <Button
-      Grid.Row="6"
+      Grid.Row="7"
       Width="75"
       Height="24"
       Margin="0 5 0 0"
       VerticalAlignment="Center"
       Content="OK"
       Command="{Binding SaveCommand}"
-      TabIndex="9"
+      TabIndex="10"
       >
       <Button.InputBindings>
         <KeyBinding Key="Enter" Command="{Binding SaveCommand}" />
