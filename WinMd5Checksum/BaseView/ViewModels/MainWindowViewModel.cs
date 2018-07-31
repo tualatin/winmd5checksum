@@ -397,7 +397,7 @@ namespace Org.Vs.WinMd5.BaseView.ViewModels
     private async Task ExecuteLoadedCommandAsync()
     {
       await EnvironmentContainer.Instance.ReadSettingsAsync();
-      await CreateUserSettingFolderAsync();
+      //await CreateUserSettingFolderAsync();
     }
 
     private async Task ExecuteWndClosingCommandAsync(object param)
