@@ -5,14 +5,27 @@ using System.Runtime.Remoting.Channels;
 using System.Runtime.Remoting.Channels.Ipc;
 using System.Threading;
 using System.Windows;
+using log4net;
 
 
 namespace Org.Vs.WinMd5.Core.Utils
 {
+  /// <summary>
+  /// Single instance service
+  /// </summary>
   public class SingleInstance : IDisposable
   {
+    private static readonly ILog LOG = LogManager.GetLogger(typeof(SingleInstance));
+
+    /// <summary>
+    /// Argument handler
+    /// </summary>
+    /// <param name="args"></param>
     public delegate void ArgsHandler(string[] args);
 
+    /// <summary>
+    /// Arguments recieved
+    /// </summary>
     public event ArgsHandler ArgsRecieved;
 
     private readonly Guid _appGuid;
@@ -82,6 +95,9 @@ namespace Org.Vs.WinMd5.Core.Utils
       _mutex = new Mutex(true, assemblyName + _appGuid, out _owned);
     }
 
+    /// <summary>
+    /// Release all resources used by <see cref="SingleInstance"/>
+    /// </summary>
     public void Dispose()
     {
       if ( _owned ) // always release a mutex if you own it
@@ -91,6 +107,11 @@ namespace Org.Vs.WinMd5.Core.Utils
       }
     }
 
+    /// <summary>
+    /// Run application
+    /// </summary>
+    /// <param name="showWindow">Show window</param>
+    /// <param name="args">Arguments</param>
     public void Run(Func<Window> showWindow, string[] args)
     {
       if ( _owned )
@@ -155,16 +176,18 @@ namespace Org.Vs.WinMd5.Core.Utils
       try
       {
         IpcClientChannel channel = new IpcClientChannel();
-        ChannelServices.RegisterChannel(channel, false);
 
+        ChannelServices.RegisterChannel(channel, false);
         RemotingConfiguration.RegisterActivatedClientType(typeof(RemotableObject), "ipc://pvp");
 
         RemotableObject proxy = new RemotableObject();
+
         proxy.BringToFront(_appGuid);
         proxy.ProcessArguments(_appGuid, args);
       }
-      catch
-      { // log it
+      catch ( Exception ex )
+      {
+        LOG.Error(ex, "{0} caused a(n) {1}", MethodBase.GetCurrentMethod().Name, ex.GetType().Name);
       }
     }
   }

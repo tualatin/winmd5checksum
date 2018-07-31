@@ -25,7 +25,6 @@ namespace Org.Vs.WinMd5
 
     private readonly Guid _winHashGui = new Guid("2ff45286-9806-41ca-a99a-41c0efe8980f");
 
-    private MainWindow _mainWindow;
     private List<VsDataGridHierarchialDataModel> _collection;
     private bool _md5;
     private bool _sha1;
@@ -121,7 +120,6 @@ namespace Org.Vs.WinMd5
       if ( !e.PropertyName.Equals("IsSuccessfullyCompleted") )
         return;
 
-
       if ( EnvironmentContainer.Instance.CurrentSettings.SingleInstance )
       {
         var instance = new SingleInstance(_winHashGui);
@@ -131,10 +129,11 @@ namespace Org.Vs.WinMd5
           new MainWindow().Show();
           return MainWindow;
         }, null);
+
         return;
       }
 
-      _mainWindow.Show();
+      new MainWindow().Show();
     }
 
     private void ResetHashCalculation()
