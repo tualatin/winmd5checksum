@@ -3,7 +3,6 @@
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
   xmlns:userControls="clr-namespace:Org.Vs.WinMd5.UI.UserControls"
   >
-
   <!--  Style and template for the button in the upper left corner of the DataGrid.  -->
   <Style x:Key="{ComponentResourceKey ResourceId=DataGridSelectAllButtonStyle, TypeInTargetAssembly={x:Type userControls:VsDataGrid}}" TargetType="{x:Type Button}">
     <Setter Property="Template">
@@ -164,12 +163,14 @@
                   <GradientStop Offset="1" Color="{StaticResource ColorGrey03}" />
                 </LinearGradientBrush>
               </Border.BorderBrush>
+
               <Border.Background>
                 <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
                   <GradientStop Offset="0" Color="{StaticResource ColorWhite}" />
                   <GradientStop Offset="1" Color="{StaticResource ColorGrey03}" />
                 </LinearGradientBrush>
               </Border.Background>
+
               <StackPanel Orientation="Horizontal">
                 <ContentPresenter
                   VerticalAlignment="Center"
@@ -216,6 +217,7 @@
                         KeyTime="0"
                         />
                     </ColorAnimationUsingKeyFrames>
+
                     <ColorAnimationUsingKeyFrames
                       Storyboard.TargetName="rowHeaderBorder"
                       Storyboard.TargetProperty="(Panel.Background).(GradientBrush.GradientStops)[1].(GradientStop.Color)"
@@ -311,6 +313,7 @@
       <Trigger Property="IsNewItem" Value="True">
         <Setter Property="Margin" Value="{Binding NewItemMargin, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" />
       </Trigger>
+
       <Trigger Property="IsMouseOver" Value="True">
         <Setter Property="Background" Value="{StaticResource BrushSolidGrey03}" />
       </Trigger>
@@ -360,6 +363,7 @@
                   <GradientStop Offset="1" Color="{StaticResource ColorGrey20}" />
                 </LinearGradientBrush>
               </Border.BorderBrush>
+
               <Border.Background>
                 <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
                   <GradientStop Offset="0" Color="{StaticResource ColorWhite}" />
@@ -403,6 +407,7 @@
               HorizontalAlignment="Left"
               Style="{StaticResource ColumnHeaderGripperStyle}"
               />
+
             <Thumb
               x:Name="PART_RightHeaderGripper"
               HorizontalAlignment="Right"
@@ -419,6 +424,7 @@
               </Setter>
               <Setter TargetName="SortArrow" Property="Visibility" Value="Visible" />
             </Trigger>
+
             <Trigger Property="SortDirection" Value="Descending">
               <Setter TargetName="SortArrow" Property="Visibility" Value="Visible" />
             </Trigger>
@@ -474,6 +480,7 @@
           <Condition Value="True" Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsSelected}" />
           <Condition Value="False" Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}, Path=IsKeyboardFocusWithin}" />
         </MultiDataTrigger.Conditions>
+
         <MultiDataTrigger.Setters>
           <Setter Property="Background" Value="{StaticResource BrushSolidBorderLightBlue}" />
           <Setter Property="Foreground" Value="Black" />
@@ -490,22 +497,6 @@
     <Setter Property="CanUserSortColumns" Value="False" />
     <Setter Property="CellStyle" Value="{StaticResource DataGridCellStyle}" />
     <Setter Property="ColumnHeaderStyle" Value="{StaticResource DataGridColumnHeaderStyle}" />
-    <Setter Property="ContextMenu">
-      <Setter.Value>
-        <ContextMenu
-          DataContext="{Binding RelativeSource={RelativeSource Self}, Path=PlacementTarget}"
-          ItemsSource="{Binding Columns}"
-          >
-          <ContextMenu.ItemContainerStyle>
-            <Style TargetType="{x:Type MenuItem}">
-              <Setter Property="Header" Value="{Binding Header}" />
-              <Setter Property="IsCheckable" Value="True" />
-              <Setter Property="IsChecked" Value="{Binding Visibility, Mode=TwoWay, Converter={StaticResource VisibilityToInverseBoolConverter}}" />
-            </Style>
-          </ContextMenu.ItemContainerStyle>
-        </ContextMenu>
-      </Setter.Value>
-    </Setter>
     <Setter Property="EnableColumnVirtualization" Value="False" />
     <Setter Property="EnableRowVirtualization" Value="True" />
     <Setter Property="FocusVisualStyle" Value="{x:Null}" />
