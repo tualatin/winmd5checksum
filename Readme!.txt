@@ -3,7 +3,7 @@ Source: git@github.com:tualatin/winmd5checksum.git
 Known issues: https://github.com/tualatin/winmd5checksum/issues
 
 Changelog:
-1.6.xxxx.x
+1.6.6787.x
 * new Single instance (see Settings dialog)
 * bug fix Column chooser -> context menu not in ColumnHeader
 * bug fix create empty folder in user dir
