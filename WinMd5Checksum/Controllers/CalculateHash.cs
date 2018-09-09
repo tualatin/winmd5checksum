@@ -41,15 +41,15 @@ namespace Org.Vs.WinMd5.Controllers
 
           var tasks = new List<Task>
           {
-            new Task(() => CalulcateHash<MD5CryptoServiceProvider>(hash.Children
+            new Task(() => CalculateHashGeneric<MD5CryptoServiceProvider>(hash.Children
               .FirstOrDefault(p => (p.Data as WinMdChecksumData)?.FileName == HashNames.Md5)?.Data as WinMdChecksumData, (hash.Data as WinMdChecksumData)?.FileName), token),
-            new Task(() => CalulcateHash<SHA1CryptoServiceProvider>(hash.Children
+            new Task(() => CalculateHashGeneric<SHA1CryptoServiceProvider>(hash.Children
               .FirstOrDefault(p => (p.Data as WinMdChecksumData)?.FileName == HashNames.Sha1)?.Data as WinMdChecksumData, (hash.Data as WinMdChecksumData)?.FileName), token),
-            new Task(() => CalulcateHash<SHA256CryptoServiceProvider>(hash.Children
+            new Task(() => CalculateHashGeneric<SHA256CryptoServiceProvider>(hash.Children
               .FirstOrDefault(p => (p.Data as WinMdChecksumData)?.FileName == HashNames.Sha256)?.Data as WinMdChecksumData, (hash.Data as WinMdChecksumData)?.FileName), token),
-            new Task(() => CalulcateHash<SHA384CryptoServiceProvider>(hash.Children
+            new Task(() => CalculateHashGeneric<SHA384CryptoServiceProvider>(hash.Children
               .FirstOrDefault(p => (p.Data as WinMdChecksumData)?.FileName == HashNames.Sha384)?.Data as WinMdChecksumData, (hash.Data as WinMdChecksumData)?.FileName), token),
-            new Task(() => CalulcateHash<SHA512CryptoServiceProvider>(hash.Children
+            new Task(() => CalculateHashGeneric<SHA512CryptoServiceProvider>(hash.Children
               .FirstOrDefault(p => (p.Data as WinMdChecksumData)?.FileName == HashNames.Sha512)?.Data as WinMdChecksumData, (hash.Data as WinMdChecksumData)?.FileName), token)
           };
 
@@ -73,7 +73,7 @@ namespace Org.Vs.WinMd5.Controllers
       return string.Compare(result, expected, StringComparison.OrdinalIgnoreCase) == 0 ? ok : failed;
     }
 
-    private void CalulcateHash<T>(WinMdChecksumData data, string fileName) where T : HashAlgorithm, new()
+    private void CalculateHashGeneric<T>(WinMdChecksumData data, string fileName) where T : HashAlgorithm, new()
     {
       if ( !data.HashIsEnabled )
       {
